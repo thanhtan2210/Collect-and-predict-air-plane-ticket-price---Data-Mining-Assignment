@@ -1,122 +1,79 @@
-# 🛫 Hướng dẫn Cài đặt và Chạy Dự án: Dự đoán Giá Vé Máy Bay
 
-Tài liệu này hướng dẫn chi tiết các bước để thiết lập môi trường và khởi chạy hệ thống dự đoán giá vé máy bay với kiến trúc tách biệt **Backend (FastAPI)** và **Frontend (Node.js)**.
+# Flight Ticket Price Prediction - Data Mining Assignment
+
+This project focuses on data mining and building a machine learning model to predict flight ticket prices based on itinerary information. The project covers the entire workflow, from data cleaning and feature engineering to model optimization and result analysis.
 
 ---
 
-## 📂 Cấu trúc Thư mục (Project Structure)
-
-Đảm bảo thư mục dự án của bạn được sắp xếp như sau:
+## Project Structure
 
 ```plaintext
 Collect-and-predict-air-plane-ticket-price/
-├── backend/
-│   ├── main.py              # API xử lý logic và model AI
-│   ├── model.pkl            # File mô hình đã huấn luyện
-│   └── requirements.txt     # Danh sách thư viện Python
-└── frontend/
-    ├── server.js            # Máy chủ web Node.js
-    ├── package.json         # Cấu hình dự án Node.js
-    └── public/
-        ├── index.html       # Giao diện chính
-        └── script.js        # Logic xử lý và gọi API
+├── data/
+│   ├── IndianFlightdata - Sheet1.csv    # Raw data
+│   └── data_for_assignment/
+│       └── cleaned_flight_data.csv      # Cleaned & encoded data
+├── notebook/
+│   ├── eda.ipynb                        # Data analysis & Preprocessing
+│   ├── model_training.ipynb             # Model training (RF, XGBoost) & Tuning
+│   └── visual_report_data.ipynb         # Visualization & Metrics for reporting
+├── models/
+│   ├── best_flight_price_model_optimized.json  # Best XGBoost model
+│   └── rf_flight_price_model.pkl               # Baseline model (Random Forest)
+├── doc/
+│   └── dataset_requirement.md           # Project requirements
+└── requirements.txt                     # Required libraries
 ```
 
 ---
 
-## 🛠 Yêu cầu hệ thống (Prerequisites)
+## Prerequisites
 
-Trước khi bắt đầu, hãy cài đặt các phần mềm sau:
-
-- **Python (3.8+)**
-- **Node.js (18.x+)**
-
----
-
-## 🟢 PHẦN 1: Cấu hình và Chạy BACKEND (Python / FastAPI)
-
-### Bước 1: Di chuyển vào thư mục Backend
+The project requires **Python 3.8+**. To install the necessary libraries, run the following command:
 
 ```bash
-cd D:\DataMining\Collect-and-predict-air-plane-ticket-price---Data-Mining-Assignment\backend
+pip install -r requirements.txt
 ```
+
+*Main libraries: pandas, numpy, seaborn, matplotlib, scikit-learn, xgboost, joblib.*
 
 ---
 
-### Bước 2: Cài đặt thư viện Python
+## Workflow
 
-```bash
-pip install fastapi uvicorn pydantic joblib pandas scikit-learn
-```
+### Step 1: EDA & Preprocessing
+Open the `notebook/eda.ipynb` file to perform:
+- Data cleaning (Missing values, Duplicates).
+- Outlier handling using the IQR method.
+- Feature Engineering: Extracting date/month, calculating flight duration, adding the `is_weekend` variable...
+- Data transformation (One-Hot Encoding).
 
----
+### Step 2: Model Training
+Open the `notebook/model_training.ipynb` file to:
+- Split the dataset into Train/Test sets (80/20).
+- Train and compare **Random Forest** and **XGBoost** models.
+- Hyperparameter Tuning using `RandomizedSearchCV`.
 
-### Bước 3: Khởi chạy Server Backend
-
-```bash
-uvicorn main:app --reload
-```
-
-**Ghi chú:**  
-Khi thấy:
-```
-Uvicorn running on http://127.0.0.1:8000
-```
-→ Backend đã chạy thành công.
-
----
-
-## 🔵 PHẦN 2: Cấu hình và Chạy FRONTEND (Node.js / Express)
-
-### Bước 1: Di chuyển vào thư mục Frontend
-
-```bash
-cd D:\DataMining\Collect-and-predict-air-plane-ticket-price---Data-Mining-Assignment\frontend
-```
+### Step 3: Reporting
+Open the `notebook/visual_report_data.ipynb` file to export charts:
+- **Feature Importance:** Which factors affect ticket prices the most.
+- **Cross-Validation:** Evaluating model stability.
+- **Residual Analysis:** Analyzing prediction errors.
+- **Market Insights:** Ticket price trends by airline and time.
 
 ---
 
-### Bước 2: Khởi tạo và Cài đặt thư viện
+## Key Results
 
-```bash
-del package.json
-npm init -y
-npm install express
-```
-
----
-
-### Bước 3: Khởi chạy Server Frontend
-
-```bash
-node server.js
-```
-
-**Ghi chú:**  
-Khi thấy:
-```
-Frontend server đang chạy tại: http://localhost:3000
-```
-→ Frontend đã hoạt động.
+Based on practical experiments, the model achieved impressive metrics:
+- **R-squared ($R^2$):** ~0.84 - 0.89 (explains over 85% of price variance).
+- **RMSE:** Average error optimized after Tuning.
+- **Best model:** XGBoost after tuning and outlier handling.
 
 ---
 
-## 🚀 Hướng dẫn sử dụng
-
-1. Truy cập: `http://localhost:3000`
-2. Nhập:
-   - Hãng hàng không
-   - Điểm đi
-   - Điểm đến
-   - Thời gian bay
-   - Số trạm dừng
-3. Nhấn **"Dự Đoán Giá Vé"**
-4. Xem kết quả hiển thị
-
----
-
-## ⚠️ Lưu ý khi gặp lỗi
-
-- **Connection Error** → Backend chưa chạy
-- **Module not found** → chạy lại `pip install` hoặc `npm install`
-- **Model error** → kiểm tra file `backend/model.pkl`
+## Authors
+- [Phan Thanh Tan, 2213076
+- Tran Minh Tam, 2212085
+- Vu Duc Lam, 2211824]
+- Course Project: Data Mining
