@@ -46,6 +46,27 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 
 ---
 
+## Key findings
+
+Full write-up with tables and charts: [docs/analysis.md](docs/analysis.md). Produced by `python -m src.analysis`.
+
+Raw gaps between medians mix different routes and airlines, so each attribute is also compared within groups of otherwise comparable flights.
+
+| Comparison | Raw gap of medians | Like-for-like gap | Held constant |
+| --- | --- | --- | --- |
+| Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month |
+| 1 stop vs non-stop | +119.9% | +55.6% | route, airline |
+| "In-flight meal not included" vs standard fare | +30.0% | -26.5% | route, airline, stops |
+| "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops |
+
+- **A fare without a meal looks 30% dearer and is in fact 26% cheaper.** The remark sits almost entirely on Jet Airways, the most expensive airline; within the same airline, route and stops it is cheaper in all 7 comparable groups.
+- **One stop costs more than non-stop in every comparable group**, but about half of the raw gap comes from which routes have connecting flights.
+- **The weekend premium is a March effect:** +20.6% in March, between +1.5% and +2.8% in the other months.
+- **Model error is concentrated in a small tail.** The median absolute error is 294 INR against a mean of 681 INR; the worst 5% of test rows carry 38.7% of the total error, and fares above the outlier fence are underpredicted by 9,864 INR on average.
+- **Forecasting a new month is harder than the headline score suggests.** Training on March-May and testing on June gives R² 0.846 and MAE 1,091 INR, against R² 0.929 and MAE 588 INR for comparable prices under the random split.
+
+---
+
 ## Validation choices
 
 - **Duplicates are removed before the split.** The raw file has 220 fully duplicated rows. Splitting first would put copies of the same row in both train and test and inflate the test score.
@@ -69,17 +90,21 @@ No. `Additional_Info` describes the fare conditions of the ticket ("In-flight me
 │   ├── preprocess.py          # Cleaning + feature engineering shared by train and predict
 │   ├── train.py               # Model comparison, test evaluation, saves model + metrics
 │   ├── ablation.py            # Feature ablation
+│   ├── analysis.py            # Like-for-like comparisons, error analysis, time-based validation
 │   ├── predictor.py           # Loads the saved pipeline, predicts from user input
 │   ├── predict_cli.py         # Terminal interface
 │   └── summary.py             # LaTeX tables generated from models/metrics.json
 ├── tests/                     # pytest: preprocessing and predictor
 ├── models/
 │   ├── flight_price_pipeline.joblib   # Fitted sklearn Pipeline (one-hot + XGBoost)
-│   └── metrics.json                   # All metrics reported above
+│   ├── metrics.json                   # All metrics reported above
+│   └── analysis.json                  # All numbers in docs/analysis.md
 ├── data/
 │   └── IndianFlightdata - Sheet1.csv  # Raw data used by the pipeline
 ├── notebook/                  # Original exploratory notebooks (see note below)
-├── docs/images/               # App screenshots
+├── docs/
+│   ├── analysis.md            # Key findings
+│   └── images/                # App screenshots and analysis charts
 └── .github/workflows/ci.yml   # Tests + training on every push
 ```
 
@@ -101,6 +126,7 @@ pip install -r requirements-dev.txt
 python -m pytest -q               # tests
 python -m src.train               # compare models, save model + metrics
 python -m src.ablation            # feature ablation
+python -m src.analysis            # numbers and charts for docs/analysis.md
 python -m src.summary             # LaTeX tables from metrics.json
 python -m src.predict_cli         # predict in the terminal
 streamlit run app.py              # web app
@@ -125,7 +151,7 @@ The data is an existing public Kaggle dataset of Indian domestic flight fares; t
 - **Four months of one year.** Journeys run from March to June 2019. The model knows nothing about other seasons or about price levels after 2019, and the app warns when a date outside this window is entered.
 - **Five routes.** Banglore → Delhi, Delhi → Cochin, Kolkata → Banglore, Mumbai → Hyderabad and Chennai → Kolkata. The app only offers these.
 - **No booking date.** How far in advance a ticket is bought is a major price driver and is not in the data.
-- **Random split.** The split is random over rows, not over time, so the reported scores describe interpolation within the same period rather than forecasting future prices.
+- **Random split.** The headline scores come from a random split over rows, so they describe interpolation within the same period. The time-based check in [docs/analysis.md](docs/analysis.md) shows the error on an unseen month is clearly higher.
 - **Rare categories.** No business-class row remains in the training set after the outlier filter, so the model cannot price business fares.
 
 ## About the notebooks

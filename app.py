@@ -31,6 +31,11 @@ def get_metrics():
 
 
 @st.cache_data
+def get_analysis():
+    return predictor.load_analysis()
+
+
+@st.cache_data
 def get_routes():
     return predictor.known_routes()
 
@@ -138,8 +143,50 @@ def insights_tab(data):
     col2.metric(f"Weekend median ({len(weekend):,} flights)", f"{weekend.median():,.0f} INR")
     col3.metric("Weekend premium", f"{(weekend.median() / week.median() - 1) * 100:+.1f}%")
 
+    like_for_like_section()
+
     with st.expander(f"Show the cleaned data ({len(data):,} rows)"):
         st.dataframe(data, width="stretch")
+
+
+def like_for_like_section():
+    """Raw gaps next to gaps between otherwise comparable flights."""
+    analysis = get_analysis()
+    if analysis is None:
+        return
+    info = analysis["additional_info"]
+    comparisons = [
+        ("Weekend vs weekday", "route, airline, stops, month", analysis["weekend"]["summary"]),
+        ("1 stop vs non-stop", "route, airline", analysis["one_stop_vs_non_stop"]["summary"]),
+        ("Meal not included vs standard fare", "route, airline, stops",
+         info["In-flight meal not included"]["summary"]),
+        ("No check-in baggage vs standard fare", "route, airline, stops",
+         info["No check-in baggage included"]["summary"]),
+    ]
+    st.subheader("Raw gap vs like-for-like gap")
+    st.dataframe(
+        pd.DataFrame(
+            [
+                {
+                    "Comparison": name,
+                    "Raw difference of medians": f"{s['raw_diff_pct']:+.1f}%",
+                    "Within comparable flights": f"{s['controlled_diff_pct']:+.1f}%",
+                    "Held constant": held,
+                    "Groups compared": s["groups_compared"],
+                }
+                for name, held, s in comparisons
+            ]
+        ),
+        hide_index=True,
+        width="stretch",
+    )
+    march = next(m for m in analysis["weekend"]["by_month"] if m["month"] == 3)
+    st.caption(
+        "The medians above mix different routes and airlines. Comparing only flights that share "
+        "the listed attributes changes the picture: the weekend premium is "
+        f"{march['controlled_diff_pct']:+.1f}% in March and small in the other months, and a fare "
+        "without a meal is cheaper than the standard fare, not dearer. Details in docs/analysis.md."
+    )
 
 
 def performance_tab(metrics):

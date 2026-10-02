@@ -1,0 +1,1134 @@
+{
+  "weekend": {
+    "summary": {
+      "raw_diff_inr": 570.0,
+      "raw_diff_pct": 7.089552238805963,
+      "groups_compared": 40,
+      "flights_compared": 6939,
+      "flights_total": 10462,
+      "controlled_diff_inr": 572.0061968583369,
+      "controlled_diff_pct": 6.557079953151713,
+      "groups_where_treated_is_dearer": 19
+    },
+    "by_month": [
+      {
+        "month": 3,
+        "groups": 11,
+        "groups_where_weekend_is_dearer": 8,
+        "controlled_diff_pct": 20.588409120461765
+      },
+      {
+        "month": 4,
+        "groups": 5,
+        "groups_where_weekend_is_dearer": 2,
+        "controlled_diff_pct": 2.757619466744842
+      },
+      {
+        "month": 5,
+        "groups": 10,
+        "groups_where_weekend_is_dearer": 4,
+        "controlled_diff_pct": 1.5169000319828791
+      },
+      {
+        "month": 6,
+        "groups": 14,
+        "groups_where_weekend_is_dearer": 5,
+        "controlled_diff_pct": 2.5779683267353137
+      }
+    ],
+    "groups": [
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Air India",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 67,
+        "n_treated": 27,
+        "median_control": 9166.0,
+        "median_treated": 10321.0,
+        "diff_inr": 1155.0,
+        "diff_pct": 12.600916430285846
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 3,
+        "n_control": 33,
+        "n_treated": 74,
+        "median_control": 8033.0,
+        "median_treated": 6502.0,
+        "diff_inr": -1531.0,
+        "diff_pct": -19.05888211129092
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 4,
+        "n_control": 87,
+        "n_treated": 39,
+        "median_control": 4591.0,
+        "median_treated": 4591.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 5,
+        "n_control": 91,
+        "n_treated": 26,
+        "median_control": 4284.0,
+        "median_treated": 4591.0,
+        "diff_inr": 307.0,
+        "diff_pct": 7.1661998132586335
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 86,
+        "n_treated": 37,
+        "median_control": 3943.0,
+        "median_treated": 4077.0,
+        "diff_inr": 134.0,
+        "diff_pct": 3.398427593203146
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 376,
+        "n_treated": 27,
+        "median_control": 13817.0,
+        "median_treated": 11087.0,
+        "diff_inr": -2730.0,
+        "diff_pct": -19.7582687993052
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Jet Airways",
+        "Total_Stops": "non-stop",
+        "Month": 4,
+        "n_control": 75,
+        "n_treated": 41,
+        "median_control": 7229.0,
+        "median_treated": 7229.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Jet Airways",
+        "Total_Stops": "non-stop",
+        "Month": 5,
+        "n_control": 102,
+        "n_treated": 27,
+        "median_control": 6686.5,
+        "median_treated": 6144.0,
+        "diff_inr": -542.5,
+        "diff_pct": -8.113362745831154
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Jet Airways",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 87,
+        "n_treated": 38,
+        "median_control": 7754.0,
+        "median_treated": 7229.0,
+        "diff_inr": -525.0,
+        "diff_pct": -6.7706989940675815
+      },
+      {
+        "Route": "Chennai → Kolkata",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 3,
+        "n_control": 40,
+        "n_treated": 20,
+        "median_control": 6297.0,
+        "median_treated": 6297.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Chennai → Kolkata",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 44,
+        "n_treated": 22,
+        "median_control": 3597.0,
+        "median_treated": 3597.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Air India",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 56,
+        "n_treated": 27,
+        "median_control": 7199.0,
+        "median_treated": 13002.0,
+        "diff_inr": 5803.0,
+        "diff_pct": 80.60841783581051
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Air India",
+        "Total_Stops": "1 stop",
+        "Month": 6,
+        "n_control": 62,
+        "n_treated": 38,
+        "median_control": 8372.0,
+        "median_treated": 8372.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Air India",
+        "Total_Stops": "2 stops",
+        "Month": 3,
+        "n_control": 44,
+        "n_treated": 35,
+        "median_control": 9303.5,
+        "median_treated": 13748.0,
+        "diff_inr": 4444.5,
+        "diff_pct": 47.77234374160262
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Air India",
+        "Total_Stops": "2 stops",
+        "Month": 6,
+        "n_control": 99,
+        "n_treated": 46,
+        "median_control": 11753.0,
+        "median_treated": 11185.0,
+        "diff_inr": -568.0,
+        "diff_pct": -4.832808644601383
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "IndiGo",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 112,
+        "n_treated": 62,
+        "median_control": 7288.0,
+        "median_treated": 11600.0,
+        "diff_inr": 4312.0,
+        "diff_pct": 59.16575192096598
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "IndiGo",
+        "Total_Stops": "1 stop",
+        "Month": 4,
+        "n_control": 37,
+        "n_treated": 22,
+        "median_control": 5947.0,
+        "median_treated": 5983.5,
+        "diff_inr": 36.5,
+        "diff_pct": 0.6137548343702726
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "IndiGo",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 137,
+        "n_treated": 28,
+        "median_control": 6794.0,
+        "median_treated": 7167.5,
+        "diff_inr": 373.5,
+        "diff_pct": 5.49749779216957
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "IndiGo",
+        "Total_Stops": "1 stop",
+        "Month": 6,
+        "n_control": 145,
+        "n_treated": 85,
+        "median_control": 6386.0,
+        "median_treated": 6442.0,
+        "diff_inr": 56.0,
+        "diff_pct": 0.8769182586908952
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 130,
+        "n_treated": 57,
+        "median_control": 12242.0,
+        "median_treated": 16289.0,
+        "diff_inr": 4047.0,
+        "diff_pct": 33.05832380330011
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 186,
+        "n_treated": 54,
+        "median_control": 12898.0,
+        "median_treated": 12373.0,
+        "diff_inr": -525.0,
+        "diff_pct": -4.07039851139711
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 6,
+        "n_control": 258,
+        "n_treated": 158,
+        "median_control": 10262.0,
+        "median_treated": 10262.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "2 stops",
+        "Month": 3,
+        "n_control": 85,
+        "n_treated": 22,
+        "median_control": 11093.0,
+        "median_treated": 18799.0,
+        "diff_inr": 7706.0,
+        "diff_pct": 69.4672315874876
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "2 stops",
+        "Month": 5,
+        "n_control": 95,
+        "n_treated": 32,
+        "median_control": 15129.0,
+        "median_treated": 15129.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "Total_Stops": "2 stops",
+        "Month": 6,
+        "n_control": 182,
+        "n_treated": 103,
+        "median_control": 13014.0,
+        "median_treated": 13292.0,
+        "diff_inr": 278.0,
+        "diff_pct": 2.136161057322883
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Multiple carriers",
+        "Total_Stops": "1 stop",
+        "Month": 3,
+        "n_control": 205,
+        "n_treated": 83,
+        "median_control": 12327.0,
+        "median_treated": 15147.0,
+        "diff_inr": 2820.0,
+        "diff_pct": 22.876612314431743
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Multiple carriers",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 294,
+        "n_treated": 61,
+        "median_control": 9424.0,
+        "median_treated": 9275.0,
+        "diff_inr": -149.0,
+        "diff_pct": -1.5810696095076349
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Multiple carriers",
+        "Total_Stops": "1 stop",
+        "Month": 6,
+        "n_control": 316,
+        "n_treated": 170,
+        "median_control": 9646.0,
+        "median_treated": 10261.0,
+        "diff_inr": 615.0,
+        "diff_pct": 6.37569977192618
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Air India",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 66,
+        "n_treated": 21,
+        "median_control": 8576.0,
+        "median_treated": 8450.0,
+        "diff_inr": -126.0,
+        "diff_pct": -1.469216417910446
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Air India",
+        "Total_Stops": "2 stops",
+        "Month": 5,
+        "n_control": 135,
+        "n_treated": 41,
+        "median_control": 12723.0,
+        "median_treated": 12140.0,
+        "diff_inr": -583.0,
+        "diff_pct": -4.582252613377347
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Air India",
+        "Total_Stops": "2 stops",
+        "Month": 6,
+        "n_control": 44,
+        "n_treated": 20,
+        "median_control": 12224.0,
+        "median_treated": 11752.0,
+        "diff_inr": -472.0,
+        "diff_pct": -3.8612565445026226
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 3,
+        "n_control": 53,
+        "n_treated": 27,
+        "median_control": 4462.0,
+        "median_treated": 5618.0,
+        "diff_inr": 1156.0,
+        "diff_pct": 25.90766472433885
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 4,
+        "n_control": 52,
+        "n_treated": 28,
+        "median_control": 4174.0,
+        "median_treated": 4804.0,
+        "diff_inr": 630.0,
+        "diff_pct": 15.093435553425971
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "IndiGo",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 60,
+        "n_treated": 23,
+        "median_control": 4804.0,
+        "median_treated": 4804.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 573,
+        "n_treated": 195,
+        "median_control": 11467.0,
+        "median_treated": 12121.0,
+        "diff_inr": 654.0,
+        "diff_pct": 5.703322577832037
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Jet Airways",
+        "Total_Stops": "1 stop",
+        "Month": 6,
+        "n_control": 192,
+        "n_treated": 103,
+        "median_control": 11080.0,
+        "median_treated": 12692.0,
+        "diff_inr": 1612.0,
+        "diff_pct": 14.54873646209387
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "SpiceJet",
+        "Total_Stops": "non-stop",
+        "Month": 4,
+        "n_control": 46,
+        "n_treated": 24,
+        "median_control": 3873.0,
+        "median_treated": 3873.0,
+        "diff_inr": 0.0,
+        "diff_pct": 0.0
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "SpiceJet",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 47,
+        "n_treated": 22,
+        "median_control": 3873.0,
+        "median_treated": 3857.0,
+        "diff_inr": -16.0,
+        "diff_pct": -0.4131164471985582
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Vistara",
+        "Total_Stops": "1 stop",
+        "Month": 5,
+        "n_control": 80,
+        "n_treated": 21,
+        "median_control": 8636.0,
+        "median_treated": 9345.0,
+        "diff_inr": 709.0,
+        "diff_pct": 8.209819360815196
+      },
+      {
+        "Route": "Mumbai → Hyderabad",
+        "Airline": "Jet Airways",
+        "Total_Stops": "non-stop",
+        "Month": 6,
+        "n_control": 54,
+        "n_treated": 20,
+        "median_control": 4995.0,
+        "median_treated": 4864.0,
+        "diff_inr": -131.0,
+        "diff_pct": -2.622622622622628
+      }
+    ]
+  },
+  "one_stop_vs_non_stop": {
+    "summary": {
+      "raw_diff_inr": 5595.0,
+      "raw_diff_pct": 119.88429397900151,
+      "groups_compared": 10,
+      "flights_compared": 4598,
+      "flights_total": 9100,
+      "controlled_diff_inr": 3410.5784036537625,
+      "controlled_diff_pct": 55.6234822725289,
+      "groups_where_treated_is_dearer": 10
+    },
+    "groups": [
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Air India",
+        "n_control": 157,
+        "n_treated": 94,
+        "median_control": 6121.0,
+        "median_treated": 9769.0,
+        "diff_inr": 3648.0,
+        "diff_pct": 59.59810488482273
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "IndiGo",
+        "n_control": 473,
+        "n_treated": 40,
+        "median_control": 4823.0,
+        "median_treated": 7494.0,
+        "diff_inr": 2671.0,
+        "diff_pct": 55.38046858801575
+      },
+      {
+        "Route": "Banglore → Delhi",
+        "Airline": "Jet Airways",
+        "n_control": 381,
+        "n_treated": 403,
+        "median_control": 7229.0,
+        "median_treated": 13555.0,
+        "diff_inr": 6326.0,
+        "diff_pct": 87.50864573246646
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Air India",
+        "n_control": 75,
+        "n_treated": 281,
+        "median_control": 6094.0,
+        "median_treated": 8372.0,
+        "diff_inr": 2278.0,
+        "diff_pct": 37.381030521824755
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "IndiGo",
+        "n_control": 59,
+        "n_treated": 628,
+        "median_control": 5601.0,
+        "median_treated": 6565.5,
+        "diff_inr": 964.5,
+        "diff_pct": 17.220139260846267
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "Airline": "Jet Airways",
+        "n_control": 34,
+        "n_treated": 875,
+        "median_control": 7202.0,
+        "median_treated": 12373.0,
+        "diff_inr": 5171.0,
+        "diff_pct": 71.79950013885032
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Air Asia",
+        "n_control": 92,
+        "n_treated": 49,
+        "median_control": 4384.0,
+        "median_treated": 5192.0,
+        "diff_inr": 808.0,
+        "diff_pct": 18.430656934306565
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "Air India",
+        "n_control": 61,
+        "n_treated": 152,
+        "median_control": 4960.0,
+        "median_treated": 8366.0,
+        "diff_inr": 3406.0,
+        "diff_pct": 68.66935483870968
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "IndiGo",
+        "n_control": 320,
+        "n_treated": 124,
+        "median_control": 4804.0,
+        "median_treated": 5069.0,
+        "diff_inr": 265.0,
+        "diff_pct": 5.51623646960866
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "Airline": "SpiceJet",
+        "n_control": 248,
+        "n_treated": 52,
+        "median_control": 3873.0,
+        "median_treated": 8224.0,
+        "diff_inr": 4351.0,
+        "diff_pct": 112.34185386005682
+      }
+    ]
+  },
+  "flights_by_route_and_stops": [
+    {
+      "Route": "Banglore → Delhi",
+      "1 stop": 562,
+      "2 stops": 73,
+      "3 stops": 7,
+      "4 stops": 1,
+      "non-stop": 1536
+    },
+    {
+      "Route": "Chennai → Kolkata",
+      "1 stop": 0,
+      "2 stops": 0,
+      "3 stops": 0,
+      "4 stops": 0,
+      "non-stop": 381
+    },
+    {
+      "Route": "Delhi → Cochin",
+      "1 stop": 3185,
+      "2 stops": 924,
+      "3 stops": 23,
+      "4 stops": 0,
+      "non-stop": 213
+    },
+    {
+      "Route": "Kolkata → Banglore",
+      "1 stop": 1834,
+      "2 stops": 291,
+      "3 stops": 11,
+      "4 stops": 0,
+      "non-stop": 724
+    },
+    {
+      "Route": "Mumbai → Hyderabad",
+      "1 stop": 44,
+      "2 stops": 30,
+      "3 stops": 2,
+      "4 stops": 0,
+      "non-stop": 621
+    }
+  ],
+  "additional_info": {
+    "In-flight meal not included": {
+      "summary": {
+        "raw_diff_inr": 2369.0,
+        "raw_diff_pct": 30.01393639934118,
+        "groups_compared": 7,
+        "flights_compared": 4779,
+        "flights_total": 10111,
+        "controlled_diff_inr": -3453.452395898724,
+        "controlled_diff_pct": -26.486510109992416,
+        "groups_where_treated_is_dearer": 0
+      },
+      "flights_by_airline": {
+        "Jet Airways": 1830,
+        "Multiple carriers": 96
+      },
+      "groups": [
+        {
+          "Route": "Banglore → Delhi",
+          "Airline": "Jet Airways",
+          "Total_Stops": "1 stop",
+          "n_control": 231,
+          "n_treated": 160,
+          "median_control": 16736.0,
+          "median_treated": 9134.0,
+          "diff_inr": -7602.0,
+          "diff_pct": -45.423040152963665
+        },
+        {
+          "Route": "Banglore → Delhi",
+          "Airline": "Jet Airways",
+          "Total_Stops": "non-stop",
+          "n_control": 200,
+          "n_treated": 181,
+          "median_control": 7229.0,
+          "median_treated": 5198.0,
+          "diff_inr": -2031.0,
+          "diff_pct": -28.095172222990726
+        },
+        {
+          "Route": "Delhi → Cochin",
+          "Airline": "Jet Airways",
+          "Total_Stops": "1 stop",
+          "n_control": 323,
+          "n_treated": 551,
+          "median_control": 14924.0,
+          "median_treated": 10262.0,
+          "diff_inr": -4662.0,
+          "diff_pct": -31.238273921200754
+        },
+        {
+          "Route": "Delhi → Cochin",
+          "Airline": "Jet Airways",
+          "Total_Stops": "2 stops",
+          "n_control": 344,
+          "n_treated": 185,
+          "median_control": 13882.0,
+          "median_treated": 10919.0,
+          "diff_inr": -2963.0,
+          "diff_pct": -21.344186716611436
+        },
+        {
+          "Route": "Delhi → Cochin",
+          "Airline": "Multiple carriers",
+          "Total_Stops": "1 stop",
+          "n_control": 1052,
+          "n_treated": 93,
+          "median_control": 10197.0,
+          "median_treated": 8552.0,
+          "diff_inr": -1645.0,
+          "diff_pct": -16.132195743846232
+        },
+        {
+          "Route": "Kolkata → Banglore",
+          "Airline": "Jet Airways",
+          "Total_Stops": "1 stop",
+          "n_control": 624,
+          "n_treated": 628,
+          "median_control": 13941.0,
+          "median_treated": 10031.0,
+          "diff_inr": -3910.0,
+          "diff_pct": -28.04676852449609
+        },
+        {
+          "Route": "Mumbai → Hyderabad",
+          "Airline": "Jet Airways",
+          "Total_Stops": "non-stop",
+          "n_control": 107,
+          "n_treated": 100,
+          "median_control": 5678.0,
+          "median_treated": 4050.0,
+          "diff_inr": -1628.0,
+          "diff_pct": -28.672067629446985
+        }
+      ]
+    },
+    "No check-in baggage included": {
+      "summary": {
+        "raw_diff_inr": -4052.0,
+        "raw_diff_pct": -51.336627391359436,
+        "groups_compared": 4,
+        "flights_compared": 667,
+        "flights_total": 8503,
+        "controlled_diff_inr": -44.94752623688156,
+        "controlled_diff_pct": -1.3967440489887413,
+        "groups_where_treated_is_dearer": 0
+      },
+      "flights_by_airline": {
+        "SpiceJet": 318
+      },
+      "groups": [
+        {
+          "Route": "Banglore → Delhi",
+          "Airline": "SpiceJet",
+          "Total_Stops": "non-stop",
+          "n_control": 94,
+          "n_treated": 76,
+          "median_control": 3971.0,
+          "median_treated": 3919.0,
+          "diff_inr": -52.0,
+          "diff_pct": -1.309493830269448
+        },
+        {
+          "Route": "Chennai → Kolkata",
+          "Airline": "SpiceJet",
+          "Total_Stops": "non-stop",
+          "n_control": 68,
+          "n_treated": 60,
+          "median_control": 3597.0,
+          "median_treated": 3543.0,
+          "diff_inr": -54.0,
+          "diff_pct": -1.5012510425354453
+        },
+        {
+          "Route": "Kolkata → Banglore",
+          "Airline": "SpiceJet",
+          "Total_Stops": "non-stop",
+          "n_control": 136,
+          "n_treated": 112,
+          "median_control": 3873.0,
+          "median_treated": 3841.0,
+          "diff_inr": -32.0,
+          "diff_pct": -0.8262328943971053
+        },
+        {
+          "Route": "Mumbai → Hyderabad",
+          "Airline": "SpiceJet",
+          "Total_Stops": "non-stop",
+          "n_control": 67,
+          "n_treated": 54,
+          "median_control": 2017.0,
+          "median_treated": 1965.0,
+          "diff_inr": -52.0,
+          "diff_pct": -2.578086266732771
+        }
+      ]
+    }
+  },
+  "errors": {
+    "Route": [
+      {
+        "Route": "Banglore → Delhi",
+        "n": 448,
+        "median_price": 5717.0,
+        "mae": 903.5681479317801,
+        "median_abs_pct_error": 5.478377077471201,
+        "bias": -313.3396312168666
+      },
+      {
+        "Route": "Chennai → Kolkata",
+        "n": 79,
+        "median_price": 3687.0,
+        "mae": 287.3120055379747,
+        "median_abs_pct_error": 2.840515929383117,
+        "bias": 117.13480889042721
+      },
+      {
+        "Route": "Delhi → Cochin",
+        "n": 880,
+        "median_price": 10262.0,
+        "mae": 763.0727089621804,
+        "median_abs_pct_error": 3.8400684998848877,
+        "bias": -44.74272960316051
+      },
+      {
+        "Route": "Kolkata → Banglore",
+        "n": 560,
+        "median_price": 9135.0,
+        "mae": 478.556596156529,
+        "median_abs_pct_error": 2.9405957812809493,
+        "bias": 20.540654645647322
+      },
+      {
+        "Route": "Mumbai → Hyderabad",
+        "n": 126,
+        "median_price": 3276.0,
+        "mae": 468.70643058655753,
+        "median_abs_pct_error": 5.911761802013411,
+        "bias": 30.89175269717262
+      }
+    ],
+    "Airline": [
+      {
+        "Airline": "Air Asia",
+        "n": 60,
+        "median_price": 5177.0,
+        "mae": 565.6257568359375,
+        "median_abs_pct_error": 6.056621457230722,
+        "bias": -113.29453938802084
+      },
+      {
+        "Airline": "Air India",
+        "n": 349,
+        "median_price": 8996.0,
+        "mae": 881.9193804284563,
+        "median_abs_pct_error": 6.2261506069530235,
+        "bias": -136.35194724883596
+      },
+      {
+        "Airline": "GoAir",
+        "n": 35,
+        "median_price": 4632.0,
+        "mae": 559.6964494977678,
+        "median_abs_pct_error": 7.852909816038204,
+        "bias": 250.46387416294644
+      },
+      {
+        "Airline": "IndiGo",
+        "n": 422,
+        "median_price": 5000.0,
+        "mae": 405.548815975822,
+        "median_abs_pct_error": 4.391889786280588,
+        "bias": 19.245076111707643
+      },
+      {
+        "Airline": "Jet Airways",
+        "n": 722,
+        "median_price": 10919.0,
+        "mae": 649.648260988357,
+        "median_abs_pct_error": 2.4231116695217336,
+        "bias": -177.77793956133138
+      },
+      {
+        "Airline": "Multiple carriers",
+        "n": 259,
+        "median_price": 9838.0,
+        "mae": 1343.995043662524,
+        "median_abs_pct_error": 6.601082517512633,
+        "bias": -20.805790374638033
+      },
+      {
+        "Airline": "Multiple carriers Premium economy",
+        "n": 3,
+        "median_price": 11269.0,
+        "mae": 799.0120442708334,
+        "median_abs_pct_error": 3.4098249428643976,
+        "bias": -799.0120442708334
+      },
+      {
+        "Airline": "SpiceJet",
+        "n": 164,
+        "median_price": 3866.0,
+        "mae": 209.04584931164254,
+        "median_abs_pct_error": 2.9892284805381015,
+        "bias": 57.27764892578125
+      },
+      {
+        "Airline": "Vistara",
+        "n": 79,
+        "median_price": 8085.0,
+        "mae": 503.40715548358384,
+        "median_abs_pct_error": 2.7295885961091755,
+        "bias": 115.74352563785601
+      }
+    ],
+    "Total_Stops": [
+      {
+        "Total_Stops": "1 stop",
+        "n": 1129,
+        "median_price": 10262.0,
+        "mae": 804.2213427777624,
+        "median_abs_pct_error": 3.687322576907479,
+        "bias": -107.53278404215567
+      },
+      {
+        "Total_Stops": "2 stops",
+        "n": 245,
+        "median_price": 12515.0,
+        "mae": 801.91142578125,
+        "median_abs_pct_error": 3.5850500558391833,
+        "bias": -65.12012715242346
+      },
+      {
+        "Total_Stops": "3 stops",
+        "n": 10,
+        "median_price": 13659.0,
+        "mae": 1931.2708984375,
+        "median_abs_pct_error": 4.502895633320119,
+        "bias": -1725.460546875
+      },
+      {
+        "Total_Stops": "4 stops",
+        "n": 1,
+        "median_price": 17686.0,
+        "mae": 5080.0419921875,
+        "median_abs_pct_error": 28.723521385205814,
+        "bias": -5080.0419921875
+      },
+      {
+        "Total_Stops": "non-stop",
+        "n": 708,
+        "median_price": 4591.0,
+        "mae": 419.8049723307292,
+        "median_abs_pct_error": 4.508107342146721,
+        "bias": 6.4867405433439265
+      }
+    ],
+    "Price band (INR)": [
+      {
+        "Price band (INR)": "< 5,000",
+        "n": 491,
+        "median_price": 4030.0,
+        "mae": 292.4774356383656,
+        "median_abs_pct_error": 4.385383599604496,
+        "bias": 152.88724482083757
+      },
+      {
+        "Price band (INR)": "5,000-10,000",
+        "n": 783,
+        "median_price": 7198.0,
+        "mae": 648.5813490281769,
+        "median_abs_pct_error": 5.060384609295846,
+        "bias": 263.59146012931035
+      },
+      {
+        "Price band (INR)": "10,000-15,000",
+        "n": 663,
+        "median_price": 12327.0,
+        "mae": 601.4430817248774,
+        "median_abs_pct_error": 2.545579348729118,
+        "bias": -163.21550289286387
+      },
+      {
+        "Price band (INR)": "15,000-23,090",
+        "n": 135,
+        "median_price": 16373.0,
+        "mae": 1249.6921440972221,
+        "median_abs_pct_error": 3.4184465360617886,
+        "bias": -897.8578125
+      },
+      {
+        "Price band (INR)": "> 23,090 (outliers)",
+        "n": 21,
+        "median_price": 27282.0,
+        "mae": 9863.716517857143,
+        "median_abs_pct_error": 25.90764632528937,
+        "bias": -9863.716517857143
+      }
+    ],
+    "concentration": {
+      "median_abs_error": 294.1533203125,
+      "mean_abs_error": 681.34202900106,
+      "share_within_500_inr": 0.654562828475872,
+      "share_of_total_error_from_worst_5pct": 0.38744368570280263,
+      "median_abs_pct_error": 3.9441811361585164
+    }
+  },
+  "noise_floor": {
+    "rows": 10462,
+    "rows_sharing_features": 452,
+    "rows_sharing_features_with_different_price": 450,
+    "mae_vs_group_median_on_those_rows": 1099.7711111111112
+  },
+  "temporal": {
+    "train_rows": 7058,
+    "test_rows": 3311,
+    "price_iqr_high": 23172.0,
+    "xgboost": {
+      "full": {
+        "n": 3311,
+        "r2": 0.8457162976264954,
+        "mae": 1090.97607421875,
+        "rmse": 1475.4643336929564
+      },
+      "in_range": {
+        "n": 3311,
+        "r2": 0.8457162976264954,
+        "mae": 1090.97607421875,
+        "rmse": 1475.4643336929564
+      }
+    },
+    "group_median_baseline": {
+      "full": {
+        "n": 3311,
+        "r2": 0.6953759940471824,
+        "mae": 1543.9803684687406,
+        "rmse": 2073.245629744922
+      }
+    },
+    "train_median_price": 8040.0,
+    "test_median_price": 8510.0,
+    "random_split": {
+      "xgboost": {
+        "full": {
+          "n": 2093,
+          "r2": 0.872249960899353,
+          "mae": 681.342041015625,
+          "rmse": 1632.0609669984758
+        },
+        "in_range": {
+          "n": 2072,
+          "r2": 0.9293705224990845,
+          "mae": 588.2774047851562,
+          "rmse": 1077.9728080986088
+        }
+      },
+      "group_median_baseline": {
+        "full": {
+          "n": 2093,
+          "r2": 0.5468156472769219,
+          "mae": 1851.0537505972288,
+          "rmse": 3073.9256667036525
+        }
+      }
+    }
+  },
+  "price_by_month": [
+    {
+      "Month": 3,
+      "count": 2678,
+      "median": 9769.0
+    },
+    {
+      "Month": 4,
+      "count": 1078,
+      "median": 5073.0
+    },
+    {
+      "Month": 5,
+      "count": 3395,
+      "median": 8662.0
+    },
+    {
+      "Month": 6,
+      "count": 3311,
+      "median": 8510.0
+    }
+  ],
+  "data_quality": {
+    "raw_rows": 10683,
+    "rows_removed_by_cleaning": 221,
+    "rows_where_arrival_differs_from_departure_plus_duration": 3,
+    "rows_with_duration_under_30_minutes": 1,
+    "airlines_with_under_30_flights": 4,
+    "additional_info_values_with_under_30_flights": 6
+  }
+}

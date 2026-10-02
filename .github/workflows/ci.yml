@@ -18,3 +18,4 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: python -m pytest -q
       - run: python -m src.train
+      - run: python -m src.analysis

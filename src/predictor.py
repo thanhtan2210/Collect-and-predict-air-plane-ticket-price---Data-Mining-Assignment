@@ -6,6 +6,7 @@ from functools import lru_cache
 import joblib
 
 from src.preprocess import (
+    ANALYSIS_PATH,
     CATEGORICAL_FEATURES,
     METRICS_PATH,
     MODEL_PATH,
@@ -29,6 +30,14 @@ def load_metrics():
     if not os.path.exists(METRICS_PATH):
         raise FileNotFoundError(_NOT_TRAINED.format(METRICS_PATH))
     with open(METRICS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_analysis():
+    """Output of `python -m src.analysis`, or None if it has not been run."""
+    if not os.path.exists(ANALYSIS_PATH):
+        return None
+    with open(ANALYSIS_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 
