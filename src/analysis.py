@@ -30,6 +30,25 @@ IMAGE_DIR = os.path.join(BASE_DIR, "docs", "images")
 COLOR = "#2a78d6"
 MIN_GROUP = 20  # minimum flights on each side of a within-group comparison
 
+# What happened to each airline label after 2019 (external facts, sourced in
+# docs/analysis.md). Used only to size how much of the data describes
+# carriers that still sell tickets under the same name.
+JET_AIRWAYS_LAST_FLIGHT = "2019-04-17"
+AIRLINE_STATUS = {
+    "Jet Airways": "ceased operations",
+    "Jet Airways Business": "ceased operations",
+    "GoAir": "ceased operations",
+    "Trujet": "ceased operations",
+    "Vistara": "merged into Air India group",
+    "Vistara Premium economy": "merged into Air India group",
+    "Air Asia": "merged into Air India group",
+    "IndiGo": "still operating",
+    "Air India": "still operating",
+    "SpiceJet": "still operating",
+    "Multiple carriers": "unidentified (combined itinerary)",
+    "Multiple carriers Premium economy": "unidentified (combined itinerary)",
+}
+
 pd.set_option("display.width", 200)
 pd.set_option("display.max_columns", 20)
 
@@ -180,6 +199,33 @@ def data_quality(raw_rows, clean):
         "airlines_with_under_30_flights": int((clean["Airline"].value_counts() < 30).sum()),
         "additional_info_values_with_under_30_flights": int(
             (clean["Additional_Info"].value_counts() < 30).sum()
+        ),
+    }
+
+
+def market_context(df):
+    """How the 2019 snapshot relates to the calendar and to today's airlines."""
+    date = pd.to_datetime(df["Date_of_Journey"], format=DATE_FORMAT)
+    by_date = (
+        df.assign(date=date).groupby("date")[TARGET].agg(["count", "median"]).reset_index()
+    )
+    by_date["weekend"] = by_date["date"].dt.dayofweek >= 5
+    weekend_dates = by_date[by_date["weekend"]].groupby(by_date["date"].dt.month).size()
+    status = df["Airline"].map(AIRLINE_STATUS).value_counts()
+    jet = df["Airline"].str.startswith("Jet Airways")
+    return {
+        "distinct_journey_dates": int(len(by_date)),
+        "weekend_dates_by_month": {int(m): int(n) for m, n in weekend_dates.items()},
+        "price_by_date": [
+            {"date": row.date.strftime("%Y-%m-%d"), "weekend": bool(row.weekend),
+             "flights": int(row.count), "median_price": float(row.median)}
+            for row in by_date.itertuples(index=False)
+        ],
+        "flights_by_airline_status_today": {s: int(n) for s, n in status.items()},
+        "share_by_airline_status_today": {s: float(n / len(df)) for s, n in status.items()},
+        "jet_airways_flights": int(jet.sum()),
+        "jet_airways_flights_dated_after_last_flight": int(
+            (jet & (date > JET_AIRWAYS_LAST_FLIGHT)).sum()
         ),
     }
 
@@ -344,6 +390,30 @@ def main():
     results["data_quality"] = quality
     for key, value in quality.items():
         print(f"  {key}: {value:,}")
+
+    # 6. Context ----------------------------------------------------------
+    print("\n" + "=" * 78 + "\n6. CONTEXT: THE 2019 SNAPSHOT AND TODAY\n" + "=" * 78)
+    context = market_context(df)
+    results["context"] = context
+    print(
+        f"  {context['distinct_journey_dates']} distinct journey dates; weekend dates per month: "
+        f"{context['weekend_dates_by_month']}"
+    )
+    print("  March, median price by journey date:")
+    for row in context["price_by_date"]:
+        if row["date"].startswith("2019-03"):
+            print(
+                f"    {row['date']}{' (weekend)' if row['weekend'] else '':<10} "
+                f"{row['flights']:>4} flights, median {row['median_price']:>8,.0f} INR"
+            )
+    print("  Flights by what happened to the airline since 2019:")
+    for status, share in context["share_by_airline_status_today"].items():
+        print(f"    {status:<36} {context['flights_by_airline_status_today'][status]:>6,} ({share:.1%})")
+    print(
+        f"  Jet Airways stopped flying on {JET_AIRWAYS_LAST_FLIGHT}; "
+        f"{context['jet_airways_flights_dated_after_last_flight']:,} of its "
+        f"{context['jet_airways_flights']:,} rows have a later journey date"
+    )
 
     # Figures -------------------------------------------------------------
     fig, ax = plt.subplots(figsize=(7.5, 0.45 * len(stops_table) + 1.5))

@@ -46,7 +46,7 @@ The app's headline number, weekend flights +7.1% dearer, barely changes when rou
 | May | +1.5% | 10 | 4 |
 | June | +2.6% | 14 | 5 |
 
-**So what.** Outside March there is no reliable weekend premium in this data. The data cannot say why March differs (there is no booking date and only one year), so "weekends cost 7% more" should not be presented as a general rule.
+**So what.** Outside March there is no reliable weekend premium in this data, so "weekends cost 7% more" should not be presented as a general rule. The comparison is also thinner than the row counts suggest: journeys fall on only 40 distinct dates, with 2 or 3 weekend dates per month, and March prices fall steeply through the month (see section 6), so the March figure compares a handful of specific dates.
 
 ## 4. The model is accurate on typical fares; a small tail carries the error
 
@@ -86,6 +86,51 @@ The baseline predicts the training-set median price of the same airline, route a
 June contains no price above the outlier fence, so the fair comparison for the June result is the in-range row: MAE rises from 588 to 1,091 INR (+85%) and R² falls from 0.929 to 0.846. The model still beats the baseline in June (1,091 vs 1,544 INR), but its advantage shrinks from 1,170 INR to 453 INR.
 
 **So what.** The model is good at filling in prices inside a period it has seen and noticeably weaker at forecasting a new month. Monthly price levels move a lot (median 9,769 INR in March, 5,073 in April, 8,662 in May, 8,510 in June), and four months of one year are not enough to learn a seasonal pattern.
+
+## 6. What this means for the market today
+
+Short answer: the numbers describe a 2019 market that no longer exists in this form. They do not prove anything about Indian air fares or the airline economy in 2026. What they support is narrower, and listed at the end of this section.
+
+**The data are advertised fares collected in advance, during a supply shock.**
+
+- Jet Airways stopped flying on 17 April 2019. Yet 2,600 of its 3,706 rows in the data have a later journey date. Those flights never operated, so the rows must be fares listed for sale before the collapse, not tickets that were flown. This is an inference from the dates; the dataset does not document how it was collected.
+- India grounded the Boeing 737 MAX on 13 March 2019, and reports at the time describe sharp fare increases as capacity fell. Jet Airways was shrinking through the same weeks. The data cover exactly this period.
+- Journeys fall on only 40 distinct dates, 10 per month. In March the median price falls from 18,472 INR on 1 March and 15,077 INR on 6 March to 6,673 INR on 27 March. A fare for a flight a few days away is normally dearer than one for a flight weeks away, so this pattern is what a single collection date in late February or early March would produce. The data cannot separate that from the capacity shock.
+
+**Most of the airlines in the data have changed or gone.**
+
+| What happened to the airline since 2019 | Rows | Share |
+| --- | --- | --- |
+| Still operating under the same name (IndiGo, Air India, SpiceJet) | 4,552 | 43.5% |
+| Ceased operations (Jet Airways, GoAir / Go First, TruJet) | 3,901 | 37.3% |
+| Unidentified ("Multiple carriers") | 1,209 | 11.6% |
+| Merged into the Air India group (Vistara, AirAsia India) | 800 | 7.6% |
+
+In August 2026 IndiGo carried about 65% of domestic passengers, the Air India group 26.7% and Akasa Air, which did not exist in 2019, 5.5%. In this data the largest single source of rows, and the main full-service carrier, is Jet Airways (35.4% of rows). The two findings with the largest effects, the fare-condition discount (finding 1) and the largest connecting-flight premiums (finding 2), are mostly Jet Airways pricing.
+
+**The pricing environment has changed too.** Between December 2025 and 23 March 2026 the government capped domestic economy fares by distance (7,500 INR up to 500 km, rising to 18,000 INR beyond 1,500 km), and airlines have since faced higher fuel costs. Neither regulation nor seven years of cost changes are in the data, so the INR amounts here should not be compared with today's fares.
+
+**What the analysis does and does not support.**
+
+| Claim | Supported? |
+| --- | --- |
+| The price levels or the model's predictions apply to tickets today | No. The error already rose 85% when predicting one month ahead inside 2019 (finding 5). |
+| "Weekends cost more" or "connections cost 56% more" as rules for today | No. The weekend comparison rests on 2 to 3 weekend dates per month, and the premiums are tied to airlines that no longer fly. |
+| In 2019, on these five routes, the fare product explained more of the price than the calendar did | Yes (ablation: R² 0.81 → 0.93 when `Additional_Info` is added). |
+| Raw comparisons of medians can point the wrong way once the airline mix is ignored | Yes, shown twice (meal and baggage remarks). This is a property of the method, not of the year. |
+| A price model must be re-validated on a later period before being trusted | Yes (finding 5). |
+
+To say something about today's market, the same pipeline would have to be rerun on current fares, ideally with the booking date recorded. The like-for-like method and the time-based validation carry over unchanged; the conclusions have to be re-earned.
+
+### Sources
+
+- Boeing 737 MAX grounding in India on 13 March 2019 and the fare spike that followed: [Business Standard / Fitch](https://www.business-standard.com/article/companies/boeing-737-max-grounding-led-to-steep-rise-in-airfares-in-india-fitch-119040500189_1.html), [Business Today](https://www.businesstoday.in/industry/aviation/story/air-fares-rise-spicejet-jet-airways-indigo-flight-operations-178335-2019-03-14)
+- Jet Airways: last flight 17 April 2019, liquidation ordered 7 November 2024: [Business Standard](https://www.business-standard.com/companies/news/fate-of-jet-airways-sealed-as-sc-orders-liquidation-route-says-jkc-failed-124110700691_1.html)
+- Go First (formerly GoAir): operations stopped May 2023, liquidation approved January 2025: [ch-aviation](https://www.ch-aviation.com/news/149462-tribunal-orders-liquidation-of-indias-go-first)
+- TruJet: operations stopped 15 February 2022: [Wikipedia](https://en.wikipedia.org/wiki/TruJet)
+- Vistara merged into Air India on 12 November 2024; AirAsia India (AIX Connect) merged into Air India Express on 1 October 2024: [Air India press release](https://www.airindia.com/in/en/newsroom/press-release/vistara-merger-completed-second-airline.html)
+- Domestic market shares, August 2026 (IndiGo 65%, Air India Group 26.7%, Akasa Air 5.5%): [RetailIntel summary of DGCA data](https://retailintel.in/signal/india-domestic-air-traffic-falls-6-34-yoy-in-august-indigo-s-b1dbd53b)
+- Domestic fare caps introduced December 2025 and lifted 23 March 2026: [Business Today](https://www.businesstoday.in/india/story/centre-lifts-domestic-airfare-caps-from-march-23-after-indigo-crisis-cautions-airlines-against-price-surge-521729-2026-03-22)
 
 ---
 

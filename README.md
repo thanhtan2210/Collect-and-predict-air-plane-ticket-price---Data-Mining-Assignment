@@ -61,9 +61,32 @@ Raw gaps between medians mix different routes and airlines, so each attribute is
 
 - **A fare without a meal looks 30% dearer and is in fact 26% cheaper.** The remark sits almost entirely on Jet Airways, the most expensive airline; within the same airline, route and stops it is cheaper in all 7 comparable groups.
 - **One stop costs more than non-stop in every comparable group**, but about half of the raw gap comes from which routes have connecting flights.
-- **The weekend premium is a March effect:** +20.6% in March, between +1.5% and +2.8% in the other months.
+- **The weekend premium is a March effect:** +20.6% in March, between +1.5% and +2.8% in the other months. It rests on only 2 to 3 weekend dates per month.
 - **Model error is concentrated in a small tail.** The median absolute error is 294 INR against a mean of 681 INR; the worst 5% of test rows carry 38.7% of the total error, and fares above the outlier fence are underpredicted by 9,864 INR on average.
 - **Forecasting a new month is harder than the headline score suggests.** Training on March-May and testing on June gives R² 0.846 and MAE 1,091 INR, against R² 0.929 and MAE 588 INR for comparable prices under the random split.
+
+---
+
+## What the numbers mean today
+
+Short answer: they describe a 2019 market that no longer exists in this form, and they do not prove anything about Indian air fares or the airline economy in 2026. Details and sources are in [docs/analysis.md](docs/analysis.md#6-what-this-means-for-the-market-today).
+
+- **The data are advertised fares collected in advance, not tickets flown.** Jet Airways stopped flying on 17 April 2019, yet 2,600 of its 3,706 rows have a later journey date. This is an inference from the dates; the dataset does not document how it was collected.
+- **The period was a supply shock.** India grounded the Boeing 737 MAX on 13 March 2019 while Jet Airways was collapsing, and fares rose sharply at the time. In the data the median price falls from 18,472 INR on 1 March to 6,673 INR on 27 March.
+- **Most of the airlines have changed or gone.** 37.3% of rows belong to airlines that have ceased operations (Jet Airways, GoAir, TruJet) and 7.6% to airlines since merged into the Air India group (Vistara, AirAsia India). Only 43.5% belong to names still operating. In August 2026 IndiGo carried about 65% of domestic passengers, and Akasa Air, third with 5.5%, did not exist in 2019.
+- **The pricing environment is different.** Domestic fares were capped by the government from December 2025 to 23 March 2026, and fuel costs have risen since. The INR amounts here should not be compared with today's fares.
+
+What does carry over is the method, not the conclusions:
+
+| Claim | Supported? |
+| --- | --- |
+| The price levels or the model's predictions apply to tickets today | No. Error already rose 85% when predicting one month ahead inside 2019. |
+| "Weekends cost more" or "connections cost 56% more" as rules for today | No. They rest on 2 to 3 weekend dates per month and on airlines that no longer fly. |
+| In 2019, on these routes, the fare product explained more of the price than the calendar | Yes (ablation: R² 0.81 → 0.93). |
+| Raw medians can point the wrong way when the airline mix is ignored | Yes, shown twice. This is a property of the method, not of the year. |
+| A price model must be re-validated on a later period before being trusted | Yes. |
+
+To say something about today's market, the same pipeline would have to be rerun on current fares, ideally with the booking date recorded.
 
 ---
 

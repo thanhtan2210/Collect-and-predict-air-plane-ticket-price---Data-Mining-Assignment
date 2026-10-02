@@ -1130,5 +1130,270 @@
     "rows_with_duration_under_30_minutes": 1,
     "airlines_with_under_30_flights": 4,
     "additional_info_values_with_under_30_flights": 6
+  },
+  "context": {
+    "distinct_journey_dates": 40,
+    "weekend_dates_by_month": {
+      "3": 3,
+      "4": 3,
+      "5": 2,
+      "6": 3
+    },
+    "price_by_date": [
+      {
+        "date": "2019-03-01",
+        "weekend": false,
+        "flights": 198,
+        "median_price": 18472.5
+      },
+      {
+        "date": "2019-03-03",
+        "weekend": true,
+        "flights": 309,
+        "median_price": 11791.0
+      },
+      {
+        "date": "2019-03-06",
+        "weekend": false,
+        "flights": 397,
+        "median_price": 15077.0
+      },
+      {
+        "date": "2019-03-09",
+        "weekend": true,
+        "flights": 299,
+        "median_price": 9586.0
+      },
+      {
+        "date": "2019-03-12",
+        "weekend": false,
+        "flights": 141,
+        "median_price": 11948.0
+      },
+      {
+        "date": "2019-03-15",
+        "weekend": false,
+        "flights": 162,
+        "median_price": 6657.5
+      },
+      {
+        "date": "2019-03-18",
+        "weekend": false,
+        "flights": 156,
+        "median_price": 10909.0
+      },
+      {
+        "date": "2019-03-21",
+        "weekend": false,
+        "flights": 412,
+        "median_price": 7695.0
+      },
+      {
+        "date": "2019-03-24",
+        "weekend": true,
+        "flights": 314,
+        "median_price": 8147.0
+      },
+      {
+        "date": "2019-03-27",
+        "weekend": false,
+        "flights": 290,
+        "median_price": 6673.0
+      },
+      {
+        "date": "2019-04-01",
+        "weekend": false,
+        "flights": 256,
+        "median_price": 7064.0
+      },
+      {
+        "date": "2019-04-03",
+        "weekend": false,
+        "flights": 110,
+        "median_price": 4450.5
+      },
+      {
+        "date": "2019-04-06",
+        "weekend": true,
+        "flights": 100,
+        "median_price": 4641.5
+      },
+      {
+        "date": "2019-04-09",
+        "weekend": false,
+        "flights": 125,
+        "median_price": 5403.0
+      },
+      {
+        "date": "2019-04-12",
+        "weekend": false,
+        "flights": 63,
+        "median_price": 4990.0
+      },
+      {
+        "date": "2019-04-15",
+        "weekend": false,
+        "flights": 89,
+        "median_price": 4823.0
+      },
+      {
+        "date": "2019-04-18",
+        "weekend": false,
+        "flights": 67,
+        "median_price": 5198.0
+      },
+      {
+        "date": "2019-04-21",
+        "weekend": true,
+        "flights": 82,
+        "median_price": 5228.0
+      },
+      {
+        "date": "2019-04-24",
+        "weekend": false,
+        "flights": 92,
+        "median_price": 4808.0
+      },
+      {
+        "date": "2019-04-27",
+        "weekend": true,
+        "flights": 94,
+        "median_price": 4823.0
+      },
+      {
+        "date": "2019-05-01",
+        "weekend": false,
+        "flights": 274,
+        "median_price": 8586.0
+      },
+      {
+        "date": "2019-05-03",
+        "weekend": false,
+        "flights": 90,
+        "median_price": 4513.5
+      },
+      {
+        "date": "2019-05-06",
+        "weekend": false,
+        "flights": 281,
+        "median_price": 8586.0
+      },
+      {
+        "date": "2019-05-09",
+        "weekend": false,
+        "flights": 466,
+        "median_price": 9314.5
+      },
+      {
+        "date": "2019-05-12",
+        "weekend": true,
+        "flights": 259,
+        "median_price": 8586.0
+      },
+      {
+        "date": "2019-05-15",
+        "weekend": false,
+        "flights": 402,
+        "median_price": 8372.0
+      },
+      {
+        "date": "2019-05-18",
+        "weekend": true,
+        "flights": 486,
+        "median_price": 9663.0
+      },
+      {
+        "date": "2019-05-21",
+        "weekend": false,
+        "flights": 482,
+        "median_price": 9663.0
+      },
+      {
+        "date": "2019-05-24",
+        "weekend": false,
+        "flights": 286,
+        "median_price": 8873.0
+      },
+      {
+        "date": "2019-05-27",
+        "weekend": false,
+        "flights": 369,
+        "median_price": 8040.0
+      },
+      {
+        "date": "2019-06-01",
+        "weekend": true,
+        "flights": 330,
+        "median_price": 8813.5
+      },
+      {
+        "date": "2019-06-03",
+        "weekend": false,
+        "flights": 326,
+        "median_price": 8603.0
+      },
+      {
+        "date": "2019-06-06",
+        "weekend": false,
+        "flights": 490,
+        "median_price": 10262.0
+      },
+      {
+        "date": "2019-06-09",
+        "weekend": true,
+        "flights": 485,
+        "median_price": 10262.0
+      },
+      {
+        "date": "2019-06-12",
+        "weekend": false,
+        "flights": 483,
+        "median_price": 8610.0
+      },
+      {
+        "date": "2019-06-15",
+        "weekend": true,
+        "flights": 314,
+        "median_price": 8195.0
+      },
+      {
+        "date": "2019-06-18",
+        "weekend": false,
+        "flights": 105,
+        "median_price": 4049.0
+      },
+      {
+        "date": "2019-06-21",
+        "weekend": false,
+        "flights": 109,
+        "median_price": 4804.0
+      },
+      {
+        "date": "2019-06-24",
+        "weekend": false,
+        "flights": 330,
+        "median_price": 7943.0
+      },
+      {
+        "date": "2019-06-27",
+        "weekend": false,
+        "flights": 339,
+        "median_price": 7741.0
+      }
+    ],
+    "flights_by_airline_status_today": {
+      "still operating": 4552,
+      "ceased operations": 3901,
+      "unidentified (combined itinerary)": 1209,
+      "merged into Air India group": 800
+    },
+    "share_by_airline_status_today": {
+      "still operating": 0.4350984515389027,
+      "ceased operations": 0.37287325559166506,
+      "unidentified (combined itinerary)": 0.11556107818772701,
+      "merged into Air India group": 0.07646721468170523
+    },
+    "jet_airways_flights": 3706,
+    "jet_airways_flights_dated_after_last_flight": 2600
   }
 }
