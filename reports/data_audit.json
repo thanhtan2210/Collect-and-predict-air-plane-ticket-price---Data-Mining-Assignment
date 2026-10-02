@@ -1,0 +1,199 @@
+{
+  "rows": 10462,
+  "distinct_journey_dates": 40,
+  "jet_airways": {
+    "last_flight": "2019-04-17",
+    "flights": 3700,
+    "flights_dated_after_last_flight": 2600,
+    "by_month": [
+      {
+        "month": 3,
+        "all_flights": 2678,
+        "jet_airways_flights": 879,
+        "jet_airways_share": 0.32823002240477966
+      },
+      {
+        "month": 4,
+        "all_flights": 1078,
+        "jet_airways_flights": 270,
+        "jet_airways_share": 0.2504638218923933
+      },
+      {
+        "month": 5,
+        "all_flights": 3395,
+        "jet_airways_flights": 1337,
+        "jet_airways_share": 0.3938144329896907
+      },
+      {
+        "month": 6,
+        "all_flights": 3311,
+        "jet_airways_flights": 1214,
+        "jet_airways_share": 0.36665659921473875
+      }
+    ]
+  },
+  "additional_info_by_airline": [
+    {
+      "Additional_Info": "1 Long layover",
+      "Airline": "Air India",
+      "flights": 6
+    },
+    {
+      "Additional_Info": "1 Long layover",
+      "Airline": "Jet Airways",
+      "flights": 12
+    },
+    {
+      "Additional_Info": "1 Long layover",
+      "Airline": "SpiceJet",
+      "flights": 1
+    },
+    {
+      "Additional_Info": "1 Short layover",
+      "Airline": "Air India",
+      "flights": 1
+    },
+    {
+      "Additional_Info": "2 Long layover",
+      "Airline": "Air India",
+      "flights": 1
+    },
+    {
+      "Additional_Info": "Business class",
+      "Airline": "Jet Airways",
+      "flights": 1
+    },
+    {
+      "Additional_Info": "Business class",
+      "Airline": "Jet Airways Business",
+      "flights": 3
+    },
+    {
+      "Additional_Info": "Change airports",
+      "Airline": "Air India",
+      "flights": 7
+    },
+    {
+      "Additional_Info": "In-flight meal not included",
+      "Airline": "Jet Airways",
+      "flights": 1830
+    },
+    {
+      "Additional_Info": "In-flight meal not included",
+      "Airline": "Multiple carriers",
+      "flights": 96
+    },
+    {
+      "Additional_Info": "No check-in baggage included",
+      "Airline": "SpiceJet",
+      "flights": 318
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Air Asia",
+      "flights": 318
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Air India",
+      "flights": 1679
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "GoAir",
+      "flights": 194
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "IndiGo",
+      "flights": 2043
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Jet Airways",
+      "flights": 1857
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Jet Airways Business",
+      "flights": 3
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Multiple carriers",
+      "flights": 1100
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Multiple carriers Premium economy",
+      "flights": 13
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "SpiceJet",
+      "flights": 496
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Trujet",
+      "flights": 1
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Vistara",
+      "flights": 478
+    },
+    {
+      "Additional_Info": "No info",
+      "Airline": "Vistara Premium economy",
+      "flights": 3
+    },
+    {
+      "Additional_Info": "Red-eye flight",
+      "Airline": "Air Asia",
+      "flights": 1
+    }
+  ],
+  "flights_by_route_and_month": [
+    {
+      "route": "Banglore → Delhi",
+      "month_3": 914,
+      "month_4": 423,
+      "month_5": 424,
+      "month_6": 418,
+      "total": 2179
+    },
+    {
+      "route": "Chennai → Kolkata",
+      "month_3": 116,
+      "month_4": 0,
+      "month_5": 131,
+      "month_6": 134,
+      "total": 381
+    },
+    {
+      "route": "Delhi → Cochin",
+      "month_3": 1066,
+      "month_4": 241,
+      "month_5": 1177,
+      "month_6": 1861,
+      "total": 4345
+    },
+    {
+      "route": "Kolkata → Banglore",
+      "month_3": 335,
+      "month_4": 375,
+      "month_5": 1461,
+      "month_6": 689,
+      "total": 2860
+    },
+    {
+      "route": "Mumbai → Hyderabad",
+      "month_3": 247,
+      "month_4": 39,
+      "month_5": 202,
+      "month_6": 209,
+      "total": 697
+    }
+  ]
+}

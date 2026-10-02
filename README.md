@@ -150,6 +150,7 @@ python -m pytest -q               # tests
 python -m src.train               # compare models, save model + metrics
 python -m src.ablation            # feature ablation
 python -m src.analysis            # numbers and charts for docs/analysis.md
+python -m src.data_audit          # data audit -> reports/data_audit.json
 python -m src.summary             # LaTeX tables from metrics.json
 python -m src.predict_cli         # predict in the terminal
 streamlit run app.py              # web app
@@ -174,6 +175,7 @@ The data is an existing public Kaggle dataset of Indian domestic flight fares; t
 - **Four months of one year.** Journeys run from March to June 2019. The model knows nothing about other seasons or about price levels after 2019, and the app warns when a date outside this window is entered.
 - **Five routes.** Banglore → Delhi, Delhi → Cochin, Kolkata → Banglore, Mumbai → Hyderabad and Chennai → Kolkata. The app only offers these.
 - **No booking date.** How far in advance a ticket is bought is a major price driver and is not in the data.
+- **The date column may not be the actual flight date.** Jet Airways stopped all flights on 17 April 2019, yet 2,600 of its 3,700 rows carry a later journey date, and its share of rows is higher in May (39.4%) than in March (32.8%). The rows are therefore either fares listed before the shutdown or dates that were not recorded as flown. Journeys also fall on only 40 distinct dates. The day and month features should be read with caution, and the data cannot be used to study what happened when Jet Airways left the market. Figures from `python -m src.data_audit` ([reports/data_audit.json](reports/data_audit.json)).
 - **Random split.** The headline scores come from a random split over rows, so they describe interpolation within the same period. The time-based check in [docs/analysis.md](docs/analysis.md) shows the error on an unseen month is clearly higher.
 - **Rare categories.** No business-class row remains in the training set after the outlier filter, so the model cannot price business fares.
 
