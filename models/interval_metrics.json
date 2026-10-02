@@ -1,0 +1,66 @@
+{
+  "target_coverage": 0.8,
+  "quantiles": [
+    0.1,
+    0.9
+  ],
+  "fit_rows": 6636,
+  "calibration_rows": 1660,
+  "conformal_adjustment_inr": 129.140625,
+  "calibration_coverage_before_adjustment": 0.6518072289156627,
+  "test_before_adjustment": {
+    "n": 2093,
+    "coverage": 0.6321070234113713,
+    "mean_width": 1923.7034912109375,
+    "median_width": 1307.10546875
+  },
+  "test": {
+    "n": 2093,
+    "coverage": 0.7802197802197802,
+    "mean_width": 2181.984619140625,
+    "median_width": 1565.38671875
+  },
+  "test_in_range": {
+    "n": 2072,
+    "coverage": 0.7881274131274131,
+    "mean_width": 2149.822021484375,
+    "median_width": 1544.7919921875
+  },
+  "test_by_price_quartile": [
+    {
+      "price_from": 1758.999,
+      "price_to": 5192.0,
+      "n": 525,
+      "coverage": 0.8247619047619048,
+      "mean_width": 1140.5540771484375,
+      "median_width": 956.177490234375
+    },
+    {
+      "price_from": 5192.0,
+      "price_to": 8040.0,
+      "n": 526,
+      "coverage": 0.7623574144486692,
+      "mean_width": 2326.046630859375,
+      "median_width": 1742.360107421875
+    },
+    {
+      "price_from": 8040.0,
+      "price_to": 11934.0,
+      "n": 519,
+      "coverage": 0.8053949903660886,
+      "mean_width": 2447.411376953125,
+      "median_width": 2073.6396484375
+    },
+    {
+      "price_from": 11934.0,
+      "price_to": 54826.0,
+      "n": 523,
+      "coverage": 0.7284894837476099,
+      "mean_width": 2819.11279296875,
+      "median_width": 2151.8544921875
+    }
+  ],
+  "test_share_below_interval": 0.11180124223602485,
+  "test_share_above_interval": 0.10797897754419493,
+  "point_prediction_inside_interval": 0.9297658862876255
+}

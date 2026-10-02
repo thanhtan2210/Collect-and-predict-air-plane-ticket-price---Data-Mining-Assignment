@@ -19,3 +19,5 @@ jobs:
       - run: python -m pytest -q
       - run: python -m src.train
       - run: python -m src.analysis
+      - run: python -m src.data_audit
+      - run: python -m src.train_intervals

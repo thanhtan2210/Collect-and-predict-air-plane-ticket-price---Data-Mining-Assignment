@@ -30,6 +30,16 @@ def get_metrics():
     return predictor.load_metrics()
 
 
+@st.cache_resource
+def get_intervals():
+    return predictor.load_intervals()
+
+
+@st.cache_data
+def get_interval_metrics():
+    return predictor.load_interval_metrics()
+
+
 @st.cache_data
 def get_analysis():
     return predictor.load_analysis()
@@ -80,6 +90,10 @@ def predict_tab(data, metrics):
         stops = st.selectbox(
             "Total stops", list(STOPS_MAP.values()), format_func=lambda n: f"{n}" if n else "Non-stop"
         )
+    offered = st.number_input(
+        "Offered price (INR)", min_value=0, value=None, step=100,
+        placeholder="Optional: enter a quote to check whether it is cheap, fair or expensive",
+    )
 
     if not DATA_START <= journey_date <= DATA_END:
         st.warning(
@@ -93,21 +107,42 @@ def predict_tab(data, metrics):
         return
 
     get_pipeline()
-    price = predictor.predict_price(
-        airline, source, destination, journey_date, dep_time, duration, stops, additional_info
+    get_intervals()
+    quote = predictor.assess_quote(
+        dict(
+            airline=airline, source=source, destination=destination, journey_date=journey_date,
+            dep_time=dep_time, duration_minutes=duration, total_stops=stops,
+            additional_info=additional_info,
+        ),
+        offered,
     )
     route = data.loc[(data["Source"] == source) & (data["Destination"] == destination), TARGET]
     q25, median, q75 = route.quantile([0.25, 0.5, 0.75])
-    mae = metrics["test"]["full"]["mae"]
+    coverage = get_interval_metrics()["test"]["coverage"]
 
     st.divider()
+    if offered is not None:
+        verdicts = {
+            predictor.CHEAP: (st.success, "below the range of comparable flights"),
+            predictor.FAIR: (st.info, "within the range of comparable flights"),
+            predictor.EXPENSIVE: (st.warning, "above the range of comparable flights"),
+        }
+        show, where = verdicts[quote["label"]]
+        show(
+            f"**{quote['label']}** - the quote of {offered:,.0f} INR is {where}. It is "
+            f"{abs(quote['difference']):,.0f} INR ({abs(quote['difference_pct']):.1f}%) "
+            f"{'above' if quote['difference'] > 0 else 'below'} the predicted price."
+        )
     col1, col2, col3 = st.columns(3)
-    col1.metric("Predicted price", f"{price:,.0f} INR")
-    col2.metric("Typical error (test MAE)", f"± {mae:,.0f} INR")
+    col1.metric("Predicted price", f"{quote['predicted']:,.0f} INR")
+    col2.metric("80% price range", f"{quote['low']:,.0f} - {quote['high']:,.0f} INR")
     col3.metric(f"Route median ({len(route):,} flights)", f"{median:,.0f} INR")
     st.caption(
-        f"{source} → {destination}, {format_duration(duration)}: half of the flights on this "
-        f"route in the data cost between {q25:,.0f} and {q75:,.0f} INR (25th-75th percentile)."
+        f"The range is built to contain 80% of prices for flights like this one; on the hold-out "
+        f"test set it contained {coverage:.1%}. {source} → {destination}, "
+        f"{format_duration(duration)}: half of the flights on this route in the data cost between "
+        f"{q25:,.0f} and {q75:,.0f} INR. Based on fares from March-June 2019: a case study, not "
+        f"advice on current prices."
     )
 
 
@@ -201,6 +236,39 @@ def performance_tab(metrics):
         f"{test['in_range']['n']:,} rows priced up to {info['price_iqr_high']:,.0f} INR (the "
         f"outlier fence learned on the training set): R² {test['in_range']['r2']:.3f}, "
         f"MAE {test['in_range']['mae']:,.0f} INR, RMSE {test['in_range']['rmse']:,.0f} INR."
+    )
+
+    intervals = get_interval_metrics()
+    st.subheader("80% price range: coverage and width")
+    st.dataframe(
+        pd.DataFrame(
+            [
+                {
+                    "Actual price (INR)": f"{band['price_from']:,.0f} - {band['price_to']:,.0f}",
+                    "Test rows": band["n"],
+                    "Coverage": f"{band['coverage']:.1%}",
+                    "Mean width (INR)": f"{band['mean_width']:,.0f}",
+                }
+                for band in intervals["test_by_price_quartile"]
+            ]
+            + [
+                {
+                    "Actual price (INR)": "All test rows",
+                    "Test rows": intervals["test"]["n"],
+                    "Coverage": f"{intervals['test']['coverage']:.1%}",
+                    "Mean width (INR)": f"{intervals['test']['mean_width']:,.0f}",
+                }
+            ]
+        ),
+        hide_index=True,
+        width="stretch",
+    )
+    st.caption(
+        f"Two quantile models (10% and 90%) calibrated with conformalized quantile regression on "
+        f"{intervals['calibration_rows']:,} held-out training rows (adjustment "
+        f"{intervals['conformal_adjustment_inr']:+,.0f} INR per side). Target coverage "
+        f"{intervals['target_coverage']:.0%}. Price bands are quartiles of the actual test price; the "
+        f"top band includes the price outliers that were removed from training."
     )
 
     left, right = st.columns(2)

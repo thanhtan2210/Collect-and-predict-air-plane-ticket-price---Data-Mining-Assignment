@@ -8,6 +8,8 @@ import joblib
 from src.preprocess import (
     ANALYSIS_PATH,
     CATEGORICAL_FEATURES,
+    INTERVAL_METRICS_PATH,
+    INTERVAL_MODEL_PATH,
     METRICS_PATH,
     MODEL_PATH,
     build_features,
@@ -30,6 +32,25 @@ def load_metrics():
     if not os.path.exists(METRICS_PATH):
         raise FileNotFoundError(_NOT_TRAINED.format(METRICS_PATH))
     with open(METRICS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def load_intervals():
+    """Quantile models and CQR margin written by `python -m src.train_intervals`."""
+    if not os.path.exists(INTERVAL_MODEL_PATH):
+        raise FileNotFoundError(
+            f"{INTERVAL_MODEL_PATH} not found. Run: python -m src.train_intervals"
+        )
+    return joblib.load(INTERVAL_MODEL_PATH)
+
+
+def load_interval_metrics():
+    if not os.path.exists(INTERVAL_METRICS_PATH):
+        raise FileNotFoundError(
+            f"{INTERVAL_METRICS_PATH} not found. Run: python -m src.train_intervals"
+        )
+    with open(INTERVAL_METRICS_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -80,3 +101,50 @@ def predict_price(
     )
     prediction = load_pipeline().predict(build_features(row))[0]
     return max(0.0, float(prediction))
+
+
+CHEAP, FAIR, EXPENSIVE = "Cheap", "Fair", "Expensive"
+
+
+def quote_label(offered_price, low, high):
+    """Cheap below the interval, Expensive above it, Fair inside (bounds included)."""
+    if offered_price < low:
+        return CHEAP
+    if offered_price > high:
+        return EXPENSIVE
+    return FAIR
+
+
+def assess_quote(inputs, offered_price=None):
+    """Judge a quoted price against comparable flights in the 2019 data.
+
+    `inputs` holds the arguments of `predict_price`. Returns the point
+    prediction, the calibrated 80% interval [low, high] and, when
+    `offered_price` is given, a label plus the gap to the prediction.
+
+    The point prediction and the interval come from separate models, so the
+    prediction is usually, but not always, inside the interval.
+    """
+    features = build_features(make_raw_row(**inputs))
+    predicted = max(0.0, float(load_pipeline().predict(features)[0]))
+
+    models = load_intervals()
+    margin = models["conformal_adjustment"]
+    bounds = sorted(float(models[key].predict(features)[0]) for key in ("lower", "upper"))
+    low, high = sorted([max(0.0, bounds[0] - margin), max(0.0, bounds[1] + margin)])
+
+    result = {
+        "predicted": predicted,
+        "low": low,
+        "high": high,
+        "coverage": models["target_coverage"],
+    }
+    if offered_price is not None:
+        offered_price = float(offered_price)
+        result.update(
+            offered=offered_price,
+            label=quote_label(offered_price, low, high),
+            difference=offered_price - predicted,
+            difference_pct=(offered_price / predicted - 1) * 100 if predicted else None,
+        )
+    return result

@@ -16,6 +16,8 @@ MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PATH = os.path.join(MODEL_DIR, "flight_price_pipeline.joblib")
 METRICS_PATH = os.path.join(MODEL_DIR, "metrics.json")
 ANALYSIS_PATH = os.path.join(MODEL_DIR, "analysis.json")
+INTERVAL_MODEL_PATH = os.path.join(MODEL_DIR, "flight_price_intervals.joblib")
+INTERVAL_METRICS_PATH = os.path.join(MODEL_DIR, "interval_metrics.json")
 
 TARGET = "Price"
 CATEGORICAL_FEATURES = ["Airline", "Source", "Destination", "Additional_Info"]
