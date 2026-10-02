@@ -1,12 +1,22 @@
 # Flight Ticket Price Prediction - Data Mining Assignment
 
-Predicts the price of Indian domestic flight tickets from itinerary details (airline, route, date, departure time, duration, stops, fare conditions). The repo contains a reproducible training pipeline, a feature ablation, tests, and a Streamlit app.
+**Problem.** A travel-agency employee holds a quote for a domestic flight in India and needs to know whether the price is cheap, fair or expensive compared with similar flights, and which alternative would cost less.
+
+**Approach.** A case study on 10,462 fares for March-June 2019 on five routes. One preprocessing function feeds an XGBoost price model and two quantile models that give a calibrated 80% price range; price comparisons hold airline, route and stops constant and report bootstrap confidence intervals.
+
+**Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 78.0% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; 6 groups), although a naive comparison across airlines says it is dearer.
+
+One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
+
+Live demo: <link>
 
 Every number in this README is printed by a script in this repo and can be regenerated with the commands below.
 
-| Predict | Market insights | Model performance |
-| --- | --- | --- |
-| ![Predict tab](docs/images/predict.png) | ![Market insights tab](docs/images/insights.png) | ![Model performance tab](docs/images/performance.png) |
+| Predict | Market insights |
+| --- | --- |
+| ![Predict tab](docs/images/predict.png) | ![Market insights tab](docs/images/insights.png) |
+| **Business findings** | **Model performance** |
+| ![Business findings tab](docs/images/business.png) | ![Model performance tab](docs/images/performance.png) |
 
 ---
 
@@ -43,6 +53,18 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 | 1. Airline + Source + Destination + Total_Stops + Duration_Minutes | 0.6567 ± 0.0297 |
 | 2. Set 1 + all date/time features | 0.8069 ± 0.0090 |
 | 3. Set 2 + Additional_Info (full model) | 0.9279 ± 0.0035 |
+
+**80% price range** (`python -m src.train_intervals`, stored in [models/interval_metrics.json](models/interval_metrics.json)). Two XGBoost quantile models (10% and 90%), calibrated with conformalized quantile regression on 1,660 held-out training rows.
+
+| Actual test price (INR) | Rows | Coverage | Mean width (INR) |
+| --- | --- | --- | --- |
+| 1,759 - 5,192 | 525 | 82.5% | 1,141 |
+| 5,192 - 8,040 | 526 | 76.2% | 2,326 |
+| 8,040 - 11,934 | 519 | 80.5% | 2,447 |
+| 11,934 - 54,826 | 523 | 72.8% | 2,819 |
+| All test rows | 2,093 | 78.0% | 2,182 |
+
+Coverage is below the 80% target in the top quarter, which contains the price outliers removed from training. The point prediction comes from a separate model and lies inside the range for 93.0% of test rows.
 
 ---
 
@@ -108,24 +130,31 @@ No. `Additional_Info` describes the fare conditions of the ticket ("In-flight me
 ## Project structure
 
 ```plaintext
-├── app.py                     # Streamlit app (3 tabs)
+├── app.py                     # Streamlit app (4 tabs)
 ├── src/
 │   ├── preprocess.py          # Cleaning + feature engineering shared by train and predict
 │   ├── train.py               # Model comparison, test evaluation, saves model + metrics
 │   ├── ablation.py            # Feature ablation
 │   ├── analysis.py            # Like-for-like comparisons, error analysis, time-based validation
-│   ├── predictor.py           # Loads the saved pipeline, predicts from user input
+│   ├── train_intervals.py     # Quantile models + conformal calibration for the 80% price range
+│   ├── business_analysis.py   # Findings in INR with bootstrap confidence intervals
+│   ├── data_audit.py          # Jet Airways dates, fare remarks, route coverage
+│   ├── predictor.py           # Loads the saved models, predicts and assesses a quote
 │   ├── predict_cli.py         # Terminal interface
 │   └── summary.py             # LaTeX tables generated from models/metrics.json
 ├── tests/                     # pytest: preprocessing and predictor
 ├── models/
 │   ├── flight_price_pipeline.joblib   # Fitted sklearn Pipeline (one-hot + XGBoost)
 │   ├── metrics.json                   # All metrics reported above
+│   ├── flight_price_intervals.joblib  # Quantile models for the price range
+│   ├── interval_metrics.json          # Coverage and width of the price range
 │   └── analysis.json                  # All numbers in docs/analysis.md
 ├── data/
 │   └── IndianFlightdata - Sheet1.csv  # Raw data used by the pipeline
 ├── notebook/                  # Original exploratory notebooks (see note below)
+├── reports/                   # findings.json, data_audit.json and CSV tables
 ├── docs/
+│   ├── business_summary.md    # One-page summary for non-technical readers
 │   ├── analysis.md            # Key findings
 │   └── images/                # App screenshots and analysis charts
 └── .github/workflows/ci.yml   # Tests + training on every push
@@ -150,6 +179,8 @@ python -m pytest -q               # tests
 python -m src.train               # compare models, save model + metrics
 python -m src.ablation            # feature ablation
 python -m src.analysis            # numbers and charts for docs/analysis.md
+python -m src.train_intervals     # 80% price range models + coverage metrics
+python -m src.business_analysis   # findings -> reports/findings.json and CSV tables
 python -m src.data_audit          # data audit -> reports/data_audit.json
 python -m src.summary             # LaTeX tables from metrics.json
 python -m src.predict_cli         # predict in the terminal
@@ -160,7 +191,7 @@ The trained model is committed, so the app and the CLI work right after cloning 
 
 ### Deploy on Streamlit Community Cloud
 
-1. Push the repo to GitHub (the app needs `app.py`, `requirements.txt`, `src/`, `models/` and `data/IndianFlightdata - Sheet1.csv`).
+1. Push the repo to GitHub (the app needs `app.py`, `requirements.txt`, `src/`, `models/`, `reports/` and `data/IndianFlightdata - Sheet1.csv`).
 2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub and click **Create app**.
 3. Select this repository, the branch, and `app.py` as the main file.
 4. Under **Advanced settings**, choose Python 3.13 so that the pinned versions match the saved model.
