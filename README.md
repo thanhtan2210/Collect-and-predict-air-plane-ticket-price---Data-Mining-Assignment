@@ -66,9 +66,28 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 
 Coverage is below the 80% target in the top quarter, which contains the price outliers removed from training. The point prediction comes from a separate model and lies inside the range for 93.0% of test rows.
 
+**Business findings in INR** (`python -m src.business_analysis`, stored in [reports/findings.json](reports/findings.json)). Each figure is the median of the within-group differences; a group needs at least 20 flights on each side, and the 95% confidence interval is a bootstrap over groups.
+
+| Comparison | Held constant | Median difference (INR) | 95% CI (INR) | Groups | Flights |
+| --- | --- | --- | --- | --- | --- |
+| 1 stop vs non-stop | airline, route | +3,038 | +964 to +4,410 | 10 | 4,598 |
+| Jet Airways: "meal not included" vs standard fare | route, stops | -3,436 | -6,132 to -1,830 | 6 | 3,634 |
+
+Across all airlines and without any control, the no-meal fares are 361 INR dearer on average (2,369 INR at the median) than the standard fares: the sign reverses because 1,830 of the 1,926 no-meal fares are Jet Airways. Both intervals exclude zero but are wide, because they rest on 10 and 6 groups.
+
+| Route | Cheapest option (at least 30 flights) | Flights | Median (INR) | Route median (INR) | Route price CV |
+| --- | --- | --- | --- | --- | --- |
+| Banglore → Delhi | GoAir, non-stop | 89 | 3,898 | 6,121 | 0.75 |
+| Chennai → Kolkata | SpiceJet, non-stop | 128 | 3,597 | 3,850 | 0.46 |
+| Delhi → Cochin | SpiceJet, 1 stop | 87 | 5,583 | 10,262 | 0.36 |
+| Kolkata → Banglore | SpiceJet, non-stop | 248 | 3,873 | 9,345 | 0.41 |
+| Mumbai → Hyderabad | SpiceJet, non-stop | 121 | 2,017 | 3,342 | 0.81 |
+
 ---
 
 ## Key findings
+
+The table below reports the same kind of comparison in percent, as a flight-weighted mean over groups rather than a median, and the meal comparison there also includes "Multiple carriers" (7 groups). That is why its figures differ from the INR table above.
 
 Full write-up with tables and charts: [docs/analysis.md](docs/analysis.md). Produced by `python -m src.analysis`.
 
