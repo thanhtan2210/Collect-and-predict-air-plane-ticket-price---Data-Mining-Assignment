@@ -34,11 +34,13 @@ RANDOM_STATE = 42
 TEST_SIZE = 0.2
 
 
-def load_split():
+def load_split(filter_outliers=True):
     """Clean, split, then filter price outliers on the training set only.
 
     Returns (X_train, y_train, X_test, y_test, info). The IQR fences are
     learned from the training prices; the test set keeps its outliers.
+    `filter_outliers=False` returns the training set with its outliers
+    (same split, same `info`); the point model always uses the default.
     """
     raw = load_raw()
     clean = clean_raw(raw)
@@ -60,6 +62,8 @@ def load_split():
         "price_iqr_low": low,
         "price_iqr_high": high,
     }
+    if not filter_outliers:
+        return X_train, y_train, X_test, y_test, info
     return X_train[keep], y_train[keep], X_test, y_test, info
 
 

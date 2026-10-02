@@ -381,8 +381,11 @@ def performance_tab(metrics):
         f"Two quantile models (10% and 90%) calibrated with conformalized quantile regression on "
         f"{intervals['calibration_rows']:,} held-out training rows (adjustment "
         f"{intervals['conformal_adjustment_inr']:+,.0f} INR per side). Target coverage "
-        f"{intervals['target_coverage']:.0%}. Price bands are quartiles of the actual test price; the "
-        f"top band includes the price outliers that were removed from training."
+        f"{intervals['target_coverage']:.0%}. Price bands are quartiles of the actual test price. "
+        f"Unlike the point model, the quantile models are trained with the price outliers kept, "
+        f"which raised coverage of the top band from "
+        f"{intervals['comparison']['outliers_removed']['test_by_price_quartile'][-1]['coverage']:.1%} "
+        f"to {intervals['test_by_price_quartile'][-1]['coverage']:.1%}."
     )
 
     left, right = st.columns(2)

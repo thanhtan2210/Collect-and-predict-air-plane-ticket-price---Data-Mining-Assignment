@@ -1,10 +1,15 @@
 """Train an 80% prediction interval for the ticket price.
 
 Two XGBoost quantile models (q = 0.10 and q = 0.90) are trained with the
-same cleaning, split and training-only outlier rule as src.train, then the
-interval is calibrated with conformalized quantile regression (CQR): 20% of
-the training set is held out, and the interval is widened (or narrowed) by
-the amount needed to cover 80% of those held-out prices.
+same cleaning and split as src.train, then the interval is calibrated with
+conformalized quantile regression (CQR): 20% of the training set is held
+out, and the interval is widened (or narrowed) by the amount needed to
+cover 80% of those held-out prices.
+
+Two training sets are compared: with the price outliers removed (the rule
+of the point model) and with them kept. The second is used only if its
+overall test coverage stays within 75-85% and its coverage of the top price
+quartile is higher; both sets of numbers are stored either way.
 
 Run from the repo root:  python -m src.train_intervals
 Writes models/flight_price_intervals.joblib and models/interval_metrics.json.
@@ -27,6 +32,8 @@ from src.train import RANDOM_STATE, load_split, make_pipeline
 LOWER_QUANTILE, UPPER_QUANTILE = 0.10, 0.90
 TARGET_COVERAGE = UPPER_QUANTILE - LOWER_QUANTILE
 CALIBRATION_SIZE = 0.2
+ACCEPTABLE_COVERAGE = (0.75, 0.85)
+OUTLIERS_REMOVED, OUTLIERS_KEPT = "outliers_removed", "outliers_kept"
 
 
 def make_quantile_xgb(quantile):
@@ -76,22 +83,19 @@ def interval_metrics(y, lower, upper):
     }
 
 
-def main():
-    X_train, y_train, X_test, y_test, info = load_split()
+def fit_variant(filter_outliers, point):
+    """Fit, calibrate and evaluate the interval on one training set."""
+    X_train, y_train, X_test, y_test, info = load_split(filter_outliers=filter_outliers)
     X_fit, X_cal, y_fit, y_cal = train_test_split(
         X_train, y_train, test_size=CALIBRATION_SIZE, random_state=RANDOM_STATE
     )
-    print(
-        f"Fit on {len(X_fit):,} rows, calibrate on {len(X_cal):,} rows, "
-        f"test on {len(X_test):,} rows (outliers kept)"
-    )
-
     models = {
         "lower": make_pipeline(make_quantile_xgb(LOWER_QUANTILE)).fit(X_fit, y_fit),
         "upper": make_pipeline(make_quantile_xgb(UPPER_QUANTILE)).fit(X_fit, y_fit),
         "lower_quantile": LOWER_QUANTILE,
         "upper_quantile": UPPER_QUANTILE,
         "target_coverage": TARGET_COVERAGE,
+        "training_outliers": OUTLIERS_REMOVED if filter_outliers else OUTLIERS_KEPT,
     }
     cal_lower, cal_upper = raw_interval(models, X_cal)
     models["conformal_adjustment"] = conformal_adjustment(cal_lower, cal_upper, y_cal.to_numpy())
@@ -99,7 +103,6 @@ def main():
     y = y_test.to_numpy()
     raw_lower, raw_upper = raw_interval(models, X_test)
     lower, upper = predict_interval(models, X_test)
-    point = load_pipeline().predict(X_test)
 
     # Four bands of the actual test price, cut at its quartiles.
     bands = pd.qcut(y_test, 4)
@@ -116,8 +119,7 @@ def main():
     in_range = y <= info["price_iqr_high"]
 
     metrics = {
-        "target_coverage": TARGET_COVERAGE,
-        "quantiles": [LOWER_QUANTILE, UPPER_QUANTILE],
+        "training_outliers": models["training_outliers"],
         "fit_rows": int(len(X_fit)),
         "calibration_rows": int(len(X_cal)),
         "conformal_adjustment_inr": models["conformal_adjustment"],
@@ -132,10 +134,33 @@ def main():
         "test_share_above_interval": float((y > upper).mean()),
         "point_prediction_inside_interval": float(((point >= lower) & (point <= upper)).mean()),
     }
+    return models, metrics
 
+
+def choose(removed, kept):
+    """Keep the outliers only if coverage stays on target and the top quartile gains."""
+    low, high = ACCEPTABLE_COVERAGE
+    on_target = low <= kept["test"]["coverage"] <= high
+    top_gain = (
+        kept["test_by_price_quartile"][-1]["coverage"]
+        - removed["test_by_price_quartile"][-1]["coverage"]
+    )
+    selected = OUTLIERS_KEPT if on_target and top_gain > 0 else OUTLIERS_REMOVED
+    return selected, {
+        "rule": "keep outliers only if overall test coverage is within 75-85% "
+                "and top-quartile coverage increases",
+        "outliers_kept_overall_coverage_on_target": bool(on_target),
+        "top_quartile_coverage_change": float(top_gain),
+        "selected": selected,
+    }
+
+
+def print_variant(name, metrics):
     print(
-        f"\nUncalibrated interval covers {metrics['calibration_coverage_before_adjustment']:.1%} of "
-        f"calibration prices; CQR adjustment = {metrics['conformal_adjustment_inr']:+,.0f} INR per side"
+        f"\n[{name}] fit on {metrics['fit_rows']:,} rows, calibrate on "
+        f"{metrics['calibration_rows']:,} rows; uncalibrated interval covers "
+        f"{metrics['calibration_coverage_before_adjustment']:.1%} of calibration prices; "
+        f"CQR adjustment = {metrics['conformal_adjustment_inr']:+,.0f} INR per side"
     )
     for label, m in [("before adjustment", metrics["test_before_adjustment"]),
                      ("calibrated", metrics["test"]),
@@ -144,20 +169,47 @@ def main():
             f"  Test, {label:<28} coverage = {m['coverage']:.1%} | "
             f"mean width = {m['mean_width']:,.0f} INR | median width = {m['median_width']:,.0f} INR"
         )
-    print("\nBy quartile of the actual test price:")
-    for band in by_band:
+    print("  By quartile of the actual test price:")
+    for band in metrics["test_by_price_quartile"]:
         print(
-            f"  {band['price_from']:>8,.0f} - {band['price_to']:>8,.0f} INR (n={band['n']:>3}): "
+            f"    {band['price_from']:>8,.0f} - {band['price_to']:>8,.0f} INR (n={band['n']:>3}): "
             f"coverage = {band['coverage']:.1%} | mean width = {band['mean_width']:,.0f} INR"
         )
     print(
-        f"\nMisses: {metrics['test_share_below_interval']:.1%} of prices below the interval, "
-        f"{metrics['test_share_above_interval']:.1%} above"
+        f"  Misses: {metrics['test_share_below_interval']:.1%} of prices below the interval, "
+        f"{metrics['test_share_above_interval']:.1%} above; point prediction inside the "
+        f"interval for {metrics['point_prediction_inside_interval']:.1%} of test rows"
     )
+
+
+def main():
+    _, _, X_test, _, _ = load_split()
+    point = load_pipeline().predict(X_test)
+
+    variants = {
+        OUTLIERS_REMOVED: fit_variant(True, point),
+        OUTLIERS_KEPT: fit_variant(False, point),
+    }
+    for name, (_, metrics) in variants.items():
+        print_variant(name, metrics)
+
+    selected, decision = choose(variants[OUTLIERS_REMOVED][1], variants[OUTLIERS_KEPT][1])
     print(
-        f"The point prediction lies inside the interval for "
-        f"{metrics['point_prediction_inside_interval']:.1%} of test rows"
+        f"\nTop-quartile coverage change when outliers are kept: "
+        f"{decision['top_quartile_coverage_change']:+.1%}; overall coverage on target: "
+        f"{decision['outliers_kept_overall_coverage_on_target']} -> using '{selected}'"
     )
+
+    models, metrics = variants[selected]
+    metrics = {
+        "target_coverage": TARGET_COVERAGE,
+        "quantiles": [LOWER_QUANTILE, UPPER_QUANTILE],
+        **metrics,
+        "comparison": {
+            "decision": decision,
+            **{name: variant_metrics for name, (_, variant_metrics) in variants.items()},
+        },
+    }
 
     os.makedirs(MODEL_DIR, exist_ok=True)
     joblib.dump(models, INTERVAL_MODEL_PATH, compress=3)

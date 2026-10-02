@@ -4,7 +4,7 @@
 
 **Approach.** A case study on 10,462 fares for March-June 2019 on five routes. One preprocessing function feeds an XGBoost price model and two quantile models that give a calibrated 80% price range; price comparisons hold airline, route and stops constant and report bootstrap confidence intervals.
 
-**Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 78.0% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; 6 groups), although a naive comparison across airlines says it is dearer.
+**Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 79.8% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; 6 groups), although a naive comparison across airlines says it is dearer.
 
 One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
 
@@ -54,17 +54,17 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 | 2. Set 1 + all date/time features | 0.8069 ± 0.0090 |
 | 3. Set 2 + Additional_Info (full model) | 0.9279 ± 0.0035 |
 
-**80% price range** (`python -m src.train_intervals`, stored in [models/interval_metrics.json](models/interval_metrics.json)). Two XGBoost quantile models (10% and 90%), calibrated with conformalized quantile regression on 1,660 held-out training rows.
+**80% price range** (`python -m src.train_intervals`, stored in [models/interval_metrics.json](models/interval_metrics.json)). Two XGBoost quantile models (10% and 90%), calibrated with conformalized quantile regression on 20% of the training set. Two training sets were compared: with the price outliers removed (the rule of the point model) and with them kept.
 
-| Actual test price (INR) | Rows | Coverage | Mean width (INR) |
-| --- | --- | --- | --- |
-| 1,759 - 5,192 | 525 | 82.5% | 1,141 |
-| 5,192 - 8,040 | 526 | 76.2% | 2,326 |
-| 8,040 - 11,934 | 519 | 80.5% | 2,447 |
-| 11,934 - 54,826 | 523 | 72.8% | 2,819 |
-| All test rows | 2,093 | 78.0% | 2,182 |
+| Actual test price (INR) | Rows | Coverage, outliers removed | Mean width (INR) | Coverage, outliers kept | Mean width (INR) |
+| --- | --- | --- | --- | --- | --- |
+| 1,759 - 5,192 | 525 | 82.5% | 1,141 | 81.9% | 1,138 |
+| 5,192 - 8,040 | 526 | 76.2% | 2,326 | 77.8% | 2,392 |
+| 8,040 - 11,934 | 519 | 80.5% | 2,447 | 80.3% | 2,548 |
+| 11,934 - 54,826 | 523 | 72.8% | 2,819 | 79.3% | 3,024 |
+| All test rows | 2,093 | 78.0% | 2,182 | **79.8%** | **2,274** |
 
-Coverage is below the 80% target in the top quarter, which contains the price outliers removed from training. The point prediction comes from a separate model and lies inside the range for 93.0% of test rows. For the remaining rows the app and `assess_quote` show the point prediction clamped to the nearest end of the range, so the displayed price is always inside it; the Cheap / Fair / Expensive label depends only on the range. The metrics in [models/metrics.json](models/metrics.json) are those of the unclamped point model.
+The quantile models trained with the outliers kept are the ones saved and used by the app. The rule, fixed before looking at the result, was to keep them only if overall coverage stayed within 75-85% and coverage of the top price quartile increased; it rose from 72.8% to 79.3%, for a range 92 INR wider on average. The point model is unchanged and still trains without outliers. Its prediction lies inside the range for 93.1% of test rows. For the remaining rows the app and `assess_quote` show the point prediction clamped to the nearest end of the range, so the displayed price is always inside it; the Cheap / Fair / Expensive label depends only on the range. The metrics in [models/metrics.json](models/metrics.json) are those of the unclamped point model.
 
 **Business findings in INR** (`python -m src.business_analysis`, stored in [reports/findings.json](reports/findings.json)). Each figure is the median of the within-group differences; a group needs at least 20 flights on each side, and the 95% confidence interval is a bootstrap over groups.
 
