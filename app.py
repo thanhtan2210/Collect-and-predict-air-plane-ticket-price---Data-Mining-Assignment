@@ -155,6 +155,11 @@ def predict_tab(data, metrics):
         f"{q25:,.0f} and {q75:,.0f} INR. Based on fares from March-June 2019: a case study, not "
         f"advice on current prices."
     )
+    if quote["point_prediction"] != quote["predicted"]:
+        st.caption(
+            f"The point model estimated {quote['point_prediction']:,.0f} INR, outside the range, "
+            "so the predicted price is shown at the nearest end of the range."
+        )
 
 
 def insights_tab(data):

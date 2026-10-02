@@ -6,6 +6,8 @@ from src.predictor import (
     EXPENSIVE,
     FAIR,
     assess_quote,
+    known_categories,
+    known_routes,
     load_interval_metrics,
     load_intervals,
     quote_label,
@@ -34,10 +36,26 @@ def test_assess_quote_without_offer():
     quote = assess_quote(INPUTS)
     assert 0 <= quote["low"] <= quote["high"]
     assert "label" not in quote
-    # Point model and quantile models are separate, so this is not guaranteed
-    # in general (see point_prediction_inside_interval in the metrics); it
-    # holds for this ordinary flight.
     assert quote["low"] <= quote["predicted"] <= quote["high"]
+
+
+def test_displayed_price_is_always_inside_the_interval():
+    """The raw point prediction may fall outside; the displayed price may not."""
+    routes = known_routes()
+    outside = 0
+    for airline in known_categories()["Airline"]:
+        for source, destinations in routes.items():
+            for stops, duration in [(0, 150), (1, 600), (2, 1200), (3, 1800)]:
+                inputs = dict(INPUTS, airline=airline, source=source,
+                              destination=destinations[0], total_stops=stops,
+                              duration_minutes=duration)
+                quote = assess_quote(inputs)
+                assert quote["low"] <= quote["predicted"] <= quote["high"]
+                clamped = min(max(quote["point_prediction"], quote["low"]), quote["high"])
+                assert quote["predicted"] == clamped
+                outside += quote["point_prediction"] != quote["predicted"]
+    # The grid includes unusual flights, so the clamp is actually exercised.
+    assert outside > 0
 
 
 def test_quote_label_boundaries():

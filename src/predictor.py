@@ -127,23 +127,27 @@ def quote_label(offered_price, low, high):
 def assess_quote(inputs, offered_price=None):
     """Judge a quoted price against comparable flights in the 2019 data.
 
-    `inputs` holds the arguments of `predict_price`. Returns the point
-    prediction, the calibrated 80% interval [low, high] and, when
-    `offered_price` is given, a label plus the gap to the prediction.
+    `inputs` holds the arguments of `predict_price`. Returns the predicted
+    price, the calibrated 80% interval [low, high] and, when `offered_price`
+    is given, a label plus the gap to the predicted price.
 
-    The point prediction and the interval come from separate models, so the
-    prediction is usually, but not always, inside the interval.
+    The point model and the interval models are separate, so the raw point
+    prediction can fall outside the interval. The displayed `predicted` is
+    the point prediction clamped into [low, high]; the unclamped value is
+    kept as `point_prediction`. The label depends only on [low, high].
     """
     features = build_features(make_raw_row(**inputs))
-    predicted = max(0.0, float(load_pipeline().predict(features)[0]))
+    point = max(0.0, float(load_pipeline().predict(features)[0]))
 
     models = load_intervals()
     margin = models["conformal_adjustment"]
     bounds = sorted(float(models[key].predict(features)[0]) for key in ("lower", "upper"))
     low, high = sorted([max(0.0, bounds[0] - margin), max(0.0, bounds[1] + margin)])
+    predicted = min(max(point, low), high)
 
     result = {
         "predicted": predicted,
+        "point_prediction": point,
         "low": low,
         "high": high,
         "coverage": models["target_coverage"],

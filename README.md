@@ -64,7 +64,7 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 | 11,934 - 54,826 | 523 | 72.8% | 2,819 |
 | All test rows | 2,093 | 78.0% | 2,182 |
 
-Coverage is below the 80% target in the top quarter, which contains the price outliers removed from training. The point prediction comes from a separate model and lies inside the range for 93.0% of test rows.
+Coverage is below the 80% target in the top quarter, which contains the price outliers removed from training. The point prediction comes from a separate model and lies inside the range for 93.0% of test rows. For the remaining rows the app and `assess_quote` show the point prediction clamped to the nearest end of the range, so the displayed price is always inside it; the Cheap / Fair / Expensive label depends only on the range. The metrics in [models/metrics.json](models/metrics.json) are those of the unclamped point model.
 
 **Business findings in INR** (`python -m src.business_analysis`, stored in [reports/findings.json](reports/findings.json)). Each figure is the median of the within-group differences; a group needs at least 20 flights on each side, and the 95% confidence interval is a bootstrap over groups.
 
