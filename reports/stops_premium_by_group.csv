@@ -1,0 +1,11 @@
+Route,Airline,n_non_stop,n_one_stop,median_non_stop,median_one_stop,diff_inr,diff_pct
+Banglore → Delhi,Air India,157,94,6121.0,9769.0,3648.0,59.59810488482273
+Banglore → Delhi,IndiGo,473,40,4823.0,7494.0,2671.0,55.38046858801575
+Banglore → Delhi,Jet Airways,381,403,7229.0,13555.0,6326.0,87.50864573246646
+Delhi → Cochin,Air India,75,281,6094.0,8372.0,2278.0,37.381030521824755
+Delhi → Cochin,IndiGo,59,628,5601.0,6565.5,964.5,17.220139260846267
+Delhi → Cochin,Jet Airways,34,875,7202.0,12373.0,5171.0,71.79950013885032
+Kolkata → Banglore,Air Asia,92,49,4384.0,5192.0,808.0,18.430656934306565
+Kolkata → Banglore,Air India,61,152,4960.0,8366.0,3406.0,68.66935483870968
+Kolkata → Banglore,IndiGo,320,124,4804.0,5069.0,265.0,5.51623646960866
+Kolkata → Banglore,SpiceJet,248,52,3873.0,8224.0,4351.0,112.34185386005682

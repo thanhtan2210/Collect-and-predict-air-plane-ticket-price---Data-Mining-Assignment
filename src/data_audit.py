@@ -9,9 +9,8 @@ import os
 import pandas as pd
 
 from src.predictor import load_clean_data
-from src.preprocess import BASE_DIR, DATE_FORMAT
+from src.preprocess import DATE_FORMAT, REPORT_DIR
 
-REPORT_DIR = os.path.join(BASE_DIR, "reports")
 AUDIT_PATH = os.path.join(REPORT_DIR, "data_audit.json")
 JET_AIRWAYS_LAST_FLIGHT = "2019-04-17"
 

@@ -1,0 +1,6 @@
+Route,cheapest_airline,cheapest_stops,option_flights,option_median,option_q25,option_q75,options_compared,dearest_option_median,route_flights,route_median,route_q25,route_q75,route_cv,saving_vs_route_median
+Banglore → Delhi,GoAir,non-stop,89,3898.0,3898.0,4937.0,11,13555.0,2179,6121.0,4544.0,8714.0,0.7456346218528496,2223.0
+Chennai → Kolkata,SpiceJet,non-stop,128,3597.0,3543.0,3649.5,3,5944.0,381,3850.0,3597.0,5277.0,0.45725850254269595,253.0
+Delhi → Cochin,SpiceJet,1 stop,87,5583.0,5034.0,6181.0,14,15965.0,4345,10262.0,7174.0,13292.0,0.3649299109868708,4679.0
+Kolkata → Banglore,SpiceJet,non-stop,248,3873.0,3841.0,3873.0,11,12534.0,2860,9345.0,5170.75,12592.0,0.409010635144562,5472.0
+Mumbai → Hyderabad,SpiceJet,non-stop,121,2017.0,1965.0,2385.0,4,5678.0,697,3342.0,2647.0,5678.0,0.8104229497494441,1325.0

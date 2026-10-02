@@ -21,3 +21,4 @@ jobs:
       - run: python -m src.analysis
       - run: python -m src.data_audit
       - run: python -m src.train_intervals
+      - run: python -m src.business_analysis

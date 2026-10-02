@@ -1,12 +1,13 @@
 """Streamlit app. Run from the repo root:  streamlit run app.py"""
 import datetime
+import os
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 from src import predictor
-from src.preprocess import DATE_FORMAT, STOPS_MAP, TARGET, format_duration
+from src.preprocess import DATE_FORMAT, REPORT_DIR, STOPS_MAP, TARGET, format_duration
 
 COLOR = "#2a78d6"
 MIN_FLIGHTS = 30
@@ -38,6 +39,16 @@ def get_intervals():
 @st.cache_data
 def get_interval_metrics():
     return predictor.load_interval_metrics()
+
+
+@st.cache_data
+def get_findings():
+    return predictor.load_findings()
+
+
+@st.cache_data
+def get_report(name):
+    return pd.read_csv(os.path.join(REPORT_DIR, name), encoding="utf-8")
 
 
 @st.cache_data
@@ -224,6 +235,104 @@ def like_for_like_section():
     )
 
 
+def effect_metrics(result, unit):
+    """Headline numbers of one controlled comparison."""
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Median difference", f"{result['median_diff_inr']:+,.0f} INR")
+    col2.metric(
+        "95% confidence interval",
+        f"{result['ci95_low_inr']:+,.0f} to {result['ci95_high_inr']:+,.0f} INR",
+    )
+    col3.metric("Groups compared", f"{result['groups']} {unit}")
+
+
+def business_tab():
+    findings = get_findings()
+    if findings is None:
+        st.info("Run `python -m src.business_analysis` to generate the findings.")
+        return
+    st.caption(
+        "A case study of fares for March-June 2019 on five routes, written for a travel-agency "
+        "user. Not advice on current prices. Differences are medians of within-group "
+        f"differences; a group needs at least {findings['min_flights_per_side']} flights on each "
+        "side. Confidence intervals are bootstrapped by resampling groups."
+    )
+
+    stops = findings["stops_premium"]
+    st.subheader("1. A connection costs more than a direct flight")
+    effect_metrics(stops, "airline-route pairs")
+    st.caption(
+        f"One stop vs non-stop within the same airline and route, {stops['flights_compared']:,} "
+        f"flights. Dearer in {stops['groups_with_positive_diff']} of {stops['groups']} groups, from "
+        f"{stops['min_diff_inr']:+,.0f} to {stops['max_diff_inr']:+,.0f} INR. Without the control "
+        f"the gap looks like {stops['raw_diff_inr']:+,.0f} INR."
+    )
+    st.dataframe(
+        get_report("stops_premium_by_group.csv").rename(
+            columns={
+                "n_non_stop": "Non-stop flights", "n_one_stop": "1-stop flights",
+                "median_non_stop": "Non-stop median (INR)", "median_one_stop": "1-stop median (INR)",
+                "diff_inr": "Difference (INR)", "diff_pct": "Difference (%)",
+            }
+        ),
+        hide_index=True, width="stretch",
+        column_config={"Difference (%)": st.column_config.NumberColumn(format="%.1f")},
+    )
+
+    fare = findings["jet_fare_class"]
+    raw = fare["all_airlines_raw"]
+    st.subheader("2. Jet Airways: the fare without a meal is the cheaper fare class")
+    effect_metrics(fare, "route-stops pairs")
+    st.caption(
+        f"Jet Airways only, 'In-flight meal not included' vs the standard fare on the same route "
+        f"and number of stops, {fare['flights_compared']:,} flights. Cheaper in all "
+        f"{fare['groups']} groups. This is a difference between two Jet Airways fare classes, not "
+        f"the price of a meal. Simpson's paradox: across all airlines the no-meal fares are "
+        f"{raw['mean_diff_inr']:+,.0f} INR on average ({raw['median_diff_inr']:+,.0f} INR at the "
+        f"median) against the standard fares, because "
+        f"{fare['no_meal_flights_by_airline']['Jet Airways']:,} of {raw['n_no_meal']:,} of them are "
+        f"Jet Airways, an expensive airline."
+    )
+    st.dataframe(
+        get_report("jet_fare_class_by_group.csv").rename(
+            columns={
+                "Total_Stops": "Stops", "n_standard": "Standard flights", "n_no_meal": "No-meal flights",
+                "median_standard": "Standard median (INR)", "median_no_meal": "No-meal median (INR)",
+                "diff_inr": "Difference (INR)", "diff_pct": "Difference (%)",
+            }
+        ),
+        hide_index=True, width="stretch",
+        column_config={"Difference (%)": st.column_config.NumberColumn(format="%.1f")},
+    )
+
+    st.subheader("3. Cheapest option on each route")
+    cheapest = get_report("cheapest_option_by_route.csv")
+    st.dataframe(
+        pd.DataFrame(
+            {
+                "Route": cheapest["Route"],
+                "Cheapest option": cheapest["cheapest_airline"] + ", " + cheapest["cheapest_stops"],
+                "Flights": cheapest["option_flights"],
+                "Median (INR)": cheapest["option_median"],
+                "25-75% (INR)": cheapest["option_q25"].map("{:,.0f}".format) + " - "
+                + cheapest["option_q75"].map("{:,.0f}".format),
+                "Route median (INR)": cheapest["route_median"],
+                "Route 25-75% (INR)": cheapest["route_q25"].map("{:,.0f}".format) + " - "
+                + cheapest["route_q75"].map("{:,.0f}".format),
+                "Route CV": cheapest["route_cv"].round(2),
+                "Route flights": cheapest["route_flights"],
+            }
+        ),
+        hide_index=True, width="stretch",
+    )
+    st.caption(
+        f"Airline and stop-count options with at least {findings['min_flights_per_option']} "
+        "flights, ranked by median price. CV is the coefficient of variation of all prices on the "
+        "route (standard deviation / mean): the higher it is, the more there is to gain from "
+        "comparing options."
+    )
+
+
 def performance_tab(metrics):
     info, test = metrics["dataset"], metrics["test"]
     st.subheader(f"{metrics['best_model']} on the hold-out test set")
@@ -308,13 +417,15 @@ def main():
         st.error(str(e))
         st.stop()
 
-    tab_predict, tab_insights, tab_performance = st.tabs(
-        ["Predict", "Market insights", "Model performance"]
+    tab_predict, tab_insights, tab_business, tab_performance = st.tabs(
+        ["Predict", "Market insights", "Business findings", "Model performance"]
     )
     with tab_predict:
         predict_tab(data, metrics)
     with tab_insights:
         insights_tab(data)
+    with tab_business:
+        business_tab()
     with tab_performance:
         performance_tab(metrics)
 

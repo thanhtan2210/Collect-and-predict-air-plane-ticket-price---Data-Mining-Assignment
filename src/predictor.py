@@ -8,6 +8,7 @@ import joblib
 from src.preprocess import (
     ANALYSIS_PATH,
     CATEGORICAL_FEATURES,
+    FINDINGS_PATH,
     INTERVAL_METRICS_PATH,
     INTERVAL_MODEL_PATH,
     METRICS_PATH,
@@ -51,6 +52,14 @@ def load_interval_metrics():
             f"{INTERVAL_METRICS_PATH} not found. Run: python -m src.train_intervals"
         )
     with open(INTERVAL_METRICS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_findings():
+    """Output of `python -m src.business_analysis`, or None if it has not been run."""
+    if not os.path.exists(FINDINGS_PATH):
+        return None
+    with open(FINDINGS_PATH, encoding="utf-8") as f:
         return json.load(f)
 
 
