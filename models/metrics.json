@@ -1,0 +1,112 @@
+{
+  "dataset": {
+    "raw_rows": 10683,
+    "clean_rows": 10462,
+    "rows_removed_by_cleaning": 221,
+    "train_rows_before_outlier_filter": 8369,
+    "train_outliers_removed": 73,
+    "train_rows": 8296,
+    "test_rows": 2093,
+    "price_iqr_low": -5489.5,
+    "price_iqr_high": 23090.5
+  },
+  "cv": {
+    "Ridge": {
+      "r2_mean": 0.7041910491756604,
+      "r2_std": 0.007316975216389709,
+      "mae_mean": 1638.800333283812,
+      "mae_std": 36.598238204355724
+    },
+    "RandomForest": {
+      "r2_mean": 0.9136096726642654,
+      "r2_std": 0.0049168617074952774,
+      "mae_mean": 656.2637184191142,
+      "mae_std": 17.972692771762347
+    },
+    "XGBoost": {
+      "r2_mean": 0.9278596043586731,
+      "r2_std": 0.0035085120282786542,
+      "mae_mean": 609.7464233398438,
+      "mae_std": 14.881877265270509
+    },
+    "XGBoost (log target)": {
+      "r2_mean": 0.926810622215271,
+      "r2_std": 0.004043135614467923,
+      "mae_mean": 606.4283813476562,
+      "mae_std": 17.06840601754835
+    }
+  },
+  "best_model": "XGBoost",
+  "test": {
+    "full": {
+      "n": 2093,
+      "r2": 0.872249960899353,
+      "mae": 681.342041015625,
+      "rmse": 1632.0609669984758
+    },
+    "in_range": {
+      "n": 2072,
+      "r2": 0.9293705224990845,
+      "mae": 588.2774047851562,
+      "rmse": 1077.9728080986088
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "Airline",
+      "importance": 0.37760451436042786
+    },
+    {
+      "feature": "Additional_Info",
+      "importance": 0.19510699808597565
+    },
+    {
+      "feature": "Duration_Minutes",
+      "importance": 0.10242065042257309
+    },
+    {
+      "feature": "Source",
+      "importance": 0.08594174683094025
+    },
+    {
+      "feature": "Destination",
+      "importance": 0.08541754633188248
+    },
+    {
+      "feature": "Total_Stops",
+      "importance": 0.07823401689529419
+    },
+    {
+      "feature": "Journey_Month",
+      "importance": 0.021418385207653046
+    },
+    {
+      "feature": "Journey_Day",
+      "importance": 0.010506893508136272
+    },
+    {
+      "feature": "Dep_Minute",
+      "importance": 0.00828318390995264
+    },
+    {
+      "feature": "Arrival_Hour",
+      "importance": 0.008215919137001038
+    },
+    {
+      "feature": "Arrival_Minute",
+      "importance": 0.007921305485069752
+    },
+    {
+      "feature": "Dep_Hour",
+      "importance": 0.0067981393076479435
+    },
+    {
+      "feature": "Day_Of_Week",
+      "importance": 0.00632096454501152
+    },
+    {
+      "feature": "Is_Weekend",
+      "importance": 0.005809687543660402
+    }
+  ]
+}

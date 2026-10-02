@@ -1,74 +1,136 @@
-
 # Flight Ticket Price Prediction - Data Mining Assignment
 
-This project focuses on data mining and building a machine learning model to predict flight ticket prices based on itinerary information. The project covers the entire workflow, from data cleaning and feature engineering to model optimization and result analysis.
+Predicts the price of Indian domestic flight tickets from itinerary details (airline, route, date, departure time, duration, stops, fare conditions). The repo contains a reproducible training pipeline, a feature ablation, tests, and a Streamlit app.
+
+Every number in this README is printed by a script in this repo and can be regenerated with the commands below.
+
+| Predict | Market insights | Model performance |
+| --- | --- | --- |
+| ![Predict tab](docs/images/predict.png) | ![Market insights tab](docs/images/insights.png) | ![Model performance tab](docs/images/performance.png) |
 
 ---
 
-## Project Structure
+## Results
+
+Produced by `python -m src.train` (also stored in [models/metrics.json](models/metrics.json)).
+
+**Data:** 10,683 raw rows → 10,462 after cleaning (220 exact duplicates and 1 row with missing values removed). 80/20 split: 8,296 training rows after removing 73 price outliers, 2,093 test rows with outliers kept.
+
+**Model comparison - 5-fold cross-validation on the training set**
+
+| Model | CV R² | CV MAE (INR) |
+| --- | --- | --- |
+| Ridge (baseline) | 0.7042 ± 0.0073 | 1,639 ± 37 |
+| RandomForest | 0.9136 ± 0.0049 | 656 ± 18 |
+| **XGBoost** | **0.9279 ± 0.0035** | 610 ± 15 |
+| XGBoost (log target) | 0.9268 ± 0.0040 | 606 ± 17 |
+
+XGBoost has the highest CV R² and is the model that gets refit on the full training set and saved. The log-target variant is within one standard deviation of it.
+
+**Hold-out test set - XGBoost, evaluated once**
+
+| Test subset | Rows | R² | MAE (INR) | RMSE (INR) |
+| --- | --- | --- | --- | --- |
+| All test rows (outliers included) | 2,093 | 0.8722 | 681 | 1,632 |
+| Price ≤ 23,090 INR (training IQR fence) | 2,072 | 0.9294 | 588 | 1,078 |
+
+The 21 test rows above the fence (16 of them Jet Airways) account for the gap between the two rows: the model was never trained on prices that high.
+
+**Feature ablation - XGBoost, 5-fold CV R² on the training set** (`python -m src.ablation`)
+
+| Feature set | CV R² |
+| --- | --- |
+| 1. Airline + Source + Destination + Total_Stops + Duration_Minutes | 0.6567 ± 0.0297 |
+| 2. Set 1 + all date/time features | 0.8069 ± 0.0090 |
+| 3. Set 2 + Additional_Info (full model) | 0.9279 ± 0.0035 |
+
+---
+
+## Validation choices
+
+- **Duplicates are removed before the split.** The raw file has 220 fully duplicated rows. Splitting first would put copies of the same row in both train and test and inflate the test score.
+- **Outlier fences are learned on the training set only.** The IQR bounds on price (upper fence 23,090 INR) are computed from training prices and applied to training rows only. The test set keeps its outliers, and results are reported both on the whole test set and on the in-range rows.
+- **Model selection uses cross-validation, not the test set.** The four models are compared with 5-fold CV on the training set; the test set is used once, for the selected model.
+- **One preprocessing function for training and prediction.** `src/preprocess.py::build_features` is the only place features are computed. Predictions build a row in the raw CSV layout (`make_raw_row`) and pass it through the same function. This fixes a bug in the previous CLI, which never filled the duration feature and therefore always predicted with a flight duration of 0. A test asserts that the serving path yields exactly the training features.
+- **Label normalisation.** "New Delhi" and "Delhi" (Destination) are the same place, and "No Info" / "No info" (Additional_Info) are the same value; both are merged.
+- **Fixed seeds.** All splits and models use `random_state=42`; running `src.train` twice yields an identical `metrics.json`.
+
+### Is `Additional_Info` leakage?
+
+No. `Additional_Info` describes the fare conditions of the ticket ("In-flight meal not included", "No check-in baggage included", "1 Long layover", ...). It is a property of the product that is shown to the buyer at booking time, not something derived from the price afterwards, so it is available when a prediction is needed. It is also the single most useful addition in the ablation (0.81 → 0.93), because it separates fare classes that share the same airline, route and schedule.
+
+---
+
+## Project structure
 
 ```plaintext
-Collect-and-predict-air-plane-ticket-price/
-├── data/
-│   ├── IndianFlightdata - Sheet1.csv    # Raw data
-│   └── data_for_assignment/
-│       └── cleaned_flight_data.csv      # Cleaned & encoded data
-├── notebook/
-│   ├── eda.ipynb                        # Data analysis & Preprocessing
-│   ├── model_training.ipynb             # Model training (RF, XGBoost) & Tuning
-│   └── visual_report_data.ipynb         # Visualization & Metrics for reporting
+├── app.py                     # Streamlit app (3 tabs)
+├── src/
+│   ├── preprocess.py          # Cleaning + feature engineering shared by train and predict
+│   ├── train.py               # Model comparison, test evaluation, saves model + metrics
+│   ├── ablation.py            # Feature ablation
+│   ├── predictor.py           # Loads the saved pipeline, predicts from user input
+│   ├── predict_cli.py         # Terminal interface
+│   └── summary.py             # LaTeX tables generated from models/metrics.json
+├── tests/                     # pytest: preprocessing and predictor
 ├── models/
-│   ├── best_flight_price_model_optimized.json  # Best XGBoost model
-│   └── rf_flight_price_model.pkl               # Baseline model (Random Forest)
-├── doc/
-│   └── dataset_requirement.md           # Project requirements
-└── requirements.txt                     # Required libraries
+│   ├── flight_price_pipeline.joblib   # Fitted sklearn Pipeline (one-hot + XGBoost)
+│   └── metrics.json                   # All metrics reported above
+├── data/
+│   └── IndianFlightdata - Sheet1.csv  # Raw data used by the pipeline
+├── notebook/                  # Original exploratory notebooks (see note below)
+├── docs/images/               # App screenshots
+└── .github/workflows/ci.yml   # Tests + training on every push
 ```
+
+`data/` also contains `flight_cleaned.csv`, `airports.csv`, `flight_price.xlsx` and `archive.zip`. They are leftovers from the exploration phase and are not used by the pipeline.
 
 ---
 
-## Prerequisites
+## How to run
 
-The project requires **Python 3.8+**. To install the necessary libraries, run the following command:
+Requires Python 3.11+ (developed and tested on Python 3.13). The package versions in `requirements.txt` are pinned because the saved `.joblib` model must be loaded with the same library versions that wrote it; the pinned NumPy needs Python 3.12 or newer, so on Python 3.11 install a NumPy 2.4 release and retrain with `python -m src.train`.
+
+All commands are run from the repo root.
 
 ```bash
-pip install -r requirements.txt
+python -m venv .venv
+.venv\Scripts\activate            # Windows  (Linux/macOS: source .venv/bin/activate)
+pip install -r requirements-dev.txt
+
+python -m pytest -q               # tests
+python -m src.train               # compare models, save model + metrics
+python -m src.ablation            # feature ablation
+python -m src.summary             # LaTeX tables from metrics.json
+python -m src.predict_cli         # predict in the terminal
+streamlit run app.py              # web app
 ```
 
-*Main libraries: pandas, numpy, seaborn, matplotlib, scikit-learn, xgboost, joblib.*
+The trained model is committed, so the app and the CLI work right after cloning without retraining.
+
+### Deploy on Streamlit Community Cloud
+
+1. Push the repo to GitHub (the app needs `app.py`, `requirements.txt`, `src/`, `models/` and `data/IndianFlightdata - Sheet1.csv`).
+2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub and click **Create app**.
+3. Select this repository, the branch, and `app.py` as the main file.
+4. Under **Advanced settings**, choose Python 3.13 so that the pinned versions match the saved model.
+5. Click **Deploy**. Dependencies are installed from `requirements.txt`.
 
 ---
 
-## Workflow
+## Data and limitations
 
-### Step 1: EDA & Preprocessing
-Open the `notebook/eda.ipynb` file to perform:
-- Data cleaning (Missing values, Duplicates).
-- Outlier handling using the IQR method.
-- Feature Engineering: Extracting date/month, calculating flight duration, adding the `is_weekend` variable...
-- Data transformation (One-Hot Encoding).
+The data is an existing public Kaggle dataset of Indian domestic flight fares; this project did not collect it.
 
-### Step 2: Model Training
-Open the `notebook/model_training.ipynb` file to:
-- Split the dataset into Train/Test sets (80/20).
-- Train and compare **Random Forest** and **XGBoost** models.
-- Hyperparameter Tuning using `RandomizedSearchCV`.
+- **Four months of one year.** Journeys run from March to June 2019. The model knows nothing about other seasons or about price levels after 2019, and the app warns when a date outside this window is entered.
+- **Five routes.** Banglore → Delhi, Delhi → Cochin, Kolkata → Banglore, Mumbai → Hyderabad and Chennai → Kolkata. The app only offers these.
+- **No booking date.** How far in advance a ticket is bought is a major price driver and is not in the data.
+- **Random split.** The split is random over rows, not over time, so the reported scores describe interpolation within the same period rather than forecasting future prices.
+- **Rare categories.** No business-class row remains in the training set after the outlier filter, so the model cannot price business fares.
 
-### Step 3: Reporting
-Open the `notebook/visual_report_data.ipynb` file to export charts:
-- **Feature Importance:** Which factors affect ticket prices the most.
-- **Cross-Validation:** Evaluating model stability.
-- **Residual Analysis:** Analyzing prediction errors.
-- **Market Insights:** Ticket price trends by airline and time.
+## About the notebooks
 
----
-
-## Key Results
-
-Based on practical experiments, the model achieved impressive metrics:
-- **R-squared ($R^2$):** ~0.84 - 0.89 (explains over 85% of price variance).
-- **RMSE:** Average error optimized after Tuning.
-- **Best model:** XGBoost after tuning and outlier handling.
+The notebooks in `notebook/` are the original exploration for the course assignment and are kept unchanged. Their numbers differ from the ones above (for example XGBoost test R² 0.842) because they were computed before the evaluation was fixed: duplicates were kept, outliers were filtered before the train/test split, and the feature set was different. The numbers in this README supersede them.
 
 ---
 
