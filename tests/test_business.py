@@ -36,7 +36,8 @@ def test_findings_file_is_readable_and_consistent():
         result = findings[key]
         assert result["groups"] > 0
         assert result["ci95_low_inr"] <= result["median_diff_inr"] <= result["ci95_high_inr"]
-    # Simpson reversal: dearer on average across airlines, cheaper like for like.
+    # Reversal caused by airline mix: dearer on average across airlines,
+    # cheaper like for like.
     fare = findings["jet_fare_class"]
     assert fare["all_airlines_raw"]["mean_diff_inr"] > 0
     assert fare["median_diff_inr"] < 0

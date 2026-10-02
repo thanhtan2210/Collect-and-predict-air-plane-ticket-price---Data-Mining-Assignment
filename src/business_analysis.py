@@ -91,7 +91,8 @@ def jet_fare_class(df):
     )
     result = summarise(summary, table)
 
-    # The same comparison without any control, to show the Simpson reversal.
+    # The same comparison without any control, to show the reversal caused
+    # by airline mix (confounding).
     both = df[df["Additional_Info"].isin([MEAL, STANDARD])]
     by_remark = both.groupby("Additional_Info")[TARGET].agg(["count", "median", "mean"])
     result["all_airlines_raw"] = {

@@ -4,7 +4,7 @@
 
 **Approach.** A case study on 10,462 fares for March-June 2019 on five routes. One preprocessing function feeds an XGBoost price model and two quantile models that give a calibrated 80% price range; price comparisons hold airline, route and stops constant and report bootstrap confidence intervals.
 
-**Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 79.8% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; 6 groups), although a naive comparison across airlines says it is dearer.
+**Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 79.8% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; only 6 groups), while the uncontrolled comparison across airlines shows it as dearer: a reversal caused by airline mix (confounding).
 
 One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
 
@@ -73,7 +73,7 @@ The quantile models trained with the outliers kept are the ones saved and used b
 | 1 stop vs non-stop | airline, route | +3,038 | +964 to +4,410 | 10 | 4,598 |
 | Jet Airways: "meal not included" vs standard fare | route, stops | -3,436 | -6,132 to -1,830 | 6 | 3,634 |
 
-Across all airlines and without any control, the no-meal fares are 361 INR dearer on average (2,369 INR at the median) than the standard fares: the sign reverses because 1,830 of the 1,926 no-meal fares are Jet Airways. Both intervals exclude zero but are wide, because they rest on 10 and 6 groups.
+The fare-class finding rests on only 6 groups (route and stops pairs within Jet Airways), so its interval is wide. Across all airlines and without any control, the no-meal fares are 361 INR dearer on average (2,369 INR at the median) than the standard fares. This is a reversal caused by airline mix (confounding): 1,830 of the 1,926 no-meal fares are Jet Airways, an expensive airline. Simpson's paradox is the textbook example of this kind of reversal; here the sign flips between the pooled comparison and the within-airline one, and within Jet Airways alone the raw gap is already negative.
 
 | Route | Cheapest option (at least 30 flights) | Flights | Median (INR) | Route median (INR) | Route price CV |
 | --- | --- | --- | --- | --- | --- |
@@ -100,8 +100,8 @@ Raw gaps between medians mix different routes and airlines, so each attribute is
 | "In-flight meal not included" vs standard fare | +30.0% | -26.5% | route, airline, stops |
 | "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops |
 
-- **A fare without a meal looks 30% dearer and is in fact 26% cheaper.** The remark sits almost entirely on Jet Airways, the most expensive airline; within the same airline, route and stops it is cheaper in all 7 comparable groups.
 - **One stop costs more than non-stop in every comparable group**, but about half of the raw gap comes from which routes have connecting flights.
+- **A fare without a meal looks 30% dearer and is in fact 26% cheaper**, a reversal caused by airline mix (confounding). The remark sits almost entirely on Jet Airways, the most expensive airline; within the same airline, route and stops it is cheaper in all 7 comparable groups (6 of them Jet Airways).
 - **The weekend premium is a March effect:** +20.6% in March, between +1.5% and +2.8% in the other months. It rests on only 2 to 3 weekend dates per month.
 - **Model error is concentrated in a small tail.** The median absolute error is 294 INR against a mean of 681 INR; the worst 5% of test rows carry 38.7% of the total error, and fares above the outlier fence are underpredicted by 9,864 INR on average.
 - **Forecasting a new month is harder than the headline score suggests.** Training on March-May and testing on June gives R² 0.846 and MAE 1,091 INR, against R² 0.929 and MAE 588 INR for comparable prices under the random split.

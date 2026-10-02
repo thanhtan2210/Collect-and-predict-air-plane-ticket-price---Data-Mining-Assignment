@@ -291,12 +291,14 @@ def business_tab():
     st.caption(
         f"Jet Airways only, 'In-flight meal not included' vs the standard fare on the same route "
         f"and number of stops, {fare['flights_compared']:,} flights. Cheaper in all "
-        f"{fare['groups']} groups. This is a difference between two Jet Airways fare classes, not "
-        f"the price of a meal. Simpson's paradox: across all airlines the no-meal fares are "
-        f"{raw['mean_diff_inr']:+,.0f} INR on average ({raw['median_diff_inr']:+,.0f} INR at the "
-        f"median) against the standard fares, because "
+        f"{fare['groups']} groups, but the finding rests on only {fare['groups']} groups. This is "
+        f"a difference between two Jet Airways fare classes, not the price of a meal. Across all "
+        f"airlines and without any control the no-meal fares are {raw['mean_diff_inr']:+,.0f} INR "
+        f"on average ({raw['median_diff_inr']:+,.0f} INR at the median) against the standard "
+        f"fares: a reversal caused by airline mix (confounding), since "
         f"{fare['no_meal_flights_by_airline']['Jet Airways']:,} of {raw['n_no_meal']:,} of them are "
-        f"Jet Airways, an expensive airline."
+        f"Jet Airways, an expensive airline. Simpson's paradox is the textbook example of such a "
+        f"reversal."
     )
     st.dataframe(
         get_report("jet_fare_class_by_group.csv").rename(
