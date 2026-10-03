@@ -13,7 +13,7 @@ COLOR = "#2a78d6"
 MIN_FLIGHTS = 30
 DATA_START, DATA_END = datetime.date(2019, 3, 1), datetime.date(2019, 6, 30)
 
-st.set_page_config(page_title="Flight Price Prediction", page_icon="✈️", layout="wide")
+st.set_page_config(page_title="Flight Price Prediction", layout="wide")
 
 
 @st.cache_resource
@@ -418,7 +418,7 @@ def performance_tab(metrics):
 
 
 def main():
-    st.title("✈️ Flight Ticket Price Prediction")
+    st.title("Flight Ticket Price Prediction")
     st.caption("Indian domestic flights, March-June 2019 · 5 routes · prices in INR")
     try:
         data, metrics = get_data(), get_metrics()
