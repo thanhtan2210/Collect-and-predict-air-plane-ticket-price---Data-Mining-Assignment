@@ -1,0 +1,58 @@
+{
+  "train_rows": 8296,
+  "feature_sets": [
+    {
+      "feature_set": "1. Airline + route + stops + duration",
+      "features": [
+        "Airline",
+        "Source",
+        "Destination",
+        "Total_Stops",
+        "Duration_Minutes"
+      ],
+      "r2_mean": 0.6566574335098266,
+      "r2_std": 0.029705451069374902
+    },
+    {
+      "feature_set": "2. Set 1 + date/time features",
+      "features": [
+        "Airline",
+        "Source",
+        "Destination",
+        "Total_Stops",
+        "Journey_Day",
+        "Journey_Month",
+        "Day_Of_Week",
+        "Is_Weekend",
+        "Dep_Hour",
+        "Dep_Minute",
+        "Arrival_Hour",
+        "Arrival_Minute",
+        "Duration_Minutes"
+      ],
+      "r2_mean": 0.8068967819213867,
+      "r2_std": 0.008999680475077794
+    },
+    {
+      "feature_set": "3. Set 2 + Additional_Info (full model)",
+      "features": [
+        "Airline",
+        "Source",
+        "Destination",
+        "Additional_Info",
+        "Total_Stops",
+        "Journey_Day",
+        "Journey_Month",
+        "Day_Of_Week",
+        "Is_Weekend",
+        "Dep_Hour",
+        "Dep_Minute",
+        "Arrival_Hour",
+        "Arrival_Minute",
+        "Duration_Minutes"
+      ],
+      "r2_mean": 0.9278596043586731,
+      "r2_std": 0.0035085120282786542
+    }
+  ]
+}
