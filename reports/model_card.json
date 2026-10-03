@@ -1,0 +1,216 @@
+{
+  "inputs": {
+    "categorical": [
+      {
+        "name": "Airline",
+        "dtype": "str",
+        "values": [
+          "Air Asia",
+          "Air India",
+          "GoAir",
+          "IndiGo",
+          "Jet Airways",
+          "Multiple carriers",
+          "Multiple carriers Premium economy",
+          "SpiceJet",
+          "Trujet",
+          "Vistara",
+          "Vistara Premium economy"
+        ]
+      },
+      {
+        "name": "Source",
+        "dtype": "str",
+        "values": [
+          "Banglore",
+          "Chennai",
+          "Delhi",
+          "Kolkata",
+          "Mumbai"
+        ]
+      },
+      {
+        "name": "Destination",
+        "dtype": "str",
+        "values": [
+          "Banglore",
+          "Cochin",
+          "Delhi",
+          "Hyderabad",
+          "Kolkata"
+        ]
+      },
+      {
+        "name": "Additional_Info",
+        "dtype": "str",
+        "values": [
+          "1 Long layover",
+          "Change airports",
+          "In-flight meal not included",
+          "No check-in baggage included",
+          "No info",
+          "Red-eye flight"
+        ]
+      }
+    ],
+    "numeric": [
+      {
+        "name": "Total_Stops",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 3
+      },
+      {
+        "name": "Journey_Day",
+        "dtype": "int32",
+        "train_min": 1,
+        "train_max": 27
+      },
+      {
+        "name": "Journey_Month",
+        "dtype": "int32",
+        "train_min": 3,
+        "train_max": 6
+      },
+      {
+        "name": "Day_Of_Week",
+        "dtype": "int32",
+        "train_min": 0,
+        "train_max": 6
+      },
+      {
+        "name": "Is_Weekend",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 1
+      },
+      {
+        "name": "Dep_Hour",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 23
+      },
+      {
+        "name": "Dep_Minute",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 55
+      },
+      {
+        "name": "Arrival_Hour",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 23
+      },
+      {
+        "name": "Arrival_Minute",
+        "dtype": "int64",
+        "train_min": 0,
+        "train_max": 55
+      },
+      {
+        "name": "Duration_Minutes",
+        "dtype": "int64",
+        "train_min": 5,
+        "train_max": 2860
+      }
+    ],
+    "routes": {
+      "Banglore": [
+        "Delhi"
+      ],
+      "Chennai": [
+        "Kolkata"
+      ],
+      "Delhi": [
+        "Cochin"
+      ],
+      "Kolkata": [
+        "Banglore"
+      ],
+      "Mumbai": [
+        "Hyderabad"
+      ]
+    }
+  },
+  "outputs": {
+    "predicted_price": {
+      "unit": "INR",
+      "description": "Point prediction, clamped into the price range when shown."
+    },
+    "price_range": {
+      "unit": "INR",
+      "target_coverage": 0.8,
+      "quantiles": [
+        0.1,
+        0.9
+      ],
+      "conformal_adjustment_inr": 125.033203125,
+      "description": "[q10 - adjustment, q90 + adjustment], floored at 0."
+    },
+    "label": {
+      "Cheap": "offered price below the lower end of the price range",
+      "Fair": "offered price inside the price range (ends included)",
+      "Expensive": "offered price above the upper end of the price range"
+    }
+  },
+  "hyperparameters": {
+    "point": {
+      "colsample_bytree": 0.8,
+      "learning_rate": 0.05,
+      "max_depth": 8,
+      "n_estimators": 600,
+      "n_jobs": -1,
+      "random_state": 42,
+      "subsample": 0.8
+    },
+    "lower": {
+      "colsample_bytree": 0.8,
+      "learning_rate": 0.05,
+      "max_depth": 8,
+      "n_estimators": 600,
+      "n_jobs": -1,
+      "objective": "reg:quantileerror",
+      "quantile_alpha": 0.1,
+      "random_state": 42,
+      "subsample": 0.8
+    },
+    "upper": {
+      "colsample_bytree": 0.8,
+      "learning_rate": 0.05,
+      "max_depth": 8,
+      "n_estimators": 600,
+      "n_jobs": -1,
+      "objective": "reg:quantileerror",
+      "quantile_alpha": 0.9,
+      "random_state": 42,
+      "subsample": 0.8
+    },
+    "calibration": {
+      "method": "conformalized quantile regression",
+      "target_coverage": 0.8,
+      "fit_rows": 6695,
+      "calibration_rows": 1674,
+      "training_outliers": "outliers_kept"
+    }
+  },
+  "training_data": {
+    "clean_rows": 10462,
+    "train_rows": 8296,
+    "train_outliers_removed": 73,
+    "test_rows": 2093,
+    "journey_date_from": "2019-03-01",
+    "journey_date_to": "2019-06-27",
+    "price_iqr_low": -5489.5,
+    "price_iqr_high": 23090.5,
+    "train_price_min": 1759,
+    "train_price_max": 23001,
+    "target": "Price"
+  },
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "xgboost": "3.4.1",
+    "point_model_commit": "82fa859a340582ab44c4162a0a50ba5346860c3b",
+    "interval_models_commit": "3f2895b31d3f2b0b020bfd043085801d749972dd"
+  }
+}
