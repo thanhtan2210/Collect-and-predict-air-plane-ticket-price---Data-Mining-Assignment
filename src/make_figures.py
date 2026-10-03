@@ -5,11 +5,16 @@ model applied to the test split of src.train; nothing is recomputed with new
 logic. If the reproduced test predictions or the stops table disagree with
 the stored metrics, the script stops instead of drawing.
 
+Each `fig_*(data, theme)` returns a matplotlib Figure, so the app draws the
+same charts from the same code.
+
 Run from the repo root:  python -m src.make_figures
 Writes docs/images/fig_*_{light,dark}.svg.
 """
+import functools
 import json
 import os
+import threading
 
 import matplotlib
 
@@ -47,6 +52,8 @@ RC = {
     "svg.hashsalt": "flight-price-figures",
     "axes.unicode_minus": False,
 }
+# pyplot and rcParams are global, so figures are drawn one at a time.
+_LOCK = threading.RLock()
 BAR_WIDTH = 0.6
 LINE_WIDTH = 2
 TOP_FEATURES = 10
@@ -64,7 +71,8 @@ def inr(value):
     return f"{value:,.0f}"
 
 
-def load_sources():
+def load_figure_data():
+    """Everything the figures show, read from models/, reports/ and the test split."""
     with open(ABLATION_PATH, encoding="utf-8") as f:
         ablation = json.load(f)
     findings = load_findings()
@@ -95,6 +103,15 @@ def load_sources():
     }
 
 
+def figure(draw):
+    """Make a drawing function pure: `draw(data, theme)` with theme "light" or "dark"."""
+    @functools.wraps(draw)
+    def wrapper(data, theme="light"):
+        with _LOCK, plt.rc_context(RC):
+            return draw(data, THEMES[theme])
+    return wrapper
+
+
 def start(theme, title, question, left=0.09, bottom=0.13, grid="x"):
     """Empty axes with the title, the question as subtitle and a value-axis grid."""
     fig, ax = plt.subplots(figsize=FIGSIZE)
@@ -116,8 +133,9 @@ def start(theme, title, question, left=0.09, bottom=0.13, grid="x"):
     return fig, ax
 
 
-def fig_ablation(sources, theme):
-    sets = sources["ablation"]["feature_sets"][::-1]
+@figure
+def fig_ablation(data, theme):
+    sets = data["ablation"]["feature_sets"][::-1]
     fig, ax = start(
         theme, "Feature ablation", "How much does each group of features add to the model?", left=0.36
     )
@@ -131,8 +149,9 @@ def fig_ablation(sources, theme):
     return fig
 
 
-def fig_models(sources, theme):
-    metrics = sources["metrics"]
+@figure
+def fig_models(data, theme):
+    metrics = data["metrics"]
     names = list(metrics["cv"])[::-1]
     fig, ax = start(
         theme, "Model comparison", "Which model scores best in cross-validation?", left=0.2
@@ -158,10 +177,11 @@ def fig_models(sources, theme):
     return fig
 
 
-def fig_pred_vs_actual(sources, theme):
-    metrics = sources["metrics"]
+@figure
+def fig_pred_vs_actual(data, theme):
+    metrics = data["metrics"]
     test, fence = metrics["test"]["full"], metrics["dataset"]["price_iqr_high"]
-    actual, predicted = sources["actual"], sources["predicted"]
+    actual, predicted = data["actual"], data["predicted"]
     fig, ax = start(
         theme, "Predicted vs actual price", "How close are the predictions on the hold-out test set?",
         left=0.11, bottom=0.15, grid="both",
@@ -194,8 +214,9 @@ def fig_pred_vs_actual(sources, theme):
     return fig
 
 
-def fig_interval_coverage(sources, theme):
-    intervals = sources["intervals"]
+@figure
+def fig_interval_coverage(data, theme):
+    intervals = data["intervals"]
     bands, target = intervals["test_by_price_quartile"], intervals["target_coverage"]
     fig, ax = start(
         theme, "Coverage of the 80% price range",
@@ -225,8 +246,9 @@ def fig_interval_coverage(sources, theme):
     return fig
 
 
-def fig_importance(sources, theme):
-    top = sources["metrics"]["feature_importance"][:TOP_FEATURES][::-1]
+@figure
+def fig_importance(data, theme):
+    top = data["metrics"]["feature_importance"][:TOP_FEATURES][::-1]
     fig, ax = start(
         theme, f"Feature importance, top {TOP_FEATURES}", "What does the price model rely on?", left=0.2
     )
@@ -242,8 +264,9 @@ def fig_importance(sources, theme):
     return fig
 
 
-def fig_stops_premium(sources, theme):
-    stops, table = sources["stops"], sources["stops_table"].sort_values("diff_inr")
+@figure
+def fig_stops_premium(data, theme):
+    stops, table = data["stops"], data["stops_table"].sort_values("diff_inr")
     fig, ax = start(
         theme, "Price of a connection", "How much more does one stop cost on the same airline and route?",
         left=0.33, bottom=0.15,
@@ -282,16 +305,16 @@ FIGURES = {
 
 
 def main(out_dir=IMAGE_DIR):
-    sources = load_sources()
+    data = load_figure_data()
     os.makedirs(out_dir, exist_ok=True)
     paths = []
     with plt.rc_context(RC):
-        for mode, theme in THEMES.items():
+        for theme, colors in THEMES.items():
             for name, (draw, title) in FIGURES.items():
-                fig = draw(sources, theme)
-                path = os.path.join(out_dir, f"{name}_{mode}.svg")
+                fig = draw(data, theme)
+                path = os.path.join(out_dir, f"{name}_{theme}.svg")
                 fig.savefig(
-                    path, format="svg", facecolor=theme["background"],
+                    path, format="svg", facecolor=colors["background"],
                     metadata={"Title": title, "Date": None},
                 )
                 plt.close(fig)
