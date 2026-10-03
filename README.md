@@ -1,5 +1,8 @@
 # Flight Ticket Price Prediction - Data Mining Assignment
 
+**Live demo:** _coming soon_
+<!-- DEMO_GIF: docs/images/demo.gif -->
+
 **Problem.** A travel-agency employee holds a quote for a domestic flight in India and needs to know whether the price is cheap, fair or expensive compared with similar flights, and which alternative would cost less.
 
 **Approach.** A case study on 10,462 fares for March-June 2019 on five routes. One preprocessing function feeds an XGBoost price model and two quantile models that give a calibrated 80% price range; price comparisons hold airline, route and stops constant and report bootstrap confidence intervals.
@@ -7,8 +10,6 @@
 **Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 79.8% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; only 6 groups), while the uncontrolled comparison across airlines shows it as dearer: a reversal caused by airline mix (confounding).
 
 One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
-
-Live demo: <link>
 
 Every number in this README is printed by a script in this repo and can be regenerated with the commands below.
 
@@ -205,11 +206,10 @@ The trained model is committed, so the app and the CLI work right after cloning 
 
 ### Deploy on Streamlit Community Cloud
 
-1. Push the repo to GitHub (the app needs `app.py`, `requirements.txt`, `src/`, `models/`, `reports/` and `data/IndianFlightdata - Sheet1.csv`).
-2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub and click **Create app**.
-3. Select this repository, the branch, and `app.py` as the main file.
-4. Under **Advanced settings**, choose Python 3.13 so that the pinned versions match the saved model.
-5. Click **Deploy**. Dependencies are installed from `requirements.txt`.
+1. On [share.streamlit.io](https://share.streamlit.io), click **Create app** and pick the repository `thanhtan2210/Collect-and-predict-air-plane-ticket-price---Data-Mining-Assignment`.
+2. Branch: `main`.
+3. Main file path: `app.py`.
+4. Under **Advanced settings**, choose Python 3.13 so that the pinned versions in `requirements.txt` match the saved model, then click **Deploy**.
 
 ---
 
