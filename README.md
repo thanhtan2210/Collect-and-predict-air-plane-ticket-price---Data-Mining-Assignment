@@ -9,6 +9,10 @@
 
 **Result.** The price model reaches R² 0.872 and MAE 681 INR on a hold-out test set, and the 80% price range contains 79.8% of test prices. On the same airline and route a one-stop flight cost 3,038 INR more than a non-stop one (95% CI 964 to 4,410; 10 groups). The Jet Airways fare without a meal cost 3,436 INR less than its standard fare (95% CI 1,830 to 6,132; only 6 groups), while the uncontrolled comparison across airlines shows it as dearer: a reversal caused by airline mix (confounding).
 
+> [!IMPORTANT]
+> On the hold-out test set the price model reaches R² **0.872** with a mean absolute error of **681 INR**.
+> The 80% price range contains **79.8%** of the test prices, against a target of 80%.
+
 One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
 
 Every number in this README is printed by a script in this repo and can be regenerated with the commands below.
@@ -38,6 +42,13 @@ Produced by `python -m src.train` (also stored in [models/metrics.json](models/m
 
 XGBoost has the highest CV R² and is the model that gets refit on the full training set and saved. The log-target variant is within one standard deviation of it.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_models_dark.svg">
+  <img alt="Cross-validated R² of the four models, with one standard deviation on each side" src="docs/images/fig_models_light.svg" width="720">
+</picture>
+
+XGBoost leads at **0.9279** with the log-target variant (0.9268) inside its one-standard-deviation block, while the Ridge baseline stays at 0.7042 (`python -m src.make_figures`).
+
 **Hold-out test set - XGBoost, evaluated once**
 
 | Test subset | Rows | R² | MAE (INR) | RMSE (INR) |
@@ -47,13 +58,34 @@ XGBoost has the highest CV R² and is the model that gets refit on the full trai
 
 The 21 test rows above the fence (16 of them Jet Airways) account for the gap between the two rows: the model was never trained on prices that high.
 
-**Feature ablation - XGBoost, 5-fold CV R² on the training set** (`python -m src.ablation`)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_pred_vs_actual_dark.svg">
+  <img alt="Scatter plot of predicted against actual price on the test set, log scales" src="docs/images/fig_pred_vs_actual_light.svg" width="720">
+</picture>
+
+Predictions follow the diagonal up to the outlier fence of **23,090 INR** and fall well below it for the dearer test fares (`python -m src.make_figures`).
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_importance_dark.svg">
+  <img alt="Bar chart of the ten most important features of the price model" src="docs/images/fig_importance_light.svg" width="720">
+</picture>
+
+Airline (0.378) and Additional_Info (0.195) carry more than half of the total gain, while the largest date or time feature, Journey_Month, has 0.021 (`python -m src.make_figures`).
+
+**Feature ablation - XGBoost, 5-fold CV R² on the training set** (`python -m src.ablation`, stored in [reports/ablation.json](reports/ablation.json))
 
 | Feature set | CV R² |
 | --- | --- |
 | 1. Airline + Source + Destination + Total_Stops + Duration_Minutes | 0.6567 ± 0.0297 |
 | 2. Set 1 + all date/time features | 0.8069 ± 0.0090 |
 | 3. Set 2 + Additional_Info (full model) | 0.9279 ± 0.0035 |
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_ablation_dark.svg">
+  <img alt="Bar chart of cross-validated R² for the three feature sets" src="docs/images/fig_ablation_light.svg" width="720">
+</picture>
+
+The date and time features lift CV R² from 0.6567 to 0.8069, and the fare remark in Additional_Info lifts it again to **0.9279** (`python -m src.make_figures`).
 
 **80% price range** (`python -m src.train_intervals`, stored in [models/interval_metrics.json](models/interval_metrics.json)). Two XGBoost quantile models (10% and 90%), calibrated with conformalized quantile regression on 20% of the training set. Two training sets were compared: with the price outliers removed (the rule of the point model) and with them kept.
 
@@ -65,6 +97,13 @@ The 21 test rows above the fence (16 of them Jet Airways) account for the gap be
 | 11,934 - 54,826 | 523 | 72.8% | 2,819 | 79.3% | 3,024 |
 | All test rows | 2,093 | 78.0% | 2,182 | **79.8%** | **2,274** |
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_interval_coverage_dark.svg">
+  <img alt="Bar chart of the coverage of the 80% price range in each quartile of the test price" src="docs/images/fig_interval_coverage_light.svg" width="720">
+</picture>
+
+Coverage stays between 77.8% and 81.9% in every price quartile, while the mean width of the range grows from 1,138 INR for the cheapest fares to **3,024 INR** for the dearest (`python -m src.make_figures`).
+
 The quantile models trained with the outliers kept are the ones saved and used by the app. The rule, fixed before looking at the result, was to keep them only if overall coverage stayed within 75-85% and coverage of the top price quartile increased; it rose from 72.8% to 79.3%, for a range 92 INR wider on average. The point model is unchanged and still trains without outliers. Its prediction lies inside the range for 93.1% of test rows. For the remaining rows the app and `assess_quote` show the point prediction clamped to the nearest end of the range, so the displayed price is always inside it; the Cheap / Fair / Expensive label depends only on the range. The metrics in [models/metrics.json](models/metrics.json) are those of the unclamped point model.
 
 **Business findings in INR** (`python -m src.business_analysis`, stored in [reports/findings.json](reports/findings.json)). Each figure is the median of the within-group differences; a group needs at least 20 flights on each side, and the 95% confidence interval is a bootstrap over groups.
@@ -73,6 +112,13 @@ The quantile models trained with the outliers kept are the ones saved and used b
 | --- | --- | --- | --- | --- | --- |
 | 1 stop vs non-stop | airline, route | +3,038 | +964 to +4,410 | 10 | 4,598 |
 | Jet Airways: "meal not included" vs standard fare | route, stops | -3,436 | -6,132 to -1,830 | 6 | 3,634 |
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/fig_stops_premium_dark.svg">
+  <img alt="Dot plot of the one-stop price premium for each airline and route, with the median and its 95% confidence interval" src="docs/images/fig_stops_premium_light.svg" width="720">
+</picture>
+
+One stop was dearer than non-stop in all 10 airline and route groups, by 265 to 6,326 INR with a median of **3,038 INR** (`python -m src.make_figures`).
 
 The fare-class finding rests on only 6 groups (route and stops pairs within Jet Airways), so its interval is wide. Across all airlines and without any control, the no-meal fares are 361 INR dearer on average (2,369 INR at the median) than the standard fares. This is a reversal caused by airline mix (confounding): 1,830 of the 1,926 no-meal fares are Jet Airways, an expensive airline. Simpson's paradox is the textbook example of this kind of reversal; here the sign flips between the pooled comparison and the within-airline one, and within Jet Airways alone the raw gap is already negative.
 
@@ -83,6 +129,64 @@ The fare-class finding rests on only 6 groups (route and stops pairs within Jet 
 | Delhi → Cochin | SpiceJet, 1 stop | 87 | 5,583 | 10,262 | 0.36 |
 | Kolkata → Banglore | SpiceJet, non-stop | 248 | 3,873 | 9,345 | 0.41 |
 | Mumbai → Hyderabad | SpiceJet, non-stop | 121 | 2,017 | 3,342 | 0.81 |
+
+---
+
+## Model card
+
+Generated by `python -m src.model_card` from the saved model files and stored in [reports/model_card.json](reports/model_card.json). The script prints the two tables below.
+
+**Inputs.** The pipeline takes the 14 columns below, which `src/preprocess.py::build_features` derives from a fare in the raw CSV layout. Valid values of the text columns are the categories of the fitted one-hot encoder; the ranges of the numeric columns are those seen in the training set. Valid routes: Banglore → Delhi, Chennai → Kolkata, Delhi → Cochin, Kolkata → Banglore and Mumbai → Hyderabad.
+
+| Column | Type | Valid values |
+| --- | --- | --- |
+| `Airline` | str | Air Asia, Air India, GoAir, IndiGo, Jet Airways, Multiple carriers, Multiple carriers Premium economy, SpiceJet, Trujet, Vistara, Vistara Premium economy |
+| `Source` | str | Banglore, Chennai, Delhi, Kolkata, Mumbai |
+| `Destination` | str | Banglore, Cochin, Delhi, Hyderabad, Kolkata |
+| `Additional_Info` | str | 1 Long layover, Change airports, In-flight meal not included, No check-in baggage included, No info, Red-eye flight |
+| `Total_Stops` | int64 | 0 to 3 |
+| `Journey_Day` | int32 | 1 to 27 |
+| `Journey_Month` | int32 | 3 to 6 |
+| `Day_Of_Week` | int32 | 0 to 6 |
+| `Is_Weekend` | int64 | 0 to 1 |
+| `Dep_Hour` | int64 | 0 to 23 |
+| `Dep_Minute` | int64 | 0 to 55 |
+| `Arrival_Hour` | int64 | 0 to 23 |
+| `Arrival_Minute` | int64 | 0 to 55 |
+| `Duration_Minutes` | int64 | 5 to 2860 |
+
+**Outputs.** A predicted price in INR; an 80% price range built from the 10% and 90% quantile predictions, widened by 125 INR on each side by the calibration; and, when a quote is given, a label: Cheap below the range, Fair inside it (ends included), Expensive above it.
+
+**Hyperparameters.** Only the values that differ from the XGBoost defaults, read with `get_params()` from the saved models.
+
+| Hyperparameter | Point model | 10% quantile model | 90% quantile model |
+| --- | --- | --- | --- |
+| `colsample_bytree` | 0.8 | 0.8 | 0.8 |
+| `learning_rate` | 0.05 | 0.05 | 0.05 |
+| `max_depth` | 8 | 8 | 8 |
+| `n_estimators` | 600 | 600 | 600 |
+| `n_jobs` | -1 | -1 | -1 |
+| `objective` | default | reg:quantileerror | reg:quantileerror |
+| `quantile_alpha` | default | 0.1 | 0.9 |
+| `random_state` | 42 | 42 | 42 |
+| `subsample` | 0.8 | 0.8 | 0.8 |
+
+The price range is calibrated with conformalized quantile regression for a target coverage of 80%: the quantile models are fitted on 6,695 rows and calibrated on 1,674 held-out training rows, with the price outliers kept.
+
+**Training data.** The point model is trained on **8,296 rows** with journey dates from 2019-03-01 to 2019-06-27, after removing the 73 training prices above the outlier fence of 23,090.5 INR. Library versions: scikit-learn 1.9.1 and xgboost 3.4.1; the point model was last changed in commit `82fa859` and the quantile models in commit `3f2895b`.
+
+**Load the model and predict one flight**
+
+```python
+import joblib
+from src.preprocess import build_features, make_raw_row
+
+pipeline = joblib.load("models/flight_price_pipeline.joblib")
+row = make_raw_row("IndiGo", "Banglore", "Delhi", "24/03/2019", "22:20", 170, 0)
+print(pipeline.predict(build_features(row))[0])  # predicted price in INR
+```
+
+`src.predictor.assess_quote` returns the price range and the label as well.
 
 ---
 
@@ -154,10 +258,12 @@ No. `Additional_Info` describes the fare conditions of the ticket ("In-flight me
 │   ├── train_intervals.py     # Quantile models + conformal calibration for the 80% price range
 │   ├── business_analysis.py   # Findings in INR with bootstrap confidence intervals
 │   ├── data_audit.py          # Jet Airways dates, fare remarks, route coverage
+│   ├── model_card.py          # Inputs, outputs and hyperparameters read from the saved models
+│   ├── make_figures.py        # README figures (light and dark SVG) from the saved results
 │   ├── predictor.py           # Loads the saved models, predicts and assesses a quote
 │   ├── predict_cli.py         # Terminal interface
 │   └── summary.py             # LaTeX tables generated from models/metrics.json
-├── tests/                     # pytest: preprocessing and predictor
+├── tests/                     # pytest: preprocessing, predictor, app smoke test, model card, figures
 ├── models/
 │   ├── flight_price_pipeline.joblib   # Fitted sklearn Pipeline (one-hot + XGBoost)
 │   ├── metrics.json                   # All metrics reported above
@@ -167,11 +273,11 @@ No. `Additional_Info` describes the fare conditions of the ticket ("In-flight me
 ├── data/
 │   └── IndianFlightdata - Sheet1.csv  # Raw data used by the pipeline
 ├── notebook/                  # Original exploratory notebooks (see note below)
-├── reports/                   # findings.json, data_audit.json and CSV tables
+├── reports/                   # findings.json, data_audit.json, ablation.json, model_card.json and CSV tables
 ├── docs/
 │   ├── business_summary.md    # One-page summary for non-technical readers
 │   ├── analysis.md            # Key findings
-│   └── images/                # App screenshots and analysis charts
+│   └── images/                # App screenshots, analysis charts and README figures
 └── .github/workflows/ci.yml   # Tests + training on every push
 ```
 
@@ -197,6 +303,8 @@ python -m src.analysis            # numbers and charts for docs/analysis.md
 python -m src.train_intervals     # 80% price range models + coverage metrics
 python -m src.business_analysis   # findings -> reports/findings.json and CSV tables
 python -m src.data_audit          # data audit -> reports/data_audit.json
+python -m src.model_card          # model card -> reports/model_card.json
+python -m src.make_figures        # README figures -> docs/images/fig_*.svg
 python -m src.summary             # LaTeX tables from metrics.json
 python -m src.predict_cli         # predict in the terminal
 streamlit run app.py              # web app
