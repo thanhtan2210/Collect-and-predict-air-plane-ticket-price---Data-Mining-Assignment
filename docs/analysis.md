@@ -8,24 +8,16 @@ Every number below is printed by `python -m src.analysis` and stored in [models/
 
 | Comparison | Raw gap of medians | Like-for-like gap | Held constant | Groups |
 | --- | --- | --- | --- | --- |
-| Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month | 40 |
 | 1 stop vs non-stop | +119.9% | +55.6% | route, airline | 10 |
 | "In-flight meal not included" vs standard fare | +30.0% | -26.5% | route, airline, stops | 7 |
 | "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops | 4 |
+| Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month | 40 |
+
+The README and [business_summary.md](business_summary.md) report the stops and fare-class comparisons in INR from `python -m src.business_analysis` ([reports/findings.json](../reports/findings.json)): +3,038 INR and -3,436 INR. Those figures are the median of the within-group differences with a bootstrap confidence interval, and the fare-class one is restricted to Jet Airways (6 groups). The figures on this page are flight-weighted means, and the fare-class comparison here also includes one "Multiple carriers" group (7 groups). Both describe the same pattern; the numbers differ because the summary statistic and the groups differ.
 
 ---
 
-## 1. A fare without a meal looks 30% dearer, and is in fact 26% cheaper
-
-Across the whole dataset, tickets marked "In-flight meal not included" have a median price 2,369 INR (+30.0%) above tickets with no remark. That is a mix effect: 1,830 of the 1,926 tickets with this remark are Jet Airways, the airline with the highest median price in the data.
-
-Comparing the same airline, route and number of stops reverses the sign. The no-meal fare is cheaper in all 7 comparable groups, by 3,453 INR (-26.5%) on average, ranging from -16.1% (Multiple carriers, Delhi → Cochin, 1 stop) to -45.4% (Jet Airways, Banglore → Delhi, 1 stop).
-
-The opposite happens with "No check-in baggage included". The raw gap is -51.3%, but all 318 tickets with this remark are SpiceJet, the airline with the lowest median price. Like for like, the fare without baggage is only 45 INR (-1.4%) cheaper, in all 4 comparable groups (all SpiceJet non-stop).
-
-**So what.** `Additional_Info` identifies the fare product, and its effect can only be read within an airline. This is why adding it lifts the model's cross-validated R² from 0.81 to 0.93 (see the ablation in the README): it separates fares that share the same airline, route and schedule.
-
-## 2. One stop costs more than non-stop, but half of the raw gap is the route mix
+## 1. One stop costs more than non-stop, but half of the raw gap is the route mix
 
 The raw gap between 1-stop and non-stop flights is +5,595 INR (+119.9%). Much of it comes from where each kind of flight operates: Chennai → Kolkata has only non-stop flights, while Delhi → Cochin has 3,185 one-stop flights and 213 non-stop.
 
@@ -33,7 +25,19 @@ Within the same route and airline the gap is +3,411 INR (+55.6%). It is positive
 
 ![Extra cost of one stop, same airline and route](images/analysis_stops.png)
 
-**So what.** In this market a connecting flight is a dearer product than a direct one, not a discount option, and the size of the premium depends heavily on the airline. The comparison covers 4,598 of the 9,100 one-stop and non-stop flights; the rest sit in groups too small to compare.
+**So what.** In this market a connecting flight is a dearer product than a direct one, not a discount option, and the size of the premium depends heavily on the airline. The comparison covers 4,598 of the 9,100 one-stop and non-stop flights, in 10 groups; the rest sit in groups too small to compare.
+
+## 2. A fare without a meal looks 30% dearer, and is in fact 26% cheaper
+
+Across the whole dataset, tickets marked "In-flight meal not included" have a median price 2,369 INR (+30.0%) above tickets with no remark. Comparing the same airline, route and number of stops reverses the sign: the no-meal fare is cheaper by 3,453 INR (-26.5%) on average, ranging from -16.1% (Multiple carriers, Delhi → Cochin, 1 stop) to -45.4% (Jet Airways, Banglore → Delhi, 1 stop).
+
+This is a reversal caused by airline mix (confounding): 1,830 of the 1,926 tickets with this remark are Jet Airways, the airline with the highest median price in the data. Simpson's paradox is the textbook example of such a reversal.
+
+The result rests on few groups. Only 7 groups have at least 20 flights on each side, 6 of them Jet Airways and 1 "Multiple carriers"; the no-meal fare is cheaper in all 7. It describes the gap between fare classes, mostly of one airline, not the price of a meal.
+
+The same kind of mix effect, in the other direction, appears with "No check-in baggage included". The raw gap is -51.3%, but all 318 tickets with this remark are SpiceJet, the airline with the lowest median price. Like for like, the fare without baggage is only 45 INR (-1.4%) cheaper, in all 4 comparable groups (all SpiceJet non-stop).
+
+**So what.** `Additional_Info` identifies the fare product, and its effect can only be read within an airline. This is why adding it lifts the model's cross-validated R² from 0.81 to 0.93 (see the ablation in the README): it separates fares that share the same airline, route and schedule.
 
 ## 3. The "weekend premium" is a March effect
 
@@ -106,7 +110,7 @@ Short answer: the numbers describe a 2019 market that no longer exists in this f
 | Unidentified ("Multiple carriers") | 1,209 | 11.6% |
 | Merged into the Air India group (Vistara, AirAsia India) | 800 | 7.6% |
 
-In August 2026 IndiGo carried about 65% of domestic passengers, the Air India group 26.7% and Akasa Air, which did not exist in 2019, 5.5%. In this data the largest single source of rows, and the main full-service carrier, is Jet Airways (35.4% of rows). The two findings with the largest effects, the fare-condition discount (finding 1) and the largest connecting-flight premiums (finding 2), are mostly Jet Airways pricing.
+In August 2026 IndiGo carried about 65% of domestic passengers, the Air India group 26.7% and Akasa Air, which did not exist in 2019, 5.5%. In this data the largest single source of rows, and the main full-service carrier, is Jet Airways (35.4% of rows). The two findings with the largest effects, the largest connecting-flight premiums (finding 1) and the fare-condition discount (finding 2), are mostly Jet Airways pricing.
 
 **The pricing environment has changed too.** Between December 2025 and 23 March 2026 the government capped domestic economy fares by distance (7,500 INR up to 500 km, rising to 18,000 INR beyond 1,500 km), and airlines have since faced higher fuel costs. Neither regulation nor seven years of cost changes are in the data, so the INR amounts here should not be compared with today's fares.
 
@@ -117,7 +121,7 @@ In August 2026 IndiGo carried about 65% of domestic passengers, the Air India gr
 | The price levels or the model's predictions apply to tickets today | No. The error already rose 85% when predicting one month ahead inside 2019 (finding 5). |
 | "Weekends cost more" or "connections cost 56% more" as rules for today | No. The weekend comparison rests on 2 to 3 weekend dates per month, and the premiums are tied to airlines that no longer fly. |
 | In 2019, on these five routes, the fare product explained more of the price than the calendar did | Yes (ablation: R² 0.81 → 0.93 when `Additional_Info` is added). |
-| Raw comparisons of medians can point the wrong way once the airline mix is ignored | Yes, shown twice (meal and baggage remarks). This is a property of the method, not of the year. |
+| Raw comparisons of medians can point the wrong way once the airline mix is ignored (confounding) | Yes, shown twice (meal and baggage remarks). This is a property of the method, not of the year. |
 | A price model must be re-validated on a later period before being trusted | Yes (finding 5). |
 
 To say something about today's market, the same pipeline would have to be rerun on current fares, ideally with the booking date recorded. The like-for-like method and the time-based validation carry over unchanged; the conclusions have to be re-earned.
