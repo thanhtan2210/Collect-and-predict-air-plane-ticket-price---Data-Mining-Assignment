@@ -87,21 +87,16 @@ The fare-class finding rests on only 6 groups (route and stops pairs within Jet 
 
 ## Key findings
 
-The table below reports the same kind of comparison in percent, as a flight-weighted mean over groups rather than a median, and the meal comparison there also includes "Multiple carriers" (7 groups). That is why its figures differ from the INR table above.
+Full write-up with tables and charts: [docs/analysis.md](docs/analysis.md). Produced by `python -m src.analysis` (stored in [models/analysis.json](models/analysis.json)). The stops and fare-class comparisons are reported once, in the INR table under Results.
 
-Full write-up with tables and charts: [docs/analysis.md](docs/analysis.md). Produced by `python -m src.analysis`.
+Two further comparisons, in percent. The like-for-like gap is the flight-weighted mean of the within-group differences; a group needs at least 20 flights on each side.
 
-Raw gaps between medians mix different routes and airlines, so each attribute is also compared within groups of otherwise comparable flights.
+| Comparison | Raw gap of medians | Like-for-like gap | Held constant | Groups |
+| --- | --- | --- | --- | --- |
+| Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month | 40 |
+| "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops | 4 |
 
-| Comparison | Raw gap of medians | Like-for-like gap | Held constant |
-| --- | --- | --- | --- |
-| Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month |
-| 1 stop vs non-stop | +119.9% | +55.6% | route, airline |
-| "In-flight meal not included" vs standard fare | +30.0% | -26.5% | route, airline, stops |
-| "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops |
-
-- **One stop costs more than non-stop in every comparable group**, but about half of the raw gap comes from which routes have connecting flights.
-- **A fare without a meal looks 30% dearer and is in fact 26% cheaper**, a reversal caused by airline mix (confounding). The remark sits almost entirely on Jet Airways, the most expensive airline; within the same airline, route and stops it is cheaper in all 7 comparable groups (6 of them Jet Airways).
+- **The baggage remark barely changes the price.** The raw gap of -51.3% is another effect of airline mix (confounding): all 318 fares with this remark are SpiceJet, the airline with the lowest median price. Within the same route and stops the gap is -1.4%, on only 4 groups.
 - **The weekend premium is a March effect:** +20.6% in March, between +1.5% and +2.8% in the other months. It rests on only 2 to 3 weekend dates per month.
 - **Model error is concentrated in a small tail.** The median absolute error is 294 INR against a mean of 681 INR; the worst 5% of test rows carry 38.7% of the total error, and fares above the outlier fence are underpredicted by 9,864 INR on average.
 - **Forecasting a new month is harder than the headline score suggests.** Training on March-May and testing on June gives R² 0.846 and MAE 1,091 INR, against R² 0.929 and MAE 588 INR for comparable prices under the random split.
@@ -122,7 +117,7 @@ What does carry over is the method, not the conclusions:
 | Claim | Supported? |
 | --- | --- |
 | The price levels or the model's predictions apply to tickets today | No. Error already rose 85% when predicting one month ahead inside 2019. |
-| "Weekends cost more" or "connections cost 56% more" as rules for today | No. They rest on 2 to 3 weekend dates per month and on airlines that no longer fly. |
+| "Weekends cost more" or "a connection costs 3,038 INR more" as rules for today | No. They rest on 2 to 3 weekend dates per month and on airlines that no longer fly. |
 | In 2019, on these routes, the fare product explained more of the price than the calendar | Yes (ablation: R² 0.81 → 0.93). |
 | Raw medians can point the wrong way when the airline mix is ignored | Yes, shown twice. This is a property of the method, not of the year. |
 | A price model must be re-validated on a later period before being trusted | Yes. |
