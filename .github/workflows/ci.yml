@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          # The pinned numpy (2.5.x) has no Python 3.11 wheels; 3.13 is the
+          # version the committed model was trained with.
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+      - run: python -m src.train
+      - run: python -m src.analysis
+      - run: python -m src.data_audit
+      - run: python -m src.train_intervals
+      - run: python -m src.business_analysis

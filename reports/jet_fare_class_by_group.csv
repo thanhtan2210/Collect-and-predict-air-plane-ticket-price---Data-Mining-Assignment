@@ -1,0 +1,7 @@
+Route,Total_Stops,n_standard,n_no_meal,median_standard,median_no_meal,diff_inr,diff_pct
+Banglore → Delhi,1 stop,231,160,16736.0,9134.0,-7602.0,-45.423040152963665
+Banglore → Delhi,non-stop,200,181,7229.0,5198.0,-2031.0,-28.095172222990726
+Delhi → Cochin,1 stop,323,551,14924.0,10262.0,-4662.0,-31.238273921200754
+Delhi → Cochin,2 stops,344,185,13882.0,10919.0,-2963.0,-21.344186716611436
+Kolkata → Banglore,1 stop,624,628,13941.0,10031.0,-3910.0,-28.04676852449609
+Mumbai → Hyderabad,non-stop,107,100,5678.0,4050.0,-1628.0,-28.672067629446985

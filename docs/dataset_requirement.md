@@ -1,3 +1,4 @@
+Requirement from the original course assignment; it describes a different dataset (Easemytrip, 300k rows) and is not the dataset used in this project.
 
 DATASET
 Dataset contains information about flight booking options from the website Easemytrip for flight travel between India's top 6 metro cities. There are 300261 datapoints and 11 features in the cleaned dataset.
