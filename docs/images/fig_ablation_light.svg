@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="540pt" height="300pt" viewBox="0 0 540 300" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Bar chart of cross-validated R2 for three feature sets</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Bar chart of cross-validated R2 for three feature sets</dc:title>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 300 
+L 540 300 
+L 540 0 
+L 0 0 
+z
+" style="fill: #fcfcfb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 194.4 261 
+L 513 261 
+L 513 60 
+L 194.4 60 
+z
+" style="fill: #fcfcfb"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 194.4 261 
+L 194.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="194.4" y="271.052246" transform="rotate(-0 194.4 271.052246)">0.0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 253.4 261 
+L 253.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="253.4" y="271.052246" transform="rotate(-0 253.4 271.052246)">0.2</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 312.4 261 
+L 312.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="312.4" y="271.052246" transform="rotate(-0 312.4 271.052246)">0.4</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 371.4 261 
+L 371.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="371.4" y="271.052246" transform="rotate(-0 371.4 271.052246)">0.6</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 430.4 261 
+L 430.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="430.4" y="271.052246" transform="rotate(-0 430.4 271.052246)">0.8</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 489.4 261 
+L 489.4 60 
+" clip-path="url(#p9c7e75d6d9)" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_6">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="489.4" y="271.052246" transform="rotate(-0 489.4 271.052246)">1.0</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #52514e" x="353.7" y="284.655352" transform="rotate(-0 353.7 284.655352)">5-fold CV R² on the training set (XGBoost)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_13"/>
+     <g id="text_8">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #52514e" x="190.9" y="234.158939" transform="rotate(-0 190.9 234.158939)">3. Set 2 + Additional_Info (full model)</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_14"/>
+     <g id="text_9">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #52514e" x="190.9" y="163.879219" transform="rotate(-0 190.9 163.879219)">2. Set 1 + date/time features</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_15"/>
+     <g id="text_10">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #52514e" x="190.9" y="93.551686" transform="rotate(-0 190.9 93.551686)">1. Airline + route + stops + duration</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 194.4 251.863636 
+L 468.118583 251.863636 
+L 468.118583 209.695804 
+L 194.4 209.695804 
+z
+" clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 194.4 181.583916 
+L 432.434551 181.583916 
+L 432.434551 139.416084 
+L 194.4 139.416084 
+z
+" clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 194.4 111.304196 
+L 388.113943 111.304196 
+L 388.113943 69.136364 
+L 194.4 69.136364 
+z
+" clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 194.4 261 
+L 194.4 60 
+" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 194.4 261 
+L 513 261 
+" style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="471.658583" y="233.108822" transform="rotate(-0 471.658583 233.108822)">0.9279</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="435.974551" y="162.829102" transform="rotate(-0 435.974551 162.829102)">0.8069</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="391.653943" y="92.549381" transform="rotate(-0 391.653943 92.549381)">0.6567</text>
+   </g>
+  </g>
+  <g id="text_14">
+   <text style="font-weight: 700; font-size: 12.5px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="16.2" y="21" transform="rotate(-0 16.2 21)">Feature ablation</text>
+  </g>
+  <g id="text_15">
+   <text style="font-size: 9.5px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #52514e" x="16.2" y="40.5" transform="rotate(-0 16.2 40.5)">How much does each group of features add to the model?</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p9c7e75d6d9">
+   <rect x="194.4" y="60" width="318.6" height="201"/>
+  </clipPath>
+ </defs>
+</svg>
