@@ -28,6 +28,14 @@ def test_app_has_four_tabs(app):
     assert [tab.label for tab in app.tabs] == TABS
 
 
+def test_figures_are_drawn_with_pyplot(app):
+    performance, business = app.tabs[3], app.tabs[2]
+    assert len(performance.get("image")) >= 5
+    assert len(business.get("image")) >= 1
+    assert not performance.get("plotly_chart")
+    assert [expander.label for expander in performance.get("expander")] == ["Show data"]
+
+
 def test_quote_gets_a_label(app):
     by_label(app.selectbox, "From").set_value("Banglore")
     app.run()
