@@ -312,13 +312,6 @@ streamlit run app.py              # web app
 
 The trained model is committed, so the app and the CLI work right after cloning without retraining.
 
-### Deploy on Streamlit Community Cloud
-
-1. On [share.streamlit.io](https://share.streamlit.io), click **Create app** and pick the repository `thanhtan2210/Collect-and-predict-air-plane-ticket-price---Data-Mining-Assignment`.
-2. Branch: `main`.
-3. Main file path: `app.py`.
-4. Under **Advanced settings**, choose Python 3.13 so that the pinned versions in `requirements.txt` match the saved model, then click **Deploy**.
-
 ---
 
 ## Data and limitations
