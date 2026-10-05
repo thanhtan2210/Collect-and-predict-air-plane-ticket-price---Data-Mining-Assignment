@@ -2,11 +2,12 @@
 import datetime
 import os
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from src import predictor
+from src import make_figures, predictor
 from src.preprocess import DATE_FORMAT, REPORT_DIR, STOPS_MAP, TARGET, format_duration
 
 COLOR = "#2a78d6"
@@ -59,6 +60,35 @@ def get_analysis():
 @st.cache_data
 def get_routes():
     return predictor.known_routes()
+
+
+@st.cache_data
+def get_figure_data():
+    return make_figures.load_figure_data()
+
+
+def viewer_theme():
+    """Theme of the viewer's session; light when Streamlit cannot tell."""
+    try:
+        theme = st.context.theme.type
+    except Exception:
+        theme = None
+    return theme if theme in make_figures.THEMES else "light"
+
+
+@st.cache_data
+def show_figure(name, theme):
+    """One of the README figures with its one-sentence conclusion underneath.
+
+    Cached per figure and theme, so a rerun replays the image instead of redrawing it.
+    """
+    data = get_figure_data()
+    draw, _ = make_figures.FIGURES[name]
+    fig = draw(data, theme)
+    with make_figures.style():
+        st.pyplot(fig, width="stretch")
+    plt.close(fig)
+    st.markdown(make_figures.captions(data)[name] + ".")
 
 
 def bar_chart(df, x, y, x_title, height=None):
@@ -272,6 +302,9 @@ def business_tab():
         f"{stops['min_diff_inr']:+,.0f} to {stops['max_diff_inr']:+,.0f} INR. Without the control "
         f"the gap looks like {stops['raw_diff_inr']:+,.0f} INR."
     )
+    left, _ = st.columns(2)
+    with left:
+        show_figure("fig_stops_premium", viewer_theme())
     st.dataframe(
         get_report("stops_premium_by_group.csv").rename(
             columns={
@@ -354,45 +387,51 @@ def performance_tab(metrics):
         f"MAE {test['in_range']['mae']:,.0f} INR, RMSE {test['in_range']['rmse']:,.0f} INR."
     )
 
+    theme = viewer_theme()
     intervals = get_interval_metrics()
-    st.subheader("80% price range: coverage and width")
-    st.dataframe(
-        pd.DataFrame(
-            [
-                {
-                    "Actual price (INR)": f"{band['price_from']:,.0f} - {band['price_to']:,.0f}",
-                    "Test rows": band["n"],
-                    "Coverage": f"{band['coverage']:.1%}",
-                    "Mean width (INR)": f"{band['mean_width']:,.0f}",
-                }
-                for band in intervals["test_by_price_quartile"]
-            ]
-            + [
-                {
-                    "Actual price (INR)": "All test rows",
-                    "Test rows": intervals["test"]["n"],
-                    "Coverage": f"{intervals['test']['coverage']:.1%}",
-                    "Mean width (INR)": f"{intervals['test']['mean_width']:,.0f}",
-                }
-            ]
-        ),
-        hide_index=True,
-        width="stretch",
-    )
-    st.caption(
-        f"Two quantile models (10% and 90%) calibrated with conformalized quantile regression on "
-        f"{intervals['calibration_rows']:,} held-out training rows (adjustment "
-        f"{intervals['conformal_adjustment_inr']:+,.0f} INR per side). Target coverage "
-        f"{intervals['target_coverage']:.0%}. Price bands are quartiles of the actual test price. "
-        f"Unlike the point model, the quantile models are trained with the price outliers kept, "
-        f"which raised coverage of the top band from "
-        f"{intervals['comparison']['outliers_removed']['test_by_price_quartile'][-1]['coverage']:.1%} "
-        f"to {intervals['test_by_price_quartile'][-1]['coverage']:.1%}."
-    )
+    left, right = st.columns(2)
+    with left:
+        show_figure("fig_pred_vs_actual", theme)
+    with right:
+        show_figure("fig_interval_coverage", theme)
+        with st.expander("Show data"):
+            st.dataframe(
+                pd.DataFrame(
+                    [
+                        {
+                            "Actual price (INR)": f"{band['price_from']:,.0f} - {band['price_to']:,.0f}",
+                            "Test rows": band["n"],
+                            "Coverage": f"{band['coverage']:.1%}",
+                            "Mean width (INR)": f"{band['mean_width']:,.0f}",
+                        }
+                        for band in intervals["test_by_price_quartile"]
+                    ]
+                    + [
+                        {
+                            "Actual price (INR)": "All test rows",
+                            "Test rows": intervals["test"]["n"],
+                            "Coverage": f"{intervals['test']['coverage']:.1%}",
+                            "Mean width (INR)": f"{intervals['test']['mean_width']:,.0f}",
+                        }
+                    ]
+                ),
+                hide_index=True,
+                width="stretch",
+            )
+        st.caption(
+            f"Two quantile models (10% and 90%) calibrated with conformalized quantile regression on "
+            f"{intervals['calibration_rows']:,} held-out training rows (adjustment "
+            f"{intervals['conformal_adjustment_inr']:+,.0f} INR per side). Target coverage "
+            f"{intervals['target_coverage']:.0%}. Price bands are quartiles of the actual test price. "
+            f"Unlike the point model, the quantile models are trained with the price outliers kept, "
+            f"which raised coverage of the top band from "
+            f"{intervals['comparison']['outliers_removed']['test_by_price_quartile'][-1]['coverage']:.1%} "
+            f"to {intervals['test_by_price_quartile'][-1]['coverage']:.1%}."
+        )
 
     left, right = st.columns(2)
     with left:
-        st.subheader("Model comparison (5-fold CV)")
+        show_figure("fig_models", theme)
         cv = pd.DataFrame(
             [
                 {
@@ -409,12 +448,9 @@ def performance_tab(metrics):
             f"({info['train_outliers_removed']} price outliers removed from training only)."
         )
     with right:
-        st.subheader("Feature importance")
-        importance = pd.DataFrame(metrics["feature_importance"])
-        fig = bar_chart(importance, "importance", "feature", "Importance (gain share)")
-        fig.update_traces(texttemplate="%{x:.3f}")
-        st.plotly_chart(fig, width="stretch")
+        show_figure("fig_importance", theme)
         st.caption("One-hot columns are summed back to their original feature.")
+        show_figure("fig_ablation", theme)
 
 
 def main():

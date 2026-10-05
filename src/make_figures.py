@@ -11,6 +11,7 @@ same charts from the same code.
 Run from the repo root:  python -m src.make_figures
 Writes docs/images/fig_*_{light,dark}.svg.
 """
+import contextlib
 import functools
 import json
 import os
@@ -103,11 +104,18 @@ def load_figure_data():
     }
 
 
+@contextlib.contextmanager
+def style():
+    """The rcParams the figures are drawn and saved with (fonts are resolved when saving)."""
+    with _LOCK, plt.rc_context(RC):
+        yield
+
+
 def figure(draw):
     """Make a drawing function pure: `draw(data, theme)` with theme "light" or "dark"."""
     @functools.wraps(draw)
     def wrapper(data, theme="light"):
-        with _LOCK, plt.rc_context(RC):
+        with style():
             return draw(data, THEMES[theme])
     return wrapper
 
@@ -304,11 +312,81 @@ FIGURES = {
 }
 
 
+# One conclusion per figure, shown under it in the README and in the app. The
+# numbers are filled in by `captions` from the data the figure is drawn from.
+CAPTIONS = {
+    "fig_ablation": (
+        "The date and time features lift CV R² from {base} to {with_dates}, and the fare remark "
+        "in Additional_Info lifts it again to **{full}**"
+    ),
+    "fig_models": (
+        "XGBoost leads at **{xgboost}** with the log-target variant ({log_target}) inside its "
+        "one-standard-deviation block, while the Ridge baseline stays at {ridge}"
+    ),
+    "fig_pred_vs_actual": (
+        "Predictions follow the diagonal up to the outlier fence of **{fence} INR** and fall "
+        "well below it for the dearer test fares"
+    ),
+    "fig_interval_coverage": (
+        "Coverage stays between {lowest} and {highest} in every price quartile, while the mean "
+        "width of the range grows from {cheapest} INR for the cheapest fares to "
+        "**{dearest} INR** for the dearest"
+    ),
+    "fig_importance": (
+        "Airline ({airline}) and Additional_Info ({additional_info}) carry more than half of "
+        "the total gain, while the largest date or time feature, Journey_Month, has {month}"
+    ),
+    "fig_stops_premium": (
+        "One stop was dearer than non-stop in all {groups} airline and route groups, by {low} "
+        "to {high} INR with a median of **{median} INR**"
+    ),
+}
+
+
+def captions(data):
+    """CAPTIONS with their numbers filled in, keyed by figure name."""
+    cv = data["metrics"]["cv"]
+    importance = {f["feature"]: f"{f['importance']:.3f}" for f in data["metrics"]["feature_importance"]}
+    sets, bands, stops = data["ablation"]["feature_sets"], data["intervals"]["test_by_price_quartile"], data["stops"]
+    coverage = [band["coverage"] for band in bands]
+    values = {
+        "fig_ablation": {
+            "base": r2_label(sets[0]["r2_mean"]),
+            "with_dates": r2_label(sets[1]["r2_mean"]),
+            "full": r2_label(sets[2]["r2_mean"]),
+        },
+        "fig_models": {
+            "xgboost": r2_label(cv["XGBoost"]["r2_mean"]),
+            "log_target": r2_label(cv["XGBoost (log target)"]["r2_mean"]),
+            "ridge": r2_label(cv["Ridge"]["r2_mean"]),
+        },
+        "fig_pred_vs_actual": {"fence": inr(data["metrics"]["dataset"]["price_iqr_high"])},
+        "fig_interval_coverage": {
+            "lowest": percent_label(min(coverage)),
+            "highest": percent_label(max(coverage)),
+            "cheapest": inr(bands[0]["mean_width"]),
+            "dearest": inr(bands[-1]["mean_width"]),
+        },
+        "fig_importance": {
+            "airline": importance["Airline"],
+            "additional_info": importance["Additional_Info"],
+            "month": importance["Journey_Month"],
+        },
+        "fig_stops_premium": {
+            "groups": stops["groups"],
+            "low": inr(stops["min_diff_inr"]),
+            "high": inr(stops["max_diff_inr"]),
+            "median": inr(stops["median_diff_inr"]),
+        },
+    }
+    return {name: text.format(**values[name]) for name, text in CAPTIONS.items()}
+
+
 def main(out_dir=IMAGE_DIR):
     data = load_figure_data()
     os.makedirs(out_dir, exist_ok=True)
     paths = []
-    with plt.rc_context(RC):
+    with style():
         for theme, colors in THEMES.items():
             for name, (draw, title) in FIGURES.items():
                 fig = draw(data, theme)
