@@ -104,7 +104,7 @@ streamlit run app.py
 
 The trained models are committed, so the app works without retraining. The other reports are regenerated, in this order, by `python -m src.ablation`, `src.analysis`, `src.train_intervals`, `src.business_analysis`, `src.data_audit`, `src.model_card` and `src.make_figures`.
 
-Running a script twice on the same machine gives identical output; on other hardware the metrics can differ slightly (about ±0.002 R²) because of floating-point summation order.
+Running a script twice on the same machine reproduces every reported metric (differences, if any, appear only beyond the 10th significant digit); on other hardware the metrics can differ slightly (about ±0.002 R²) because of floating-point summation order.
 
 ## Limitations
 
@@ -114,13 +114,12 @@ Running a script twice on the same machine gives identical output; on other hard
 - **The date column may not be the actual flight date.** Jet Airways stopped all flights on 17 April 2019 ([Al Jazeera](https://www.aljazeera.com/economy/2019/4/17/indias-debt-ridden-jet-airways-suspends-all-operations)), yet 2,600 of its 3,706 rows carry a later journey date, and journeys fall on only 40 distinct dates (`python -m src.data_audit`, [reports/data_audit.json](reports/data_audit.json)). Day and month features should be read with caution.
 - **Random split.** The headline scores describe interpolation within the same period. Trained on March-May and tested on June, MAE rises from 586 to 1,100 INR ([docs/analysis.md](docs/analysis.md#5-predicting-the-next-month-is-harder-than-the-headline-score-suggests)).
 - **Rare categories.** No business-class row remains in the training set after the outlier filter, so the model cannot price business fares.
+- **Original notebooks.** The notebooks in `notebook/` are the course exploration, kept unchanged. Their numbers (for example XGBoost test R² 0.842) predate the evaluation fixes (duplicates kept, outliers filtered before the split, a different feature set) and are superseded by the ones above.
 
 ## Authors
 
-Data Mining course project, team of three:
+Originally a Data Mining course project at HCMUT by Phan Thanh Tan (2213076), Tran Minh Tam (2212085) and Vu Duc Lam (2211824).
 
-- Phan Thanh Tan (2213076)
-- Tran Minh Tam (2212085)
-- Vu Duc Lam (2211824)
-
-The notebooks in `notebook/` are the original exploration for the course and are kept unchanged. Their numbers (for example XGBoost test R² 0.842) were computed before the evaluation was fixed (duplicates kept, outliers filtered before the split, a different feature set) and are superseded by the ones above.
+- **Phan Thanh Tan:** data cleaning, feature engineering and model training in the original project; the later refactor in this repository (reproducible pipeline, evaluation fixes, calibrated price range, business analysis, Streamlit app, tests and CI).
+- **Tran Minh Tam:** report and presentation
+- **Vu Duc Lam:** first web frontend prototype (later removed)
