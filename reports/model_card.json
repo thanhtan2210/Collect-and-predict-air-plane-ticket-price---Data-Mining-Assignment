@@ -210,7 +210,7 @@
   "versions": {
     "scikit-learn": "1.9.1",
     "xgboost": "3.4.1",
-    "point_model_commit": "82fa859a340582ab44c4162a0a50ba5346860c3b",
-    "interval_models_commit": "3f2895b31d3f2b0b020bfd043085801d749972dd"
+    "point_model_commit": "3d9096565ea4db21fd773e34689250a2c68f2264",
+    "interval_models_commit": "3d9096565ea4db21fd773e34689250a2c68f2264"
   }
 }

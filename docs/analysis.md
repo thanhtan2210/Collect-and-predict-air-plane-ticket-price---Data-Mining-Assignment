@@ -2,7 +2,7 @@
 
 What the data says about Indian domestic flight prices (March-June 2019, 5 routes, 10,462 flights after cleaning), and where the price model can and cannot be trusted.
 
-Every number from the data below is printed by `python -m src.analysis` and stored in [models/analysis.json](../models/analysis.json); facts from outside the data (section 6) link to their source.
+Unless another script is named, every number from the data below is printed by `python -m src.analysis` and stored in [models/analysis.json](../models/analysis.json); facts from outside the data (section 6) link to their source.
 
 **Method.** A raw gap between two medians mixes different routes and airlines. To separate the effect of one attribute, flights are grouped so that the other attributes are identical, the two sides are compared inside each group (only groups with at least 20 flights on each side), and the within-group differences are averaged, weighted by the number of flights. This is a descriptive like-for-like comparison, not a causal estimate.
 
@@ -13,7 +13,24 @@ Every number from the data below is printed by `python -m src.analysis` and stor
 | "No check-in baggage included" vs standard fare | -51.3% | -1.4% | route, airline, stops | 4 |
 | Weekend vs weekday | +7.1% | +6.6% | route, airline, stops, month | 40 |
 
-The README and [business_summary.md](business_summary.md) report the stops and fare-class comparisons in INR from `python -m src.business_analysis` ([reports/findings.json](../reports/findings.json)): +3,038 INR and -3,436 INR. Those figures are the median of the within-group differences with a bootstrap confidence interval, and the fare-class one is restricted to Jet Airways (6 groups). The figures on this page are flight-weighted means, and the fare-class comparison here also includes one "Multiple carriers" group (7 groups). Both describe the same pattern; the numbers differ because the summary statistic and the groups differ.
+## Results in INR
+
+Produced by `python -m src.business_analysis` and stored in [reports/findings.json](../reports/findings.json). Each figure is the median of the within-group differences; a group needs at least 20 flights on each side, and the 95% confidence interval is a bootstrap over groups.
+
+| Comparison | Held constant | Median difference (INR) | 95% CI (INR) | Groups | Flights |
+| --- | --- | --- | --- | --- | --- |
+| 1 stop vs non-stop | airline, route | +3,038 | +964 to +4,410 | 10 | 4,598 |
+| Jet Airways: "meal not included" vs standard fare | route, stops | -3,436 | -6,132 to -1,830 | 6 | 3,634 |
+
+These differ from the percentages in the table above because the summary statistic and the groups differ: the percentages are flight-weighted means, and the fare-class comparison there also includes one "Multiple carriers" group (7 groups). Both describe the same pattern; section 2 explains the reversal.
+
+| Route | Cheapest option (at least 30 flights) | Flights | Median (INR) | Route median (INR) | Route price CV |
+| --- | --- | --- | --- | --- | --- |
+| Banglore → Delhi | GoAir, non-stop | 89 | 3,898 | 6,121 | 0.75 |
+| Chennai → Kolkata | SpiceJet, non-stop | 128 | 3,597 | 3,850 | 0.46 |
+| Delhi → Cochin | SpiceJet, 1 stop | 87 | 5,583 | 10,262 | 0.36 |
+| Kolkata → Banglore | SpiceJet, non-stop | 248 | 3,873 | 9,345 | 0.41 |
+| Mumbai → Hyderabad | SpiceJet, non-stop | 121 | 2,017 | 3,342 | 0.81 |
 
 ---
 
@@ -129,6 +146,19 @@ In August 2026 IndiGo carried 65% of domestic passengers, the Air India group 26
 To say something about today's market, the same pipeline would have to be rerun on current fares, ideally with the booking date recorded. The like-for-like method and the time-based validation carry over unchanged; the conclusions have to be re-earned.
 
 ---
+
+## Validation choices
+
+- **Duplicates are removed before the split.** The raw file has 220 fully duplicated rows. Splitting first would put copies of the same row in both train and test and inflate the test score.
+- **Outlier fences are learned on the training set only.** The IQR bounds on price (upper fence 23,090 INR) are computed from training prices and applied to training rows only. The test set keeps its outliers, and results are reported both on the whole test set and on the in-range rows.
+- **Model selection uses cross-validation, not the test set.** The four models are compared with 5-fold CV on the training set; the test set is used once, for the selected model.
+- **One preprocessing function for training and prediction.** `src/preprocess.py::build_features` is the only place features are computed. Predictions build a row in the raw CSV layout (`make_raw_row`) and pass it through the same function. This fixes a bug in the previous CLI, which never filled the duration feature and therefore always predicted with a flight duration of 0. A test asserts that the serving path yields exactly the training features.
+- **Label normalisation.** "New Delhi" and "Delhi" (Destination) are the same place, and "No Info" / "No info" (Additional_Info) are the same value; both are merged.
+- **Fixed seeds and thread count.** All splits and models use `random_state=42`, and XGBoost and RandomForest run on 4 threads (`XGB_N_JOBS` in `src/train.py`).
+
+### Is `Additional_Info` leakage?
+
+No. `Additional_Info` describes the fare conditions of the ticket ("In-flight meal not included", "No check-in baggage included", "1 Long layover", ...). It is a property of the product that is shown to the buyer at booking time, not something derived from the price afterwards, so it is available when a prediction is needed. It is also the single most useful addition in the ablation (0.81 → 0.93), because it separates fare classes that share the same airline, route and schedule.
 
 ## Data quality notes
 

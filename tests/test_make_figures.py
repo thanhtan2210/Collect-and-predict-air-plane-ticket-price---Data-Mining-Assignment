@@ -66,12 +66,15 @@ def test_svg_files_match_the_committed_ones(svg_paths):
 
 
 def test_captions_are_the_readme_sentences(data):
-    with open(os.path.join(BASE_DIR, "README.md"), encoding="utf-8") as f:
-        readme = f.read()
+    # Three figures are shown in the README, the other three in the model card.
+    text = ""
+    for path in ("README.md", os.path.join("docs", "model_card.md")):
+        with open(os.path.join(BASE_DIR, path), encoding="utf-8") as f:
+            text += f.read()
     captions = make_figures.captions(data)
     assert set(captions) == set(make_figures.FIGURES)
     for name, caption in captions.items():
-        assert caption + " (`python -m src.make_figures`)." in readme, name
+        assert caption + " (`python -m src.make_figures`)." in text, name
 
 
 def labels(texts, pattern):
