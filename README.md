@@ -2,7 +2,7 @@
 
 Is the price quoted for this flight cheap, fair or expensive compared with similar flights?
 
-**Live demo:** _coming soon_
+**Live demo:** [streamlit demo](https://flight-price-prediction-t.streamlit.app/)
 <!-- DEMO_GIF: docs/images/demo.gif -->
 
 ![Predict tab: price range and assessment of a quote](docs/images/predict.png)
