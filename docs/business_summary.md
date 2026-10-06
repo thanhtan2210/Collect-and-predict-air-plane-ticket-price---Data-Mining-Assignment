@@ -26,7 +26,7 @@ Each comparison is made between flights that are alike in the stated respects. T
 ## Limitations
 
 - **2019 data.** Prices, airlines and regulation have changed; Jet Airways, the largest airline in the data, no longer flies.
-- **The date column is unreliable.** 2,600 Jet Airways rows are dated after the airline's last flight on 17 April 2019, so the dates may not be actual flight dates.
+- **The date column is unreliable.** 2,600 Jet Airways rows are dated after the airline's last flight on 17 April 2019 ([Al Jazeera](https://www.aljazeera.com/economy/2019/4/17/indias-debt-ridden-jet-airways-suspends-all-operations)), so the dates may not be actual flight dates.
 - **Five routes only**, and each comparison uses only the groups with enough flights (10 and 6 groups), so the confidence intervals are wide.
 - **No booking date.** How far ahead a ticket is bought strongly affects its price and is not in the data, which is one reason the price range is wide.
 

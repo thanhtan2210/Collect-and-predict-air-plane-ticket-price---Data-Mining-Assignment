@@ -15,7 +15,7 @@
 
 One-page summary for non-technical readers: [docs/business_summary.md](docs/business_summary.md). The data are from 2019, so this is not advice on current prices.
 
-Every number in this README is printed by a script in this repo and can be regenerated with the commands below.
+Every number about the data and the models in this README is printed by a script in this repo and can be regenerated with the commands below. The one outside fact, the date Jet Airways stopped flying, links to its source.
 
 | Predict | Market insights |
 | --- | --- |
@@ -208,29 +208,6 @@ Two further comparisons, in percent. The like-for-like gap is the flight-weighte
 
 ---
 
-## What the numbers mean today
-
-Short answer: they describe a 2019 market that no longer exists in this form, and they do not prove anything about Indian air fares or the airline economy in 2026. Details and sources are in [docs/analysis.md](docs/analysis.md#6-what-this-means-for-the-market-today).
-
-- **The data are advertised fares collected in advance, not tickets flown.** Jet Airways stopped flying on 17 April 2019, yet 2,600 of its 3,706 rows have a later journey date. This is an inference from the dates; the dataset does not document how it was collected.
-- **The period was a supply shock.** India grounded the Boeing 737 MAX on 13 March 2019 while Jet Airways was collapsing, and fares rose sharply at the time. In the data the median price falls from 18,472 INR on 1 March to 6,673 INR on 27 March.
-- **Most of the airlines have changed or gone.** 37.3% of rows belong to airlines that have ceased operations (Jet Airways, GoAir, TruJet) and 7.6% to airlines since merged into the Air India group (Vistara, AirAsia India). Only 43.5% belong to names still operating. In August 2026 IndiGo carried about 65% of domestic passengers, and Akasa Air, third with 5.5%, did not exist in 2019.
-- **The pricing environment is different.** Domestic fares were capped by the government from December 2025 to 23 March 2026, and fuel costs have risen since. The INR amounts here should not be compared with today's fares.
-
-What does carry over is the method, not the conclusions:
-
-| Claim | Supported? |
-| --- | --- |
-| The price levels or the model's predictions apply to tickets today | No. Error already rose 88% when predicting one month ahead inside 2019. |
-| "Weekends cost more" or "a connection costs 3,038 INR more" as rules for today | No. They rest on 2 to 3 weekend dates per month and on airlines that no longer fly. |
-| In 2019, on these routes, the fare product explained more of the price than the calendar | Yes (ablation: R² 0.81 → 0.93). |
-| Raw medians can point the wrong way when the airline mix is ignored | Yes, shown twice. This is a property of the method, not of the year. |
-| A price model must be re-validated on a later period before being trusted | Yes. |
-
-To say something about today's market, the same pipeline would have to be rerun on current fares, ideally with the booking date recorded.
-
----
-
 ## Validation choices
 
 - **Duplicates are removed before the split.** The raw file has 220 fully duplicated rows. Splitting first would put copies of the same row in both train and test and inflate the test score.
@@ -318,10 +295,11 @@ The trained model is committed, so the app and the CLI work right after cloning 
 
 The data is an existing public Kaggle dataset of Indian domestic flight fares; this project did not collect it.
 
+- **A 2019 market.** The data are fares offered in 2019, and the Indian airline market has changed a lot since: several of these airlines no longer fly or have merged (details and sources in [docs/analysis.md](docs/analysis.md#6-what-this-means-for-the-market-today)). The conclusions about prices do not apply today; the method does.
 - **Four months of one year.** Journeys run from March to June 2019. The model knows nothing about other seasons or about price levels after 2019, and the app warns when a date outside this window is entered.
 - **Five routes.** Banglore → Delhi, Delhi → Cochin, Kolkata → Banglore, Mumbai → Hyderabad and Chennai → Kolkata. The app only offers these.
 - **No booking date.** How far in advance a ticket is bought is a major price driver and is not in the data.
-- **The date column may not be the actual flight date.** Jet Airways stopped all flights on 17 April 2019, yet 2,600 of its 3,700 rows carry a later journey date, and its share of rows is higher in May (39.4%) than in March (32.8%). The rows are therefore either fares listed before the shutdown or dates that were not recorded as flown. Journeys also fall on only 40 distinct dates. The day and month features should be read with caution, and the data cannot be used to study what happened when Jet Airways left the market. Figures from `python -m src.data_audit` ([reports/data_audit.json](reports/data_audit.json)).
+- **The date column may not be the actual flight date.** Jet Airways stopped all flights on 17 April 2019 ([Al Jazeera](https://www.aljazeera.com/economy/2019/4/17/indias-debt-ridden-jet-airways-suspends-all-operations)), yet 2,600 of its 3,700 rows carry a later journey date, and its share of rows is higher in May (39.4%) than in March (32.8%). The rows are therefore either fares listed before the shutdown or dates that were not recorded as flown. Journeys also fall on only 40 distinct dates. The day and month features should be read with caution, and the data cannot be used to study what happened when Jet Airways left the market. Figures from `python -m src.data_audit` ([reports/data_audit.json](reports/data_audit.json)).
 - **Random split.** The headline scores come from a random split over rows, so they describe interpolation within the same period. The time-based check in [docs/analysis.md](docs/analysis.md) shows the error on an unseen month is clearly higher.
 - **Rare categories.** No business-class row remains in the training set after the outlier filter, so the model cannot price business fares.
 
