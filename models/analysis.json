@@ -839,41 +839,41 @@
         "Route": "Banglore → Delhi",
         "n": 448,
         "median_price": 5717.0,
-        "mae": 903.5681479317801,
-        "median_abs_pct_error": 5.478377077471201,
-        "bias": -313.3396312168666
+        "mae": 896.7052225385394,
+        "median_abs_pct_error": 4.779140458237352,
+        "bias": -312.3936086382185
       },
       {
         "Route": "Chennai → Kolkata",
         "n": 79,
         "median_price": 3687.0,
-        "mae": 287.3120055379747,
-        "median_abs_pct_error": 2.840515929383117,
-        "bias": 117.13480889042721
+        "mae": 292.83225684829904,
+        "median_abs_pct_error": 2.3122728796217897,
+        "bias": 126.75696264339399
       },
       {
         "Route": "Delhi → Cochin",
         "n": 880,
         "median_price": 10262.0,
-        "mae": 763.0727089621804,
-        "median_abs_pct_error": 3.8400684998848877,
-        "bias": -44.74272960316051
+        "mae": 766.0811884099787,
+        "median_abs_pct_error": 4.08462009780542,
+        "bias": -35.36161942915483
       },
       {
         "Route": "Kolkata → Banglore",
         "n": 560,
         "median_price": 9135.0,
-        "mae": 478.556596156529,
-        "median_abs_pct_error": 2.9405957812809493,
-        "bias": 20.540654645647322
+        "mae": 473.78248639787944,
+        "median_abs_pct_error": 3.0160260225904656,
+        "bias": 17.57520490373884
       },
       {
         "Route": "Mumbai → Hyderabad",
         "n": 126,
         "median_price": 3276.0,
-        "mae": 468.70643058655753,
-        "median_abs_pct_error": 5.911761802013411,
-        "bias": 30.89175269717262
+        "mae": 441.8234068855407,
+        "median_abs_pct_error": 5.65025630827383,
+        "bias": 8.398528568328373
       }
     ],
     "Airline": [
@@ -881,73 +881,73 @@
         "Airline": "Air Asia",
         "n": 60,
         "median_price": 5177.0,
-        "mae": 565.6257568359375,
-        "median_abs_pct_error": 6.056621457230722,
-        "bias": -113.29453938802084
+        "mae": 579.4672322591146,
+        "median_abs_pct_error": 5.222946649134048,
+        "bias": -143.58480224609374
       },
       {
         "Airline": "Air India",
         "n": 349,
         "median_price": 8996.0,
-        "mae": 881.9193804284563,
-        "median_abs_pct_error": 6.2261506069530235,
-        "bias": -136.35194724883596
+        "mae": 888.3777485057755,
+        "median_abs_pct_error": 5.724107082594107,
+        "bias": -140.5808329322618
       },
       {
         "Airline": "GoAir",
         "n": 35,
         "median_price": 4632.0,
-        "mae": 559.6964494977678,
-        "median_abs_pct_error": 7.852909816038204,
-        "bias": 250.46387416294644
+        "mae": 561.968115234375,
+        "median_abs_pct_error": 9.400014926732512,
+        "bias": 247.49178989955357
       },
       {
         "Airline": "IndiGo",
         "n": 422,
         "median_price": 5000.0,
-        "mae": 405.548815975822,
-        "median_abs_pct_error": 4.391889786280588,
-        "bias": 19.245076111707643
+        "mae": 402.5040277417802,
+        "median_abs_pct_error": 4.372533121311275,
+        "bias": 26.46649256701718
       },
       {
         "Airline": "Jet Airways",
         "n": 722,
         "median_price": 10919.0,
-        "mae": 649.648260988357,
-        "median_abs_pct_error": 2.4231116695217336,
-        "bias": -177.77793956133138
+        "mae": 637.7747594775255,
+        "median_abs_pct_error": 2.166129920183711,
+        "bias": -173.31162775520474
       },
       {
         "Airline": "Multiple carriers",
         "n": 259,
         "median_price": 9838.0,
-        "mae": 1343.995043662524,
-        "median_abs_pct_error": 6.601082517512633,
-        "bias": -20.805790374638033
+        "mae": 1364.7029647532577,
+        "median_abs_pct_error": 6.714526799926864,
+        "bias": -2.4553741101592665
       },
       {
         "Airline": "Multiple carriers Premium economy",
         "n": 3,
         "median_price": 11269.0,
-        "mae": 799.0120442708334,
-        "median_abs_pct_error": 3.4098249428643976,
-        "bias": -799.0120442708334
+        "mae": 589.8330078125,
+        "median_abs_pct_error": 0.4824664178276688,
+        "bias": -553.5869140625
       },
       {
         "Airline": "SpiceJet",
         "n": 164,
         "median_price": 3866.0,
-        "mae": 209.04584931164254,
-        "median_abs_pct_error": 2.9892284805381015,
-        "bias": 57.27764892578125
+        "mae": 206.76735556997903,
+        "median_abs_pct_error": 2.9693604558433817,
+        "bias": 55.829676930497335
       },
       {
         "Airline": "Vistara",
         "n": 79,
         "median_price": 8085.0,
-        "mae": 503.40715548358384,
-        "median_abs_pct_error": 2.7295885961091755,
-        "bias": 115.74352563785601
+        "mae": 456.31435423259495,
+        "median_abs_pct_error": 2.6892340626735147,
+        "bias": 75.46740259098101
       }
     ],
     "Total_Stops": [
@@ -955,41 +955,41 @@
         "Total_Stops": "1 stop",
         "n": 1129,
         "median_price": 10262.0,
-        "mae": 804.2213427777624,
-        "median_abs_pct_error": 3.687322576907479,
-        "bias": -107.53278404215567
+        "mae": 802.4422919895926,
+        "median_abs_pct_error": 3.7347429867500197,
+        "bias": -97.40510995626661
       },
       {
         "Total_Stops": "2 stops",
         "n": 245,
         "median_price": 12515.0,
-        "mae": 801.91142578125,
-        "median_abs_pct_error": 3.5850500558391833,
-        "bias": -65.12012715242346
+        "mae": 803.9826012436224,
+        "median_abs_pct_error": 3.8047638323857833,
+        "bias": -83.26571667729591
       },
       {
         "Total_Stops": "3 stops",
         "n": 10,
         "median_price": 13659.0,
-        "mae": 1931.2708984375,
-        "median_abs_pct_error": 4.502895633320119,
-        "bias": -1725.460546875
+        "mae": 2091.262109375,
+        "median_abs_pct_error": 4.01200575275101,
+        "bias": -1846.03828125
       },
       {
         "Total_Stops": "4 stops",
         "n": 1,
         "median_price": 17686.0,
-        "mae": 5080.0419921875,
-        "median_abs_pct_error": 28.723521385205814,
-        "bias": -5080.0419921875
+        "mae": 4914.6513671875,
+        "median_abs_pct_error": 27.78837140782257,
+        "bias": -4914.6513671875
       },
       {
         "Total_Stops": "non-stop",
         "n": 708,
         "median_price": 4591.0,
-        "mae": 419.8049723307292,
-        "median_abs_pct_error": 4.508107342146721,
-        "bias": 6.4867405433439265
+        "mae": 411.35129663499737,
+        "median_abs_pct_error": 4.046002409957373,
+        "bias": 5.069310075145657
       }
     ],
     "Price band (INR)": [
@@ -997,49 +997,49 @@
         "Price band (INR)": "< 5,000",
         "n": 491,
         "median_price": 4030.0,
-        "mae": 292.4774356383656,
-        "median_abs_pct_error": 4.385383599604496,
-        "bias": 152.88724482083757
+        "mae": 297.55938583964485,
+        "median_abs_pct_error": 3.98478515625,
+        "bias": 156.83915607895239
       },
       {
         "Price band (INR)": "5,000-10,000",
         "n": 783,
         "median_price": 7198.0,
-        "mae": 648.5813490281769,
-        "median_abs_pct_error": 5.060384609295846,
-        "bias": 263.59146012931035
+        "mae": 635.3869101961606,
+        "median_abs_pct_error": 4.989709437532697,
+        "bias": 269.38054570262614
       },
       {
         "Price band (INR)": "10,000-15,000",
         "n": 663,
         "median_price": 12327.0,
-        "mae": 601.4430817248774,
-        "median_abs_pct_error": 2.545579348729118,
-        "bias": -163.21550289286387
+        "mae": 599.2409259226528,
+        "median_abs_pct_error": 2.4290833263250358,
+        "bias": -171.04931640625
       },
       {
         "Price band (INR)": "15,000-23,090",
         "n": 135,
         "median_price": 16373.0,
-        "mae": 1249.6921440972221,
-        "median_abs_pct_error": 3.4184465360617886,
-        "bias": -897.8578125
+        "mae": 1283.7021773726851,
+        "median_abs_pct_error": 4.008603584877137,
+        "bias": -880.6873336226852
       },
       {
         "Price band (INR)": "> 23,090 (outliers)",
         "n": 21,
         "median_price": 27282.0,
-        "mae": 9863.716517857143,
-        "median_abs_pct_error": 25.90764632528937,
-        "bias": -9863.716517857143
+        "mae": 9799.56849888393,
+        "median_abs_pct_error": 24.25556084975827,
+        "bias": -9799.56849888393
       }
     ],
     "concentration": {
-      "median_abs_error": 294.1533203125,
-      "mean_abs_error": 681.34202900106,
-      "share_within_500_inr": 0.654562828475872,
-      "share_of_total_error_from_worst_5pct": 0.38744368570280263,
-      "median_abs_pct_error": 3.9441811361585164
+      "median_abs_error": 297.7685546875,
+      "mean_abs_error": 678.4505854942443,
+      "share_within_500_inr": 0.6502627806975633,
+      "share_of_total_error_from_worst_5pct": 0.3859155233690812,
+      "median_abs_pct_error": 3.878057027902889
     }
   },
   "noise_floor": {
@@ -1055,15 +1055,15 @@
     "xgboost": {
       "full": {
         "n": 3311,
-        "r2": 0.8457162976264954,
-        "mae": 1090.97607421875,
-        "rmse": 1475.4643336929564
+        "r2": 0.8428048491477966,
+        "mae": 1099.8399658203125,
+        "rmse": 1489.3208183598322
       },
       "in_range": {
         "n": 3311,
-        "r2": 0.8457162976264954,
-        "mae": 1090.97607421875,
-        "rmse": 1475.4643336929564
+        "r2": 0.8428048491477966,
+        "mae": 1099.8399658203125,
+        "rmse": 1489.3208183598322
       }
     },
     "group_median_baseline": {
@@ -1080,15 +1080,15 @@
       "xgboost": {
         "full": {
           "n": 2093,
-          "r2": 0.872249960899353,
-          "mae": 681.342041015625,
-          "rmse": 1632.0609669984758
+          "r2": 0.872471809387207,
+          "mae": 678.4505615234375,
+          "rmse": 1630.6436612577256
         },
         "in_range": {
           "n": 2072,
-          "r2": 0.9293705224990845,
-          "mae": 588.2774047851562,
-          "rmse": 1077.9728080986088
+          "r2": 0.9301453232765198,
+          "mae": 586.0068359375,
+          "rmse": 1072.043667487477
         }
       },
       "group_median_baseline": {

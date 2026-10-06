@@ -43,28 +43,28 @@ z
      <g id="line2d_1"/>
      <g id="text_1">
       <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(64.967558 250.643311)">1,759 - 5,192 INR</text>
-      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(55.316464 260.382295)">mean width 1,138 INR</text>
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(55.316464 260.382295)">mean width 1,128 INR</text>
      </g>
     </g>
     <g id="xtick_2">
      <g id="line2d_2"/>
      <g id="text_2">
       <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(165.924079 250.643311)">5,192 - 8,040 INR</text>
-      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(156.272986 260.382295)">mean width 2,392 INR</text>
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(156.272986 260.382295)">mean width 2,384 INR</text>
      </g>
     </g>
     <g id="xtick_3">
      <g id="line2d_3"/>
      <g id="text_3">
       <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(264.45482 250.643311)">8,040 - 11,934 INR</text>
-      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(257.229507 260.382295)">mean width 2,548 INR</text>
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(257.229507 260.382295)">mean width 2,510 INR</text>
      </g>
     </g>
     <g id="xtick_4">
      <g id="line2d_4"/>
      <g id="text_4">
       <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(362.98556 250.643311)">11,934 - 54,826 INR</text>
-      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(358.186029 260.382295)">mean width 3,024 INR</text>
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; fill: #c3c2b7" transform="translate(358.186029 260.382295)">mean width 2,998 INR</text>
      </g>
     </g>
     <g id="text_5">
@@ -145,32 +145,32 @@ L 513 60
    <g id="patch_3">
     <path d="M 68.791304 240 
 L 129.365217 240 
-L 129.365217 92.571429 
-L 68.791304 92.571429 
+L 129.365217 92.228571 
+L 68.791304 92.228571 
 z
 " clip-path="url(#pb73e899135)" style="fill: #3987e5"/>
    </g>
    <g id="patch_4">
     <path d="M 169.747826 240 
 L 230.321739 240 
-L 230.321739 100.038023 
-L 169.747826 100.038023 
+L 230.321739 105.855513 
+L 169.747826 105.855513 
 z
 " clip-path="url(#pb73e899135)" style="fill: #3987e5"/>
    </g>
    <g id="patch_5">
     <path d="M 270.704348 240 
 L 331.278261 240 
-L 331.278261 95.375723 
-L 270.704348 95.375723 
+L 331.278261 97.109827 
+L 270.704348 97.109827 
 z
 " clip-path="url(#pb73e899135)" style="fill: #3987e5"/>
    </g>
    <g id="patch_6">
     <path d="M 371.66087 240 
 L 432.234783 240 
-L 432.234783 97.170172 
-L 371.66087 97.170172 
+L 432.234783 97.51434 
+L 371.66087 97.51434 
 z
 " clip-path="url(#pb73e899135)" style="fill: #3987e5"/>
    </g>
@@ -190,16 +190,16 @@ L 513 240
 " style="fill: none; stroke: #2c2c2a; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_13">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="99.078261" y="87.171429" transform="rotate(-0 99.078261 87.171429)">81.9%</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="99.078261" y="86.828571" transform="rotate(-0 99.078261 86.828571)">82.1%</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="200.034783" y="90.6" transform="rotate(-0 200.034783 90.6)">77.8%</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="200.034783" y="90.6" transform="rotate(-0 200.034783 90.6)">74.5%</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="300.991304" y="89.975723" transform="rotate(-0 300.991304 89.975723)">80.3%</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="300.991304" y="90.6" transform="rotate(-0 300.991304 90.6)">79.4%</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="401.947826" y="90.6" transform="rotate(-0 401.947826 90.6)">79.3%</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="401.947826" y="90.6" transform="rotate(-0 401.947826 90.6)">79.2%</text>
    </g>
    <g id="text_17">
     <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #c3c2b7" x="510.98087" y="90.6" transform="rotate(-0 510.98087 90.6)">target 80%</text>

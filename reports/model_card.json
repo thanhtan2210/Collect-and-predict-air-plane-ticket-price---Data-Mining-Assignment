@@ -145,7 +145,7 @@
         0.1,
         0.9
       ],
-      "conformal_adjustment_inr": 125.033203125,
+      "conformal_adjustment_inr": 118.365234375,
       "description": "[q10 - adjustment, q90 + adjustment], floored at 0."
     },
     "label": {
@@ -160,7 +160,7 @@
       "learning_rate": 0.05,
       "max_depth": 8,
       "n_estimators": 600,
-      "n_jobs": -1,
+      "n_jobs": 4,
       "random_state": 42,
       "subsample": 0.8
     },
@@ -169,7 +169,7 @@
       "learning_rate": 0.05,
       "max_depth": 8,
       "n_estimators": 600,
-      "n_jobs": -1,
+      "n_jobs": 4,
       "objective": "reg:quantileerror",
       "quantile_alpha": 0.1,
       "random_state": 42,
@@ -180,7 +180,7 @@
       "learning_rate": 0.05,
       "max_depth": 8,
       "n_estimators": 600,
-      "n_jobs": -1,
+      "n_jobs": 4,
       "objective": "reg:quantileerror",
       "quantile_alpha": 0.9,
       "random_state": 42,
@@ -210,7 +210,7 @@
   "versions": {
     "scikit-learn": "1.9.1",
     "xgboost": "3.4.1",
-    "point_model_commit": "82fa859a340582ab44c4162a0a50ba5346860c3b",
-    "interval_models_commit": "3f2895b31d3f2b0b020bfd043085801d749972dd"
+    "point_model_commit": "3d9096565ea4db21fd773e34689250a2c68f2264",
+    "interval_models_commit": "3d9096565ea4db21fd773e34689250a2c68f2264"
   }
 }
