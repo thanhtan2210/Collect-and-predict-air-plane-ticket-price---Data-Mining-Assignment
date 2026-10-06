@@ -27,7 +27,7 @@ from xgboost import XGBRegressor
 
 from src.predictor import load_pipeline
 from src.preprocess import INTERVAL_METRICS_PATH, INTERVAL_MODEL_PATH, MODEL_DIR
-from src.train import RANDOM_STATE, load_split, make_pipeline
+from src.train import RANDOM_STATE, XGB_N_JOBS, load_split, make_pipeline
 
 LOWER_QUANTILE, UPPER_QUANTILE = 0.10, 0.90
 TARGET_COVERAGE = UPPER_QUANTILE - LOWER_QUANTILE
@@ -46,7 +46,7 @@ def make_quantile_xgb(quantile):
         subsample=0.8,
         colsample_bytree=0.8,
         random_state=RANDOM_STATE,
-        n_jobs=-1,
+        n_jobs=XGB_N_JOBS,
     )
 
 

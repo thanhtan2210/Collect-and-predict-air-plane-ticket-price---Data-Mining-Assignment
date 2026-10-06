@@ -54,24 +54,24 @@ The app's headline number, weekend flights +7.1% dearer, barely changes when rou
 
 ## 4. The model is accurate on typical fares; a small tail carries the error
 
-On the hold-out test set (2,093 flights) the mean absolute error is 681 INR, but the median absolute error is 294 INR (3.9% of the price). 65.5% of predictions are within 500 INR. The worst 5% of rows account for 38.7% of the total error.
+On the hold-out test set (2,093 flights) the mean absolute error is 678 INR, but the median absolute error is 298 INR (3.9% of the price). 65.0% of predictions are within 500 INR. The worst 5% of rows account for 38.6% of the total error.
 
 | Actual price (INR) | Test rows | MAE (INR) | Mean error (INR) |
 | --- | --- | --- | --- |
-| < 5,000 | 491 | 293 | +153 |
-| 5,000-10,000 | 783 | 649 | +264 |
-| 10,000-15,000 | 663 | 601 | -163 |
-| 15,000-23,090 | 135 | 1,250 | -898 |
-| > 23,090 (outliers) | 21 | 9,864 | -9,864 |
+| < 5,000 | 491 | 298 | +157 |
+| 5,000-10,000 | 783 | 635 | +269 |
+| 10,000-15,000 | 663 | 599 | -171 |
+| 15,000-23,090 | 135 | 1,284 | -881 |
+| > 23,090 (outliers) | 21 | 9,800 | -9,800 |
 
 ![Test error by route and by actual price](images/analysis_errors.png)
 
-- **Expensive tickets are underpredicted.** Fares above the training outlier fence are missed by 9,864 INR on average, always on the low side: the model never saw prices that high. The 15,000-23,090 band is also underpredicted, by 898 INR on average. Part of this is expected when error is grouped by the actual price, since any model pulls extreme values toward the average.
-- **By route**, Banglore → Delhi is the weakest (MAE 904 INR, underpredicted by 313 INR on average); Chennai → Kolkata, which has only non-stop flights, is the easiest (MAE 287 INR).
-- **By airline**, "Multiple carriers" is the hardest (MAE 1,344 INR over 259 test rows) and SpiceJet the easiest (MAE 209 INR over 164 rows). "Multiple carriers" is a label for itineraries that combine airlines, so it hides the information that drives the price.
+- **Expensive tickets are underpredicted.** Fares above the training outlier fence are missed by 9,800 INR on average, always on the low side: the model never saw prices that high. The 15,000-23,090 band is also underpredicted, by 881 INR on average. Part of this is expected when error is grouped by the actual price, since any model pulls extreme values toward the average.
+- **By route**, Banglore → Delhi is the weakest (MAE 897 INR, underpredicted by 312 INR on average); Chennai → Kolkata, which has only non-stop flights, is the easiest (MAE 293 INR).
+- **By airline**, "Multiple carriers" is the hardest (MAE 1,365 INR over 259 test rows) and SpiceJet the easiest (MAE 207 INR over 164 rows). "Multiple carriers" is a label for itineraries that combine airlines, so it hides the information that drives the price.
 - **Some error cannot be removed with these features.** 450 flights share every model feature with another flight and still have a different price. On those rows, even predicting the group's own median misses by 1,100 INR on average. The missing driver is most likely the booking date.
 
-**So what.** The app's "± 681 INR" understates the accuracy for a typical ticket and badly overstates it for expensive ones. A price-dependent range would be more honest than a single number.
+**So what.** The app's "± 678 INR" understates the accuracy for a typical ticket and badly overstates it for expensive ones. A price-dependent range would be more honest than a single number.
 
 ## 5. Predicting the next month is harder than the headline score suggests
 
@@ -79,15 +79,15 @@ The headline evaluation splits rows at random, so the test flights come from the
 
 | Evaluation | XGBoost R² | XGBoost MAE (INR) | Baseline R² | Baseline MAE (INR) |
 | --- | --- | --- | --- | --- |
-| Random 80/20 split, all test rows | 0.8722 | 681 | 0.5468 | 1,851 |
-| Random 80/20 split, prices up to 23,090 INR | 0.9294 | 588 | - | - |
-| Train March-May, test June | 0.8457 | 1,091 | 0.6954 | 1,544 |
+| Random 80/20 split, all test rows | 0.8725 | 678 | 0.5468 | 1,851 |
+| Random 80/20 split, prices up to 23,090 INR | 0.9301 | 586 | - | - |
+| Train March-May, test June | 0.8428 | 1,100 | 0.6954 | 1,544 |
 
 The baseline predicts the training-set median price of the same airline, route and number of stops.
 
 ![Test MAE: random split vs June hold-out](images/analysis_temporal.png)
 
-June contains no price above the outlier fence, so the fair comparison for the June result is the in-range row: MAE rises from 588 to 1,091 INR (+85%) and R² falls from 0.929 to 0.846. The model still beats the baseline in June (1,091 vs 1,544 INR), but its advantage shrinks from 1,170 INR to 453 INR.
+June contains no price above the outlier fence, so the fair comparison for the June result is the in-range row: MAE rises from 586 to 1,100 INR (+88%) and R² falls from 0.930 to 0.843. The model still beats the baseline in June (1,100 vs 1,544 INR), but its advantage shrinks from 1,173 INR to 444 INR.
 
 **So what.** The model is good at filling in prices inside a period it has seen and noticeably weaker at forecasting a new month. Monthly price levels move a lot (median 9,769 INR in March, 5,073 in April, 8,662 in May, 8,510 in June), and four months of one year are not enough to learn a seasonal pattern.
 
@@ -118,7 +118,7 @@ In August 2026 IndiGo carried about 65% of domestic passengers, the Air India gr
 
 | Claim | Supported? |
 | --- | --- |
-| The price levels or the model's predictions apply to tickets today | No. The error already rose 85% when predicting one month ahead inside 2019 (finding 5). |
+| The price levels or the model's predictions apply to tickets today | No. The error already rose 88% when predicting one month ahead inside 2019 (finding 5). |
 | "Weekends cost more" or "connections cost 56% more" as rules for today | No. The weekend comparison rests on 2 to 3 weekend dates per month, and the premiums are tied to airlines that no longer fly. |
 | In 2019, on these five routes, the fare product explained more of the price than the calendar did | Yes (ablation: R² 0.81 → 0.93 when `Additional_Info` is added). |
 | Raw comparisons of medians can point the wrong way once the airline mix is ignored (confounding) | Yes, shown twice (meal and baggage remarks). This is a property of the method, not of the year. |

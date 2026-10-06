@@ -4,7 +4,7 @@
 
 **User.** A travel-agency employee holding a quote for a customer, who needs to know whether the price is cheap, fair or expensive compared with similar flights, and which alternative would cost less.
 
-**Tool.** The app takes the flight details and the quoted price and returns a price range for comparable flights, with a label: cheap (below the range), fair (inside) or expensive (above). The range is designed to contain 80% of prices; on 2,093 flights the model had never seen it contained 79.8%. Its average width is 2,274 INR, from 1,138 INR for the cheapest quarter of tickets to 3,024 INR for the dearest quarter.
+**Tool.** The app takes the flight details and the quoted price and returns a price range for comparable flights, with a label: cheap (below the range), fair (inside) or expensive (above). The range is designed to contain 80% of prices; on 2,093 flights the model had never seen it contained 78.8%. Its average width is 2,254 INR, from 1,128 INR for the cheapest quarter of tickets to 2,998 INR for the dearest quarter.
 
 ## Three findings
 

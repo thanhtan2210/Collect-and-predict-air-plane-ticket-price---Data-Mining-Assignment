@@ -10,8 +10,8 @@
         "Total_Stops",
         "Duration_Minutes"
       ],
-      "r2_mean": 0.6566574335098266,
-      "r2_std": 0.029705451069374902
+      "r2_mean": 0.6565054059028625,
+      "r2_std": 0.029528408466197517
     },
     {
       "feature_set": "2. Set 1 + date/time features",
@@ -30,8 +30,8 @@
         "Arrival_Minute",
         "Duration_Minutes"
       ],
-      "r2_mean": 0.8068967819213867,
-      "r2_std": 0.008999680475077794
+      "r2_mean": 0.807344937324524,
+      "r2_std": 0.008313812995543561
     },
     {
       "feature_set": "3. Set 2 + Additional_Info (full model)",
@@ -51,8 +51,8 @@
         "Arrival_Minute",
         "Duration_Minutes"
       ],
-      "r2_mean": 0.9278596043586731,
-      "r2_std": 0.0035085120282786542
+      "r2_mean": 0.9281481146812439,
+      "r2_std": 0.003336664517165038
     }
   ]
 }

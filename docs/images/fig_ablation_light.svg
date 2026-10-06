@@ -131,24 +131,24 @@ L 489.4 60
    </g>
    <g id="patch_3">
     <path d="M 194.4 251.863636 
-L 468.118583 251.863636 
-L 468.118583 209.695804 
+L 468.203694 251.863636 
+L 468.203694 209.695804 
 L 194.4 209.695804 
 z
 " clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
    </g>
    <g id="patch_4">
     <path d="M 194.4 181.583916 
-L 432.434551 181.583916 
-L 432.434551 139.416084 
+L 432.566757 181.583916 
+L 432.566757 139.416084 
 L 194.4 139.416084 
 z
 " clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
    </g>
    <g id="patch_5">
     <path d="M 194.4 111.304196 
-L 388.113943 111.304196 
-L 388.113943 69.136364 
+L 388.069095 111.304196 
+L 388.069095 69.136364 
 L 194.4 69.136364 
 z
 " clip-path="url(#p9c7e75d6d9)" style="fill: #2a78d6"/>
@@ -164,13 +164,13 @@ L 513 261
 " style="fill: none; stroke: #e1e0d9; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_11">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="471.658583" y="233.108822" transform="rotate(-0 471.658583 233.108822)">0.9279</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="471.743694" y="233.108822" transform="rotate(-0 471.743694 233.108822)">0.9281</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="435.974551" y="162.829102" transform="rotate(-0 435.974551 162.829102)">0.8069</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="436.106757" y="162.829102" transform="rotate(-0 436.106757 162.829102)">0.8073</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="391.653943" y="92.549381" transform="rotate(-0 391.653943 92.549381)">0.6567</text>
+    <text style="font-size: 9px; font-family: 'Segoe UI', 'Helvetica Neue', 'Arial', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #0b0b0b" x="391.609095" y="92.549381" transform="rotate(-0 391.609095 92.549381)">0.6565</text>
    </g>
   </g>
   <g id="text_14">

@@ -24,89 +24,89 @@
       "mae_std": 17.972692771762347
     },
     "XGBoost": {
-      "r2_mean": 0.9278596043586731,
-      "r2_std": 0.0035085120282786542,
-      "mae_mean": 609.7464233398438,
-      "mae_std": 14.881877265270509
+      "r2_mean": 0.9281481146812439,
+      "r2_std": 0.003336664517165038,
+      "mae_mean": 608.9689331054688,
+      "mae_std": 15.8293977633815
     },
     "XGBoost (log target)": {
-      "r2_mean": 0.926810622215271,
-      "r2_std": 0.004043135614467923,
-      "mae_mean": 606.4283813476562,
-      "mae_std": 17.06840601754835
+      "r2_mean": 0.926680064201355,
+      "r2_std": 0.0033395409014894783,
+      "mae_mean": 605.4874755859375,
+      "mae_std": 14.323860734335852
     }
   },
   "best_model": "XGBoost",
   "test": {
     "full": {
       "n": 2093,
-      "r2": 0.872249960899353,
-      "mae": 681.342041015625,
-      "rmse": 1632.0609669984758
+      "r2": 0.872471809387207,
+      "mae": 678.4505615234375,
+      "rmse": 1630.6436612577256
     },
     "in_range": {
       "n": 2072,
-      "r2": 0.9293705224990845,
-      "mae": 588.2774047851562,
-      "rmse": 1077.9728080986088
+      "r2": 0.9301453232765198,
+      "mae": 586.0068359375,
+      "rmse": 1072.043667487477
     }
   },
   "feature_importance": [
     {
       "feature": "Airline",
-      "importance": 0.37760451436042786
+      "importance": 0.3842903673648834
     },
     {
       "feature": "Additional_Info",
-      "importance": 0.19510699808597565
+      "importance": 0.1968117207288742
     },
     {
       "feature": "Duration_Minutes",
-      "importance": 0.10242065042257309
+      "importance": 0.10019141435623169
     },
     {
       "feature": "Source",
-      "importance": 0.08594174683094025
+      "importance": 0.08646030724048615
     },
     {
       "feature": "Destination",
-      "importance": 0.08541754633188248
+      "importance": 0.08220668882131577
     },
     {
       "feature": "Total_Stops",
-      "importance": 0.07823401689529419
+      "importance": 0.07533813267946243
     },
     {
       "feature": "Journey_Month",
-      "importance": 0.021418385207653046
+      "importance": 0.021473659202456474
     },
     {
       "feature": "Journey_Day",
-      "importance": 0.010506893508136272
+      "importance": 0.010451818816363811
     },
     {
       "feature": "Dep_Minute",
-      "importance": 0.00828318390995264
+      "importance": 0.008186813443899155
     },
     {
       "feature": "Arrival_Hour",
-      "importance": 0.008215919137001038
+      "importance": 0.008138403296470642
     },
     {
       "feature": "Arrival_Minute",
-      "importance": 0.007921305485069752
+      "importance": 0.007308781612664461
     },
     {
       "feature": "Dep_Hour",
-      "importance": 0.0067981393076479435
+      "importance": 0.006944735534489155
     },
     {
       "feature": "Day_Of_Week",
-      "importance": 0.00632096454501152
+      "importance": 0.0061143082566559315
     },
     {
       "feature": "Is_Weekend",
-      "importance": 0.005809687543660402
+      "importance": 0.006082767155021429
     }
   ]
 }

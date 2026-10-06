@@ -32,6 +32,9 @@ from src.preprocess import (
 
 RANDOM_STATE = 42
 TEST_SIZE = 0.2
+# A fixed thread count instead of all cores (-1): the same machine then gives identical
+# results whatever its core count, and other machines differ only by summation order.
+XGB_N_JOBS = 4
 
 
 def load_split(filter_outliers=True):
@@ -84,7 +87,7 @@ def make_xgb():
         subsample=0.8,
         colsample_bytree=0.8,
         random_state=RANDOM_STATE,
-        n_jobs=-1,
+        n_jobs=XGB_N_JOBS,
     )
 
 
@@ -99,7 +102,7 @@ def make_models():
         "Ridge": make_pipeline(Ridge(random_state=RANDOM_STATE), scale=True),
         "RandomForest": make_pipeline(
             RandomForestRegressor(
-                n_estimators=300, min_samples_leaf=2, random_state=RANDOM_STATE, n_jobs=-1
+                n_estimators=300, min_samples_leaf=2, random_state=RANDOM_STATE, n_jobs=XGB_N_JOBS
             )
         ),
         "XGBoost": make_pipeline(make_xgb()),
